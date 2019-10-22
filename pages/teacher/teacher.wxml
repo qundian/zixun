@@ -1,0 +1,99 @@
+<view style="padding-bottom:4em;">
+  <view style="position:relative;">
+    <image src="/images/userbg.png" aspectFit id="userBg"></image>
+    <image src="/images/headerImg.jpg" id="headerImg"></image>
+    <view id="userName">陈楚华</view>
+    <view id="userBot">
+      <view class="C-09261532" style="width:29.5%;">
+        <text style="font-size:1.1em;font-weight:bold;">300元</text><text style="font-size:.85em;color:#999;">账户余额</text>
+      </view>
+      <view class="C-09261532" style="width:29.5%;">
+        <text style="font-size:1.1em;font-weight:bold;">10小时</text><text style="font-size:.85em;color:#999;">累计咨询时长</text>
+      </view>
+      <view class="C-09261532" style="width:40%;border:none;">
+        <view style="display:inline-block;width:50%;"><image src="/images/cz.png">
+          </image><text style="font-size:.85em;color:#999;">充值</text>
+        </view>
+        <view style="display:inline-block;width:50%;">
+          <image src="/images/tx.png"></image><text style="font-size:.85em;color:#999;">提现</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="kong"></view>
+  <view style="padding:1em .85em;">
+    <view class="C-09261610 {{listState == 'now'?'select':''}}" data-name="now" bindtap="change"><text>已预约咨询</text><view></view></view>
+    <view class="C-09261610 {{listState == 'once'?'select':''}}" data-name="once" bindtap="change"><text>咨询历史</text><view></view></view>
+  </view>
+  <view id="now" wx:if="{{listState == 'now'}}" wx:key="index">
+    <block wx:for="{{orderList}}" wx:key="s">
+      <view class="teacherList">
+        <view><text>咨询用户：</text><text class="C-09270945">{{item.teacherName}}</text></view>
+        <view><text>咨询费用：</text><text class="C-09270945">￥{{item.price}}</text></view>
+        <view><text>通话时间：</text><text class="C-09270945">{{item.time}}</text></view>
+        <view><text>咨询主题：</text><text class="C-09270945">{{item.ques}}</text></view>
+        <button wx:if="{{item.state}}" style="background:#fa5151;" bindtap="cancel"><text>取消预约</text></button>
+        <button wx:if="{{!item.state}}"><text>拨打电话</text></button>
+      </view>
+    </block>
+  </view>
+  <view id="once" wx:if="{{listState == 'once'}}" wx:key="index">
+    <block wx:for="{{onceList}}" wx:key="k">
+      <view class="teacherList">
+        <view><text>咨询用户：</text><text class="C-09270945">{{item.teacherName}}</text></view>
+        <view><text>咨询费用：</text><text class="C-09270945">￥{{item.price}}</text></view>
+        <view><text>分成所得：</text><text class="C-09270945">￥{{item.profit}}</text></view>
+        <view><text>违约扣除：</text><text class="C-09270945">￥{{item.punish}}</text></view>
+        <view><text>通话时间：</text><text class="C-09270945">{{item.time}}</text></view>
+        <view><text>通话时长：</text><text class="C-09270945">{{item.long}}分钟</text></view>
+        <view><text>咨询主题：</text><text class="C-09270945">{{item.ques}}</text></view>
+        <view><text>此次评分：</text>
+        <view style="padding:0;width:70%;float:right;text-align:right;">
+          <block wx:for="{{gradeImg}}" wx:key="index" wx:for-item="option">
+            <image src="{{option}}" wx:if="{{index<(item.grade%1 != 0?(item.grade-1):item.grade)}}"></image>
+          </block>
+          <image src="/images/xxhalf.png" wx:if="{{item.grade%1 != 0}}"></image>
+        </view>
+        </view>
+        <view><text>此次评价：</text><text class="C-09270945" style="text-align:left;">{{item.discuss}}</text></view>
+      </view>
+    </block>
+  </view>
+  <!-- 底部导航栏 -->
+  <view class="weui-tabbar">
+    <view class="weui-tabbar__item weui-bar__item_on">
+      <navigator url="/pages/index/index" hover-class="none" open-type="redirectTo">
+          <view style="position: relative;display:inline-block;">
+            <image src="/images/home.png" class="weui-tabbar__icon"></image>
+          </view>
+          <view class="weui-tabbar__label">首页</view>
+      </navigator>
+    </view> 
+    <view class="weui-tabbar__item">
+      <view style="position: relative;display:inline-block;">
+        <image src="/images/userSelect.png" class="weui-tabbar__icon"></image>
+        <view class="weui-badge weui-badge_dot" style="position:absolute;top:-2px;left:calc(100% - 3px);"></view>
+      </view>
+      <view class="weui-tabbar__label" style="color:#2F69F8;">个人中心</view>
+    </view>
+  </view>
+  <view class="page__bd">
+        <view class="weui-demo-dialog {{istrue ? 'weui-demo-dialog_show' : ''}}">
+          <view class="weui-mask" bindtap="closeDialog"></view>
+          <view class="weui-dialog__wrp" bindtap="closeDialog">
+              <view class="weui-dialog">
+                <view class="weui-dialog__hd">
+                  <view class="weui-dialog__title">提示</view>
+                </view>
+                <view class="weui-dialog__bd">
+                  您确定要取消本次咨询吗？
+                </view>
+                <view class="weui-dialog__ft">
+                    <view class="weui-dialog__btn weui-dialog__btn_default" bindtap="closeDialog">取消</view>
+                    <view class="weui-dialog__btn" bindtap="closeDialog">确定</view>
+                </view>
+              </view>
+          </view>
+        </view>
+    </view>
+</view>

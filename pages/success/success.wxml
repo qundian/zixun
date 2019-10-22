@@ -1,0 +1,29 @@
+<view>
+  <view id="B-10171010">
+    <view style="position:relative;">
+      <view style="text-align:center;margin-top:1em;padding-bottom:1.5em;">
+        <view style="font-weight:bold;color:#2F69F8;">预约成功</view>
+        <view style="margin-top:.5em;">恭喜您成功预约与<text>{{status == 'teacher'?user.name:teacher.name}}</text>的一对一咨询</view>
+      </view>
+      <view class="kong"></view>
+      <block wx:if="{{status == 'teacher'}}">
+        <view class="teacherList" style="box-shadow:none;">
+          <view><text>咨询用户：</text><text class="C-09270945">{{user.name}}</text></view>
+          <view><text>用户职位：</text><text class="C-09270945">{{user.position}}</text></view>
+          <view><text>咨询费用：</text><text class="C-09270945">￥{{user.price}}</text></view>
+          <view><text>咨询时间：</text><text class="C-09270945">{{user.time}}</text></view>
+          <view><text>咨询主题：</text><text class="C-09270945">{{user.content}}</text></view>
+        </view>
+      </block>
+      <block wx:else>
+        <view class="teacherList" style="box-shadow:none;">
+          <view><text>咨询老师：</text><text class="C-09270945">{{teacher.name}}</text></view>
+          <view><text>咨询费用：</text><text class="C-09270945">￥{{teacher.price}}</text></view>
+          <view><text>咨询时间：</text><text class="C-09270945">{{teacher.time}}</text></view>
+          <view><text>咨询主题：</text><text class="C-09270945">{{teacher.content}}</text></view>
+        </view>
+      </block>
+    </view>
+  </view>
+  <button wx:if="{{status == 'user'}}">拨打电话</button>
+</view> 

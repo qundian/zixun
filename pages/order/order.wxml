@@ -1,0 +1,118 @@
+<view style="padding-bottom:3.2em;">
+  <view class="B-10091334">
+    <navigator url="/pages/userInfo/userInfo" hover-class="none"><text>填写基本信息</text><image src="/images/right.png"></image></navigator>
+  </view>
+  <view class="B-10091334" style="border:none;" bindtap="openDialog">
+    <text>选择预约时间</text><image src="/images/right.png"></image>
+  </view>
+  <view class="kong"></view>
+  <view class="leader"><view></view><text>咨询老师</text></view>
+  <view class="teacherList">
+    <view class="teacherListImg">
+      <image src="/images/headerImg.jpg"></image>
+    </view>
+    <view class="tesacherListRight">
+      <view class="teacherListP1">
+        <text>陈春花</text>
+        <block wx:for="{{gradeImg}}" wx:key="{{index}}">
+          <image src="{{item}}" wx:if="{{index<(grade%1 != 0?(grade-1):grade)}}"></image>
+        </block>
+        <image src="/images/xxhalf.png" wx:if="{{grade%1 != 0}}"></image>
+        <view class="teacherListPrice">
+          <text style='color:#aaa;text-decoration:line-through;'>￥400/</text>
+          <text style="font-size:.5em;">￥</text><text style="font-weight:bold;font-size:1.2em;">300</text>/小时
+        </view>
+      </view>
+      <view class="teacherListShow">原阿里巴巴有限公司CHO</view>
+      <view class="teacherListBest">
+        <text>职业规划</text><text>个人成长</text><text>组织变革</text>
+      </view>
+      <view style="height:1.3em;">
+        <view class="teacherListDate">帮助<text>200</text>人</view>
+        <view class="teacherListDate">咨询<text>40</text>小时</view>
+      </view>
+      <view style="height:1.3em;">
+        <view class="teacherListDate"><text>24</text>条评价</view>
+      </view>
+    </view>
+  </view>
+  <view class="leader"><view></view><text>本次咨询主题</text></view>
+  <textarea></textarea>
+  <view style="padding:1.2em 6%;font-size:.75em;overflow:hidden;padding-bottom:.6em;">
+    <text style="width:20%;float:left;line-height:2.5em;">热门主题：</text>
+    <view style="float:left;width:80%;">
+      <block wx:for="{{territory}}" wx:key="{{index}}">
+        <text class="C-10091403 {{item.check?'select':''}}" data-name="{{item.name}}" bindtap="addSelect">{{item.name}}</text>
+      </block>
+    </view>
+  </view>
+  <view class="kong" style="height:1.35em;"></view>
+  <view class="B-10091334">
+    <text>咨询费用：</text><text style="float:right;margin-top:.3em;font-weight:bold;">￥300</text>
+  </view>
+  <view class="B-10091334">
+    <text>账户余额：</text><text style="color:#FD3E3E;font-size:.75em;">(您的余额不足以支持本次咨询)</text><text style="float:right;margin-top:.3em;font-weight:bold;">￥100</text>
+  </view>
+  <view class="B-10091334" style="border:none;">
+    <text>咨询优惠：</text><text style="float:right;margin-top:.3em;font-weight:bold;">-￥100</text>
+  </view>
+  <view class="kong" style="height:1.35em;"></view>
+  <view id="B-10081418">
+    <view style="width:70%;font-size:1em;line-height:2.6em;">
+      待支付：<text style="display:inline;color:#FF0000;font-size:1.1em;">￥1200</text>
+    </view>
+    <view style="width:30%;"><navigator hover-class="none" url="/pages/order/order">去支付</navigator></view>
+    <view style="height:1em;width:100%;" wx:if="{{isIphoneX}}"></view>
+  </view>
+  <view class="page__bd">
+    <view class="weui-demo-dialog {{istrue ? 'weui-demo-dialog_show' : ''}}">
+      <view class="weui-mask" bindtap="closeDialog"></view>
+      <view class="weui-half-screen-dialog">
+        <view class="weui-half-screen-dialog__hd">
+          <view class="weui-half-screen-dialog__hd__main">
+            <text class="weui-half-screen-dialog__title">可预约时间</text>
+            <text class="weui-half-screen-dialog__subtitle" style="color:red;">每次预约只可选择同一天内的单个或者连续的时间段</text>
+          </view>
+          <view class="weui-half-screen-dialog__hd__side" style="left:-1em;">
+            <view bindtap="closeDialog" class="weui-icon-btn weui-icon-btn_close">关闭</view>
+          </view>
+        </view>
+        <scroll-view scroll-x="true" scroll-with-animation="true" style="white-space: nowrap;border-bottom:1px solid #aaa;">
+          <block wx:for="{{arr}}" wx:for-item="i" wx:for-index="idx" wx:key="idx">
+              <view class="C-09291042-left {{idx == witchDay?'select':''}}" bindtap="selectDay" data-index="{{idx}}">
+                <text style="font-weight:bold;">{{i.date}}</text>
+                <text style="font-size:.9em;">{{i.state?'可预约':'不可预约'}}</text>
+              </view>
+          </block>
+        </scroll-view>
+        <view class="weui-half-screen-dialog__bd" style="padding-bottom:1em;padding-top:.5em;">
+          <block wx:for="{{arr}}" wx:for-item="i" wx:for-index="idx" wx:key="idx">
+            <view style="position:relative;">
+              <view class="C-09291042-right" wx:if="{{idx == witchDay}}">
+                <block wx:for="{{i.time}}" wx:for-item="z" wx:for-index="zdx" wx:key="zdx">
+                  <view class="E-bg {{z.isSelect?'select':''}}" style="color:{{z.state?'#000':'#ccc'}}" data-index="{{zdx}}" bindtap="selectTime">
+                    <text style="font-size:.8em;font-weight:bold;">{{z.part}}</text>
+                    <text style="font-size:.8em;padding-top:.2em;">{{z.state?'可预约':'不可预约'}}</text>
+                  </view>
+                </block>
+              </view>
+            </view>
+          </block>
+        </view>
+      </view>
+    </view>
+    <view class="weui-demo-dialog {{isShowModel ? 'weui-demo-dialog_show' : ''}}">
+      <view class="weui-dialog__wrp" bindtap="closeModel">
+          <view class="weui-dialog">
+            <view class="weui-dialog__hd">
+              <view class="weui-dialog__title">提示</view>
+            </view>
+            <view class="weui-dialog__bd">{{waring}}</view>
+            <view class="weui-dialog__ft">
+                <view class="weui-dialog__btn" bindtap="closeModel" >确定</view>
+            </view>
+          </view>
+      </view>
+    </view>
+  </view>
+</view>

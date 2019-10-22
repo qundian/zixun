@@ -1,0 +1,22 @@
+<view>
+  <view id="B-10171010">
+    <view style="position:relative;">
+      <view style="text-align:center;margin-top:1em;padding-bottom:1.5em;">
+        <view style="font-weight:bold;">订单确认通知</view>
+        <view style="margin-top:.5em;text-align:left;padding:0 1em;color:#666;fon-size:.85em;">亲爱的陈老师，您与张三的一对一咨询服务已经结束，费用已打入您的个人中心，具体详情如下：</view>
+      </view>
+      <view class="kong"></view>
+      <view class="teacherList" style="box-shadow:none;">
+        <view><text>咨询用户：</text><text class="C-09270945">{{user.name}}</text></view>
+        <view><text>用户职位：</text><text class="C-09270945">{{user.position}}</text></view>
+        <view><text>咨询费用：</text><text class="C-09270945">￥{{user.price}}</text></view>
+        <view><text>分成费用：</text><text class="C-09270945">￥{{user.divide}}</text></view>
+        <view><text>违约扣费：</text><text class="C-09270945">￥{{user.koufei}}</text></view>
+        <view><text>咨询时间：</text><text class="C-09270945">{{user.time}}</text></view>
+        <view><text>通话时长：</text><text class="C-09270945">{{user.long}}分钟</text></view>
+        <view><text>咨询主题：</text><text class="C-09270945">{{user.content}}</text></view>
+      </view>
+    </view>
+  </view>
+  <navigator url="/pages/teacher/teacher"><button>个人账户</button></navigator>
+</view> 

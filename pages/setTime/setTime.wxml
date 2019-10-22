@@ -1,0 +1,73 @@
+<view style="padding-bottom:4em;">
+  <view id="B-10151034">
+    <view style="color:#666666;">请根据自己的日常安排合理调整咨询时间</view>
+    <view style="color:red;">您最多可安排近一个月的咨询时间，我们将在每周三和每周日提醒您更新时间。</view>
+  </view>
+  <view style="text-align:center;padding:1em 0;font-size:.85em;">点击日历，选择当天可咨询时间段</view>
+  <!-- 日历年月 -->
+  <view class='calendar_title flex_nowrap'>
+    <view class='icon' bindtap='lastMonth'>
+      <image src='/images/zuo.png' />
+    </view>
+    <view style="display:inline-block;width:60%;vertical-align: middle;text-align:center;">
+      <text style="vertical-align: middle;">{{year}}年{{month}}月</text>
+    </view>
+    <view class='icon' bindtap='nextMonth' style="text-align:right;">
+      <image src='/images/you.png' />
+    </view>
+  </view>
+  <!-- 日历主体 -->
+  <view class='calendar'>
+    <view class='header'>
+      <view wx:for='{{date}}' wx:key='' class='{{(index == todayIndex) && isTodayWeek ? "weekMark" : ""}}'>{{item}}
+        <view></view>
+      </view>
+    </view>
+    <view class='date-box'>
+      <block wx:for='{{dateArr}}' wx:key=''>
+        <view bindtap="clickDate" data-date="{{item.isToday}}" data-state="{{item.canSelect}}">
+          <view class='date-head' data-year='{{year}}' data-month='{{month}}' data-datenum='{{item.dateNum}}' style="background:{{item.dateNum?'#eee':'#fff'}};">
+            <view style="background:{{item.canSelect?'#3ED5BA':'#eee'}}" class='{{isToday == item.isToday ? "nowDay" : ""}}'>{{item.dateNum}}</view>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+  <view style="padding:0 2em;font-size:.9em;">
+    <view style="color:red;font-weight:bold;">提示：</view>
+    <view style="padding-left:1em;">
+      <view style="color:#ff9933;">橙色：表示今天日期</view>
+      <view style="color:#3ED5BA;">绿色：表示可以设置</view>
+      <view style="color:#2F69F8;">蓝色：表示已经选择</view>
+    </view>
+  </view>
+  <view class="page__bd">
+    <view class="weui-demo-dialog {{istrue ? 'weui-demo-dialog_show' : ''}}">
+      <view class="weui-mask" bindtap="closeDialog"></view>
+      <view class="weui-half-screen-dialog">
+        <view class="weui-half-screen-dialog__hd">
+          <view class="weui-half-screen-dialog__hd__main">
+            <text class="weui-half-screen-dialog__title">设置预约时间</text>
+          </view>
+          <view class="weui-half-screen-dialog__hd__side" style="left:-1em;">
+            <view bindtap="closeDialog" class="weui-icon-btn weui-icon-btn_close">关闭</view>
+          </view>
+        </view>
+        <view class="weui-half-screen-dialog__bd" style="padding-bottom:1em;padding-top:.5em;">
+          <block wx:for="{{arr}}" wx:for-item="i" wx:for-index="idx" wx:key="idx">
+            <view style="position:relative;">
+              <view class="C-09291042-right" wx:if="{{idx == witchDay}}">
+                <block wx:for="{{i}}" wx:for-item="z" wx:for-index="zdx" wx:key="zdx">
+                  <view class="E-bg {{z.isSelect?'select':''}}" style="color:{{z.state?'#000':'#ccc'}}" data-index="{{zdx}}" bindtap="selectTime">
+                    <text style="font-size:.8em;font-weight:bold;">{{z.part}}</text>
+                    <!-- <text style="font-size:.8em;padding-top:.2em;">{{z.state?'可预约':'不可预约'}}</text> -->
+                  </view>
+                </block>
+              </view>
+            </view>
+          </block>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

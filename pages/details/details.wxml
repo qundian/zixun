@@ -1,0 +1,133 @@
+<view style="padding-bottom:4em;">
+  <view style="position:relative;">
+    <image src="/images/person.jpg" aspectFit style="width:100%;height:15.625em;"></image>
+    <text id="teacherName">张三</text>
+    <view id="C-09281003">
+      <text>原阿里巴巴人力资源总监</text>
+      <view style="float:right;margin-right:1em;">从业20年|访客2938人</view>
+    </view>
+    <view id="userBot">
+      <view class="C-09261532" style="width:45%;">
+        <block wx:for="{{gradeImg}}" wx:key="{{index}}">
+          <image src="{{item}}" wx:if="{{index<(grade%1 != 0?(grade-1):grade)}}"></image>
+        </block>
+        <image src="/images/xxhalf.png" wx:if="{{grade%1 != 0}}"></image>
+        <text style="font-size:.85em;color:#999;">评分</text>
+      </view>
+      <view class="C-09261532" style="width:27.25%;">
+        <text style="font-size:1.1em;font-weight:bold;">10小时</text><text style="font-size:.85em;color:#999;">咨询人数</text>
+      </view>
+      <view class="C-09261532" style="width:27.25%;">
+        <text style="font-size:1.1em;font-weight:bold;">10小时</text><text style="font-size:.85em;color:#999;">咨询时长</text>
+      </view>
+      <view class="kong" style="margin-top:.5em;"></view>
+    </view>
+  </view>
+  <view style="margin-top:3em;">
+    <view class="leader"><view></view><text>背景介绍</text></view>
+    <view style="padding:0 1.75em;font-size:.875em;line-height:1.625em;">
+      缩放模式，保持纵横比缩放图片，只保证图片的短边能完全显示出来。也就是说，图片通常只在水平或垂直方向是完整的，另一个方向将会发生截取
+    </view>
+    <view class="kong"></view>
+    <view class="leader"><view></view><text>擅长话题</text></view>
+    <view id="C-03290948">
+      <text>组织变革</text><text>人才发展</text><text>股权激励</text><text>招聘绩效</text><text>企业文化</text>
+      <view style="font-size:0.875em;"># 如何做残保金以及如何减税</view>
+      <view style="font-size:0.875em;"># 怎么做才能让招聘更简单更高效</view>
+    </view>
+    <view class="kong"></view>
+    <view class="leader">
+      <view></view><text>可预约时间</text>
+      <text style="float:right;color:#2F69F8;font-weight:bold;" bindtap="openDialog">more</text>
+    </view>
+    <view style="position:relative;padding:0 1.75em;border-bottom:1px solid #dcdcdc;margin-bottom:.5em;">
+      <view class="C-09291042-left" style="line-height:2em;">时段</view>
+      <view class="C-09291042-right"><image src="/images/kechi.png" aspectFit style="width:100%;height:1.2em;vertical-align:bottom;"></image></view>
+    </view>
+    <!-- 今天 -->
+    <block wx:for="{{arr}}" wx:for-item="i" wx:for-index="idx" wx:key="idx" wx:if="{{idx<=2}}">
+      <view style="position:relative;padding:0 1.75em;">
+        <view class="C-09291042-left">{{i.date}}</view>
+        <view class="C-09291042-right" style="padding-left:3.3em;padding-top:.3em;padding-bottom:.3em;">
+          <block wx:for="{{i.time}}" wx:for-item="z" wx:for-index="zdx" wx:key="zdx">
+            <view class="E-bg" style="background:{{z?'#c9e8be':'#eee'}}"></view>
+          </block>
+        </view>
+      </view>
+    </block>
+    <view class="kong"></view>
+    <view class="leader" style="padding-bottom:0;">
+      <view></view><text>咨询历史</text>
+      <navigator style="float:right;color:#2F69F8;font-weight:bold;" hover-class="none" url="/pages/history/history">more</navigator>
+    </view>
+    <scroll-view scroll-x="true" style="white-space: nowrap;height:8.5em;padding-left:6.1%;box-sizing:border-box;" scroll-with-animation="true">
+      <view class="D-10081133">
+        <view style="color:#666;font-size:.875em;">匿名</view><view style="font-size:.75em;color:#999">2019-05-21</view>
+        <view class="E-10081305">我们有不同的背景和不同的历史。因此，我们有权拥有不同的未来。We have a different background, a different history. Accordingly, we have the right to different futures</view>
+      </view>
+      <view class="D-10081133">
+        <view style="color:#666;font-size:.875em;">匿名</view><view style="font-size:.75em;color:#999">2019-05-21</view>
+        <view class="E-10081305">我们有不同的背景和不同的历史。因此，我们有权拥有不同的未来。We have a different background, a different history. Accordingly, we have the right to different futures</view>
+      </view> 
+    </scroll-view>
+    <view class="kong"></view>
+    <view class="leader"><view></view><text>评论</text></view>
+    <view style="padding:0 6.1%;">
+      <view class="C-10081354">
+        <view class="D-10081400">
+          <image src="/images/headerImg.jpg"></image><text>张三</text>
+          <text style="float:right;margin-top:.2em;font-size:.75em;color:#999;">2019-04-10</text>
+        </view>
+        <view class="D-10081403">
+          我们有不同的背景和不同的历史。因此，我们有权拥有不同的未来。We have a different background, a different history. Accordingly, we have the right to different futures
+        </view> 
+      </view>
+    </view>
+  </view>
+  <view id="B-10081418">
+    <view style="width:15%;" bindtap="collect">
+      <image src="/images/like.png" wx:if="{{!isCollect}}"></image>
+      <image src="/images/love.png" wx:if="{{isCollect}}"></image>
+      <text>收藏</text>
+    </view>
+    <view style="width:15%;">
+      <image src="/images/kefu.png"></image><text>客服</text>
+    </view>
+    <view style="width:40%;font-size:1em;line-height:2.6em;">
+      <text style="display:inline;color:#FF0000;font-size:1.1em;">￥1200</text>/小时
+    </view>
+    <view style="width:30%;"><navigator hover-class="none" url="/pages/order/order">预约咨询</navigator></view>
+    <view style="height:1em;width:100%;" wx:if="{{isIphoneX}}"></view>
+  </view>
+  <view class="page__bd">
+    <view class="weui-demo-dialog {{istrue ? 'weui-demo-dialog_show' : ''}}">
+      <view class="weui-mask" bindtap="closeDialog"></view>
+      <view class="weui-half-screen-dialog">
+        <view class="weui-half-screen-dialog__hd">
+          <view class="weui-half-screen-dialog__hd__main">
+            <text class="weui-half-screen-dialog__title">可预约时间</text>
+          </view>
+          <view class="weui-half-screen-dialog__hd__side" style="left:-1em;">
+            <view bindtap="closeDialog" class="weui-icon-btn weui-icon-btn_close">关闭</view>
+          </view>
+        </view>
+        <view style="position:relative;border-bottom:1px solid #dcdcdc;margin-bottom:.5em;">
+          <view class="C-09291042-left C-10090950" style="line-height:2em;">时段</view>
+          <view class="C-09291042-right"><image src="/images/kechi.png" aspectFit style="width:100%;height:1.2em;vertical-align:bottom;"></image></view>
+        </view>
+        <view class="weui-half-screen-dialog__bd" style="padding-bottom:1em;height:20em;overflow-y:auto;">
+          <block wx:for="{{arr}}" wx:for-item="i" wx:for-index="idx" wx:key="idx">
+            <view style="position:relative;">
+              <view class="C-09291042-left C-10090950">{{i.date}}</view>
+              <view class="C-09291042-right" style="padding-left:3.3em;padding-top:.3em;padding-bottom:.3em;">
+                <block wx:for="{{i.time}}" wx:for-item="z" wx:for-index="zdx" wx:key="zdx">
+                  <view class="E-bg" style="background:{{z?'#c9e8be':'#eee'}}"></view>
+                </block>
+              </view>
+            </view>
+          </block>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

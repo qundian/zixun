@@ -1,0 +1,123 @@
+<!--index.wxml-->
+<view style="padding-bottom:4em;">
+<!-- 搜索框 -->
+  <view class="page__bd">
+    <view class="weui-search-bar">
+        <view class="weui-search-bar__form">
+            <view class="weui-search-bar__box">
+                <icon class="weui-icon-search_in-box" type="search" size="14"></icon>
+                <input type="text" class="weui-search-bar__input" placeholder="搜索" value="{{inputVal}}" bindconfirm="search"/>
+                <view class="weui-icon-clear" wx:if="{{inputVal.length > 0}}" bindtap="clearInput">
+                    <icon type="clear" size="14"></icon>
+                </view>
+            </view>
+            <label class="weui-search-bar__label" hidden="{{inputShowed}}" bindtap="showInput">
+                <icon class="weui-icon-search" type="search" size="14"></icon>
+                <view class="weui-search-bar__text">搜索</view>
+            </label>
+        </view>
+        <view class="weui-search-bar__cancel-btn" hidden="{{!inputShowed}}" bindtap="hideInput">取消</view>
+    </view>
+    <!-- 筛选按钮 -->
+  </view>
+  <image src="/images/sx.png" id="sx" bindtap="translateShow"></image>
+  <!-- 热词 -->
+  <view id="hotWords">
+    <text>热词：</text>
+    <block wx:for="{{hotWords}}" wx:key="{{index}}">
+      <navigator url="/pages/details/details" hover-class="none" style="display:inline-block;">
+        <text>{{item}}</text>
+      </navigator>
+    </block>
+  </view>
+  <!-- 轮播图 -->
+  <swiper indicator-dots="{{indicatorDots}}"
+    autoplay="{{autoplay}}" duration="{{duration}}" circular='true' indicator-active-color='#fff' indicator-color='rgba(200, 200, 200, .6)' style="height:{{imgheights[current]}}px;" bindchange="bindchange">
+    <block wx:for="{{imgUrls}}" wx:key="{{index}}">
+      <swiper-item>
+        <navigator url="/pages/details/details" hover-class="none">
+          <image src="{{item}}" data-id='{{index}}' class="slide-image" mode="widthFix" bindload="imageLoad"/>
+        </navigator>
+      </swiper-item>
+    </block>
+  </swiper>
+  <view class="kong"></view>
+  <view class="leader"><view></view><text>老师列表</text></view>
+  <view>
+    <!-- 老师列表循环 -->
+    <navigator url="/pages/details/details" hover-class="none">
+      <block wx:for="{{teacherList}}" wx:key="s">
+        <view class="teacherList">
+          <view class="teacherListImg">
+            <image src="{{item.headerImg}}"></image>
+          </view>
+          <view class="tesacherListRight">
+            <view class="teacherListP1">
+              <text>{{item.name}}</text>
+              <block wx:for="{{gradeImg}}" wx:key="index" wx:for-item="option">
+                <image src="{{option}}" wx:if="{{index<(item.grade%1 != 0?(item.grade-1):item.grade)}}"></image>
+              </block>
+              <image src="/images/xxhalf.png" wx:if="{{item.grade%1 != 0}}"></image>
+              <view class="teacherListPrice">
+                <text style='color:#aaa;text-decoration:line-through;'>￥{{item.original}}/</text>
+                <text style="font-size:.5em;">￥</text><text style="font-weight:bold;font-size:1.2em;">{{item.price}}</text>/小时
+              </view>
+            </view>
+            <view class="teacherListShow">{{item.company}}</view>
+            <view class="teacherListBest">
+              <block wx:for="{{item.territory}}" wx:for-item="itm" wx:key="idx">
+                <text>{{itm}}</text>
+              </block>
+            </view>
+            <view style="height:1.3em;">
+              <view class="teacherListDate">帮助<text>{{item.num1}}</text>人</view>
+              <view class="teacherListDate">咨询<text>{{item.num2}}</text>小时</view>
+            </view>
+            <view style="height:1.3em;">
+              <view class="teacherListDate"><text>{{item.num3}}</text>条评价</view>
+            </view>
+            <button class="teacherListBtn">预约咨询</button>
+          </view>
+        </view>
+      </block>
+    </navigator>
+  </view>
+  <!-- 筛选弹窗 -->
+  <view id="mask" bindtap="translateHide" animation="{{animation2}}" style="display:{{display}}"></view>
+  <view id="leftModel" animation="{{animation1}}">
+    <view class="leader"><view></view><text>擅长领域</text></view>
+    <view id="B-09261124">
+      <block wx:for='{{territory}}' wx:key='{{index}}'>
+        <text bindtap="addSelect" data-name="{{item.name}}" class="{{item.check?'select':''}}">{{item.name}}</text>
+      </block>
+    </view>
+    <view class="leader"><view></view><text>价格区间</text></view>
+    <view id="B-09261132">
+      <input type="number" placeholder="0"></input><text style="padding-right:0;font-size:.8em;">/小时</text><text>—</text><input type="number" placeholder="0"></input><text style="padding-right:0;font-size:.8em;">/小时</text>
+    </view>
+    <view class="leader"><view></view><text>时间区间</text></view>
+    <view id="B-09261136">
+      <input type="number" placeholder="8"></input><text style="padding-right:0;">点</text><text>—</text><input type="number" placeholder="22"></input><text style="padding-right:0;">点</text>
+    </view>
+    <navigator url="/pages/kefu" hover-class="none" style="text-align:center;font-size:.75em;padding:1em 5.9%;">没有找到适合老师，可以向客服反应呦 点击联系客服</navigator>
+    <button id="B-09261151" bindtap="translateHide">确定</button> 
+  </view>
+  <!-- 底部导航栏 -->
+  <view class="weui-tabbar">
+    <view class="weui-tabbar__item weui-bar__item_on">
+      <view style="position: relative;display:inline-block;">
+        <image src="/images/homeSelect.png" class="weui-tabbar__icon"></image>
+      </view>
+      <view class="weui-tabbar__label" style="color:#2F69F8;">首页</view>
+    </view>
+    <view class="weui-tabbar__item">
+      <navigator url="/pages/user/user" hover-class="none" open-type="redirectTo">
+        <view style="position: relative;display:inline-block;">
+          <image src="/images/user.png" class="weui-tabbar__icon"></image>
+          <view class="weui-badge weui-badge_dot" style="position:absolute;top:-2px;left:calc(100% - 3px);"></view>
+        </view>
+        <view class="weui-tabbar__label">个人中心</view>
+      </navigator>
+    </view>
+  </view>
+</view>

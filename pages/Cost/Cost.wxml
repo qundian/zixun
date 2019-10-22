@@ -1,0 +1,41 @@
+<view style="padding-bottom:4em;">
+  <view class="leader"><view></view><text>扣费通知</text></view>
+  <view style="padding:0 2em;font-size:.9em;color:#333;padding-bottom:1em;">您与陈老师的一对一咨询已经结束，费用共计300元</view>
+  <view class="kong"></view>
+  <view class="leader"><view></view><text>账单明细</text></view>
+  <view class="teacherList" style="box-shadow:none;padding:0 1em;">
+    <view><text>咨询老师：</text><text class="C-09270945">{{user.name}}</text></view>
+    <view><text>咨询费用：</text><text class="C-09270945">￥{{user.price}}</text></view>
+    <view><text>咨询时间：</text><text class="C-09270945">{{user.time}}</text></view>
+    <view><text>通话时长：</text><text class="C-09270945">{{user.long}}分钟</text></view>
+    <view><text>咨询主题：</text><text class="C-09270945" style="text-align:left;">{{user.content}}</text></view>
+  </view>
+  <view class="kong"></view>
+  <view class="leader"><view></view><text>评价此次服务</text></view>
+  <view style="padding:0 2em;">
+    <view class="C-10101704">
+      <text>态度：</text>
+      <block wx:for="{{gradeImg}}" wx:key="index" wx:for-item="option">
+        <image src="{{option}}" wx:if="{{index < manner}}" data-index="{{index}}" data-name="manner" bindtap="costSub"></image>
+      </block>
+      <block wx:for="{{[0,1,2,3,4]}}" wx:key="index" wx:if="{{index < 5-manner}}"><image src="/images/star.png" data-index="{{index}}" data-name="manner" bindtap="costAdd"></image></block>
+    </view>
+    <view class="C-10101704">
+      <text>专业：</text>
+      <block wx:for="{{gradeImg}}" wx:key="index" wx:for-item="option">
+        <image src="{{option}}" wx:if="{{index < major}}" data-index="{{index}}" data-name="major" bindtap="costSub"></image>
+      </block>
+      <block wx:for="{{[0,1,2,3,4]}}" wx:key="index" wx:if="{{index < 5-major}}"><image src="/images/star.png" data-index="{{index}}" data-name="major" bindtap="costAdd"></image></block>
+    </view>
+    <view class="C-10101704">
+      <text>满意：</text>
+      <block wx:for="{{gradeImg}}" wx:key="index" wx:for-item="option">
+        <image src="{{option}}" wx:if="{{index < satisfied}}" data-index="{{index}}" data-name="satisfied" bindtap="costSub"></image>
+      </block>
+      <block wx:for="{{[0,1,2,3,4]}}" wx:key="index" wx:if="{{index < 5-satisfied}}"><image src="/images/star.png" data-index="{{index}}" data-name="satisfied" bindtap="costAdd"></image></block>
+    </view>
+    <textarea style="padding:0.5em;fons-size:.85em;background:#F8F8F8;border-radius:.5em;margin-top:1.5em;" placeholder="其他想说的"></textarea>
+  </view>
+  <button>确认评价</button>
+  
+</view> 

@@ -1,0 +1,94 @@
+#B-10151034{
+  width:90%;
+  margin:0 auto;
+  padding:1em 2em;
+  border-top:1px solid #EBEBEB;
+  border-bottom:1px solid #EBEBEB;
+  box-sizing: border-box;
+  font-size:.85em;
+  margin-top:2em;
+  line-height: 27px;
+}
+.C-10151126{
+  width:25%;
+  display: inline-block;
+  text-align: center;
+  padding:1em 0;
+  font-size:.9em;
+}
+.calendar_title{width: 80%; margin: 0 auto; justify-content: space-between;font-size: 20pt;}
+.calendar_title .icon image{width: 60rpx; height: 60rpx;}
+.icon{display: inline-block;width:20%;vertical-align: middle}
+.icon image{vertical-align: middle}
+/* 日历 */
+.calendar{width: 100%;margin-top:1em;background: #fff;border-bottom-right-radius: 20rpx;border-bottom-left-radius: 20rpx;padding: 0 0 20rpx;font-family: FZZhunYuan-M02S;}
+.header{font-size: 0;width: 80%;margin: 0 auto;}
+.header>view{display: inline-block;width: 14.285%;color: #666;font-size: 30rpx;text-align: center;border-bottom: 1px solid #D0D0D0;padding: 20rpx 0;margin-bottom:.5em;}
+.weekMark{position: relative;width: 80%;margin: 0 auto;}
+.weekMark view{position: absolute;bottom: 0;left: 0;width: 100%;border-bottom: 2px solid #69f;}
+.date-box{font-size: 0;padding: 10rpx 0;width: 80%;margin: 0 auto;}
+.date-box>view{position: relative;display: inline-block;width: 14.285%;color: #666;text-align: center;vertical-align: middle;margin-bottom:.5em;}
+.date-head{height: 60rpx;line-height: 60rpx;font-size: 12pt;width: 60rpx;text-align: center;color: #fff;margin-bottom: .5em;border-radius:50%;}
+.date-head view{border-radius:50%;}
+.nowDay,.canSelet,.already{width: 60rpx;text-align: center;color: #fff;background-color: #ff9933 !important;}
+.weui-demo-dialog{
+  visibility:hidden;
+  opacity:0;
+  transition:all .3s;
+}
+.weui-half-screen-dialog{
+  padding: 0 calc(10px + constant(safe-area-inset-right)) constant(safe-area-inset-bottom) calc(10px + constant(safe-area-inset-left));
+  padding: 0 calc(10px + env(safe-area-inset-right)) env(safe-area-inset-bottom) calc(10px + env(safe-area-inset-left));
+  transition:all .3s;
+  transform:translateY(100%);
+}
+.weui-demo-dialog_show{
+  visibility:visible;
+  opacity:1;
+}
+.weui-demo-dialog_show .weui-half-screen-dialog{
+    transform:translateY(0);
+}
+.C-09291042-left{
+  font-size:.875em;
+  color:#333;
+  display: inline-block;
+  padding:.3em 0;
+  background: #eee;
+  border-radius: .3em;
+  margin-right:.5em;
+  margin-bottom:.5em;
+  width:4.375em;
+}
+.C-09291042-left text{
+  display: block;
+  text-align: center;
+  line-height: 1.5em;
+}
+.C-09291042-right{
+  padding-bottom:.3em;
+}
+.E-bg{
+  display:inline-block;
+  width:23.5%;
+  padding:1em 0;
+  box-sizing: border-box;
+  background:#eee;
+  margin-right: 2%;
+  border-radius:.3em;
+  margin-bottom:.5em;
+  text-align:center;
+}
+.E-bg:nth-child(4n+0){
+  margin-right:0 !important;
+}
+.E-bg text{
+  display: block;
+}
+.C-10090950{
+  left:0.5em;
+}
+.select{
+  color:#2F69F8 !important;
+  border:1px solid #2F69F8;
+}

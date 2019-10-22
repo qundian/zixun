@@ -1,0 +1,27 @@
+{
+  "pages": [
+    "pages/TeacherCancel/TeacherCancel",
+    "pages/index/index",
+    "pages/divideInto/divideInto",
+    "pages/Cost/Cost",
+    "pages/confirmOrder/confirmOrder",
+    "pages/success/success", 
+    "pages/setTime/setTime",
+    "pages/teacher/teacher",
+    "pages/user/user",
+    "pages/moreHistory/moreHistory",
+    "pages/order/order",
+    "pages/details/details",
+    "pages/userInfo/userInfo",
+    "pages/logs/logs",
+    "pages/history/history"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#2F69F8",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle": "black"
+  },
+  "sitemapLocation": "sitemap.json"
+}
+  

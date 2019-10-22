@@ -1,0 +1,18 @@
+<view style="padding:0 1em;">
+  <view style="width:48%;float:left;margin-right:4%;">
+    <block wx:for="{{list}}" wx:key="index" wx:if="{{index%2 == 0}}">
+        <view class="D-10081133">
+          <view style="color:#666;font-size:.875em;">{{item.name}}</view><view style="font-size:.75em;color:#999">{{item.time}}</view>
+          <view class="E-10081305">{{item.content}}</view>
+        </view>
+    </block>
+  </view>
+  <view style="width:48%;float:left;">
+    <block wx:for="{{list}}" wx:key="index" wx:if="{{index%2 != 0}}">
+        <view class="D-10081133">
+          <view style="color:#666;font-size:.875em;">{{item.name}}</view><view style="font-size:.75em;color:#999">{{item.time}}</view>
+          <view class="E-10081305">{{item.content}}</view>
+        </view>
+    </block>
+  </view>
+</view>

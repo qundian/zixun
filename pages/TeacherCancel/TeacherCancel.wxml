@@ -1,0 +1,15 @@
+<view>
+  <view id="B-10171010">
+    <view style="position:relative;">
+      <view style="margin-top:1em;padding:1em;">
+        <view style="margin-top:.5em;font-size:.85em;">您成功取消与张三的一对一咨询，因为您的取消行为，导致老师权益受到损失，我们将在您的预缴费用中扣除相应的费用，剩余费用我们将退回到您的个人账户中，请查收。</view>
+      </view>
+      <view class="kong"></view>
+      <view class="teacherList" style="box-shadow:none;">
+        <view><text>扣除费用：</text><text class="C-09270945">￥{{user.cost}}</text></view>
+        <view><text>剩余费用：</text><text class="C-09270945">￥{{user.surplus}}</text></view>
+      </view>
+    </view>
+  </view>
+  <navigator url="/pages/user/user" hover-class="none"><button>个人账户</button></navigator>
+</view> 

@@ -1,0 +1,36 @@
+<view>
+  <view id="B-10171010">
+    <view style="position:relative;">
+      <view style="text-align:center;margin-top:1em;padding-bottom:1.5em;">
+        <view style="font-weight:bold;">订单确认通知</view>
+        <view style="margin-top:.5em;text-align:left;padding:0 1em;color:#666;fon-size:.85em;">亲爱的陈老师，有一位用户对您发起了预约咨询服务，详情如下：</view>
+      </view>
+      <view class="kong"></view>
+      <view class="teacherList" style="box-shadow:none;">
+        <view><text>咨询用户：</text><text class="C-09270945">{{user.name}}</text></view>
+        <view><text>用户职位：</text><text class="C-09270945">{{user.position}}</text></view>
+        <view><text>咨询费用：</text><text class="C-09270945">￥{{user.price}}</text></view>
+        <view><text>咨询时间：</text><text class="C-09270945">{{user.time}}</text></view>
+        <view><text>咨询主题：</text><text class="C-09270945">{{user.content}}</text></view>
+      </view>
+    </view>
+  </view>
+  <button>确认预约</button>
+  <button style="margin-top:1em;background:#FFB701;" bindtap="openDialog">抱歉，另有安排</button>
+  <view class="page__bd">
+    <view class="weui-demo-dialog {{istrue ? 'weui-demo-dialog_show' : ''}}">
+      <view class="weui-mask" bindtap="closeDialog"></view>
+      <view class="weui-dialog__wrp">
+          <view class="weui-dialog">
+            <view class="weui-dialog__bd" style="padding: 30px 16px 0;">
+              <textarea type="text" placeholder="您可以简单说明一下理由..." style="width:100%;background:#eee;padding:.5em;text-align:left;box-sizing:border-box;border-radius:.5em;font-weight:normal;"></textarea>
+            </view>
+            <view class="weui-dialog__ft">
+            <view class="weui-dialog__btn" bindtap="closeDialog" >取消</view>
+                <view class="weui-dialog__btn" bindtap="closeDialog" >通知用户</view>
+            </view>
+          </view>
+      </view>
+    </view>
+  </view>
+</view> 

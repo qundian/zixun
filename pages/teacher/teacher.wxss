@@ -1,0 +1,111 @@
+#userBg{
+  width:100%;
+}
+#headerImg{
+  position:absolute;
+  top:2.2em;
+  left:50%;
+  z-index:1;
+  width:5.5em;
+  height:5.5em;
+  border-radius:50%;
+  margin-left:-2.75em;
+}
+#userName{
+  position:absolute;
+  top:6.7em;
+  left:0;
+  z-index:1;
+  width:100%;
+  font-size:1.2em;
+  color:#fff;
+  text-align:center;
+}
+#userBot{
+  position:absolute;
+  bottom:0;
+  left:0;
+  z-index:1;
+  width:100%;
+  background:#fff;
+  border-top-left-radius:1em;
+  border-top-right-radius:1em;
+  padding-top:1em;
+  padding-bottom:.5em;
+}
+.C-09261532{
+  display:inline-block;
+  text-align:center;
+  border-right:1px solid #E1DEDE;
+}
+.C-09261532 text,.C-09261532 image{
+  display:block;
+}
+.C-09261532 image{
+  display:inline-block;
+  width:1.4em;
+  height: 1.5em;
+}
+.C-09261610{
+  display:inline-block;
+  position:relative;
+  margin-right:1em;
+}
+.C-09261610 view{
+  position:absolute;
+  bottom:-2px;
+  left:0;
+  z-index:1;
+  width:100%;
+  height:2px;
+}
+.C-09261610 text{
+  font-weight:bold;
+}
+.select{
+  color:#2F69F8;
+}
+.select view{
+  background:#2F69F8;
+}
+.teacherList{
+  font-size:.9em;
+}
+.teacherList view{
+  padding:.5em 0;
+  overflow: hidden;
+}
+.teacherList text{
+  width:30%;
+}
+.teacherList .C-09270945{
+  float:right;
+  font-weight:bold;
+  width:70%;
+  text-align: right;
+}
+.teacherList button{
+  width:15em;
+  height:2.375em;
+  border-radius:3em;
+  background:#2F69F8;
+  color:#fff;
+  margin-top:.5em;
+}
+.teacherList button text{
+  font-size:.9em;
+}
+.teacherList image{
+  width:.9em;
+  height: .9em;
+  margin-right:.3em;
+}
+.weui-demo-dialog{
+  visibility:hidden;
+  opacity:0;
+  transition:opacity .3s;
+}
+.weui-demo-dialog_show{
+  visibility:visible;
+  opacity:1;
+}

@@ -1,0 +1,51 @@
+#B-10171010{
+  margin-top:1em;
+}
+#B-10171010 image{
+  width:100%;
+}
+.teacherList{
+  font-size:.9em;
+}
+.teacherList view{
+  padding:.5em 0;
+  overflow: hidden;
+}
+.teacherList text{
+  width:30%;
+}
+.teacherList .C-09270945{
+  float:right;
+  font-weight:bold;
+  width:70%;
+  text-align: right;
+}
+button{
+  background: #2F69F8;
+  border-radius: 27.5px;
+  color:#fff;
+  font-weight:bold;
+  width:17em;
+  height:3em;
+  line-height:3em;
+  font-size:.875em;
+  margin-top: 3em;
+}
+.weui-demo-dialog{
+  visibility:hidden;
+  opacity:0;
+  transition:all .3s;
+}
+.weui-half-screen-dialog{
+  padding: 0 calc(10px + constant(safe-area-inset-right)) constant(safe-area-inset-bottom) calc(10px + constant(safe-area-inset-left));
+  padding: 0 calc(10px + env(safe-area-inset-right)) env(safe-area-inset-bottom) calc(10px + env(safe-area-inset-left));
+  transition:all .3s;
+  transform:translateY(100%);
+}
+.weui-demo-dialog_show{
+  visibility:visible;
+  opacity:1;
+}
+.weui-demo-dialog_show .weui-half-screen-dialog{
+    transform:translateY(0);
+}
