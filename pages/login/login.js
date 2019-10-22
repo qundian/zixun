@@ -1,15 +1,25 @@
-//app.js
-App({
-  onLaunch: function () {
-    // 获取手机型号，判断是否是苹果刘海手机
-    var _self = this;
-    wx.getSystemInfo({
+var app = getApp();
+Page({
+  data: {
+    
+  },
+  onLoad: function(){
+    wx.getSetting({
       success(res) {
-        if (res.model == 'iPhone X' || res.model == 'iPhone XR' || res.model == 'iPhone XS Max' || res.model == 'iPhone 11' || res.model == 'iPhone 11 Pro' || res.model == 'iPhone 11 Pro Max') {
-          _self.globalData.isIphoneX = true;
-        }
+        console.log(res.authSetting)
+      },
+      fail(res){
+        console.log(res)
       }
-    }) 
+    })
+  },
+  rejectLogin: function (e) {
+    wx.navigateBack({
+
+    })
+  },
+  bindGetUserInfo: function () {
+    var _self = this;
     wx.getUserInfo({
       success: function (res) {
         if (!res.userInfo) {
@@ -20,28 +30,22 @@ App({
       }
     })
   },
-  globalData: {
-    domain: 'http://zxt.hrpindao.com/',
-    userInfo: null,
-    isIphoneX: false,
-    status: 'teacher'
-  },
   login: function () {
-    var _self = this;
-    var token = wx.getStorageSync('token');
+    let that = this;
+    let token = wx.getStorageSync('token');
     if (token) {
       wx.request({
-        url: _self.globalData.domain + '/api/wechat/login',
+        url:  app.globalData.domain + '/api/wechat/login',
         data: {
           token: token
         },
         success: function (res) {
           if (res.data.code != 0) {
             wx.removeStorageSync('token')
-            _self.login();
+            that.login();
           } else {
             // 回到原来的地方放
-            // wx.navigateBack();
+            wx.navigateBack();
           }
         }
       })
@@ -51,7 +55,7 @@ App({
       success: function (res) {
         // debugger
         wx.request({
-          url: _self.globalData.domain + '/api/wechat/login' + '?code=' + res.code,
+          url: app.globalData.domain + '/api/wechat/login'+'?code='+res.code,
           data: {
             code: res.code
           },
@@ -59,7 +63,7 @@ App({
             console.log(res.data.code)
             if (res.data.code == 10000) {
               // 去注册
-              _self.registerUser();
+              that.registerUser();
               return;
             }
             else if (res.data.code != 0) {
@@ -75,14 +79,14 @@ App({
             wx.setStorageSync('token', res.data.token)
             wx.setStorageSync('uid', res.data.data.uid)
             // 回到原来的页面
-            // wx.navigateBack();
+            wx.navigateBack();
           }
         })
       }
     })
   },
   registerUser: function () {
-    var _self = this;
+    var that = this;
     wx.login({
       success: function (res) {
         var code = res.code; // 微信登录接口返回的 code 参数，下面注册接口需要用到
@@ -92,11 +96,11 @@ App({
             var encryptedData = res.encryptedData;
             // 下面开始调用注册接口
             wx.request({
-              url: _self.globalData.domain + '/api/wechat/register' + '?iv=' + iv + '&encryptedData=' + encryptedData + '&code=' + code,
+              url: app.globalData.domain + '/api/wechat/register' + '?iv=' + iv + '&encryptedData=' + encryptedData+'&code='+code,
               data: { code: code, encryptedData: encryptedData, iv: iv }, // 设置请求的 参数
               success: (res) => {
                 wx.hideLoading();
-                _self.login();
+                that.login();
               }
             })
           }
