@@ -22,8 +22,8 @@
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.8.3",
-	"appid": "wxe9cac7cbb626fe71",
-	"projectname": "%E4%B8%80%E5%AF%B9%E4%B8%80%E5%92%A8%E8%AF%A2-%E4%B8%B4%E6%97%B6%E6%96%87%E4%BB%B6",
+	"appid": "wx7e98d26b7182a9a9",
+	"projectname": "zixun",
 	"debugOptions": {
 		"hidedInDevtools": []
 	},

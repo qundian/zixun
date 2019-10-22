@@ -1,14 +1,14 @@
 {
   "pages": [
-    "pages/TeacherCancel/TeacherCancel",
     "pages/index/index",
+    "pages/UserCancel/UserCancel",
+    "pages/user/user",
     "pages/divideInto/divideInto",
     "pages/Cost/Cost",
     "pages/confirmOrder/confirmOrder",
     "pages/success/success", 
     "pages/setTime/setTime",
     "pages/teacher/teacher",
-    "pages/user/user",
     "pages/moreHistory/moreHistory",
     "pages/order/order",
     "pages/details/details",
