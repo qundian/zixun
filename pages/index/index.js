@@ -116,5 +116,19 @@ Page({
     this.setData({
       territory: arr
     })
+  },
+  bindGetUserInfo:function(){
+    wx.getUserInfo({
+      success: function (res) {
+        if (!res.userInfo) {
+          return;
+        }
+        wx.setStorageSync('userInfo', res.userInfo)
+        // _self.login();
+      },
+      fail: function(res){
+        console.log(res)
+      }
+    })
   }
 })

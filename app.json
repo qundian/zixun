@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/details/details",
     "pages/index/index",
     "pages/login/login",
     "pages/UserCancel/UserCancel",
@@ -12,7 +13,6 @@
     "pages/teacher/teacher",
     "pages/moreHistory/moreHistory",
     "pages/order/order",
-    "pages/details/details",
     "pages/userInfo/userInfo",
     "pages/logs/logs",
     "pages/history/history"

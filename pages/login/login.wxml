@@ -1,3 +1,19 @@
 <view>
-  <button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">授权登录</button>
+  <view style="text-align:center;margin-top:2em;">
+    <image src="/images/logo.png" style="width:9em;height:9em;"></image>
+    <view style="font-size:1.5em;">职接问</view>
+    <view style="font-size:1.1em;color:#aaa;margin-top:.3em;"> 一对一专业咨询服务</view>
+  </view>
+  <button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">一键授权登录</button>
+  <view>
+    <view style="padding:0 1em;font-size:1.1em;padding-top:2.7em;">职接问将获取一下权限：</view>
+    <view style="border:1px solid #eee;border-radius:.5em;margin:0.5em 1em;">
+      <view class="C-10230952">
+        <image src="/images/nike.png"></image><text>访问你的详细资料(必选)</text>
+      </view>
+      <view class="C-10230952" style="border:none;">
+        <image src="/images/nike.png"></image><text>访问你的基本资料(必选)</text>
+      </view>
+    </view>
+  </view>
 </view>

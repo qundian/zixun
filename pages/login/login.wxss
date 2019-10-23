@@ -1,0 +1,22 @@
+button{
+  width:90%;
+  line-height: 40px;
+  background: #12b7f5;
+  color: #fff;
+  margin-top:2em;
+}
+.C-10230952{
+  padding:.5em 0;
+  color:#aaa;
+  border-bottom:1px solid #eee;
+  font-size:.9em;
+}
+.C-10230952 image{
+  width:1.3em;
+  height:1.3em;
+  vertical-align: middle;
+  margin:0 .3em;
+}
+.C-10230952 text{
+  vertical-align: middle;
+}

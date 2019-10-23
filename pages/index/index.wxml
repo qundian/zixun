@@ -120,4 +120,5 @@
       </navigator>
     </view>
   </view>
+  <button open-type="getUserInfo" bindtap="bindGetUserInfo">登录</button>
 </view>
