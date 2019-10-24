@@ -36,7 +36,7 @@
     <block wx:for="{{imgUrls}}" wx:key="{{index}}">
       <swiper-item>
         <navigator url="/pages/details/details" hover-class="none">
-          <image src="{{item}}" data-id='{{index}}' class="slide-image" mode="widthFix" bindload="imageLoad"/>
+          <image src="{{item.url}}" data-goods_id='{{item.goods_id}}' data-id="{{index}}" class="slide-image" mode="widthFix" bindload="imageLoad"/>
         </navigator>
       </swiper-item>
     </block>
@@ -47,7 +47,7 @@
     <!-- 老师列表循环 -->
     <navigator url="/pages/details/details" hover-class="none">
       <block wx:for="{{teacherList}}" wx:key="s">
-        <view class="teacherList">
+        <view class="teacherList" data-id="{{item.id}}">
           <view class="teacherListImg">
             <image src="{{item.headerImg}}"></image>
           </view>
@@ -120,5 +120,4 @@
       </navigator>
     </view>
   </view>
-  <button open-type="getUserInfo" bindtap="bindGetUserInfo">登录</button>
 </view>

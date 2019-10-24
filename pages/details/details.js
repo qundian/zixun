@@ -1,32 +1,73 @@
 var app = getApp();
 Page({
   data: {
+    id:1,
     gradeImg: [
       '/images/xx.png', '/images/xx.png', '/images/xx.png', '/images/xx.png', '/images/xx.png'
     ],  //评分图片
-    grade: 3.5, //评分
-    arr: [
-      { date: '今天', time: [false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false]},
-      { date: '明天', time: [false, false, false, true, true, false, false, false, false, false, false, false, false, false, false, false] },
-      { date: '后天', time: [false, false, false, false, false, false, false, true, false, false, true, false, false, false, false, false] },
-      { date: '10/01', time: [false, false, false, false, false, false, false, true, false, false, false, true, true, false, false, false] },
-      { date: '10/02', time: [false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false] },
-      { date: '10/03', time: [false, false, false, true, true, false, false, false, false, false, false, false, false, false, false, false] },
-      { date: '10/04', time: [false, false, false, false, false, false, false, true, false, false, true, false, false, false, false, false] },
-      { date: '10/05', time: [false, false, false, false, false, false, false, true, false, false, false, true, true, false, false, false] },
-      { date: '10/06', time: [false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false] },
-      { date: '10/07', time: [false, false, false, true, true, false, false, false, false, false, false, false, false, false, false, false] },
-      { date: '10/08', time: [false, false, false, false, false, false, false, true, false, false, true, false, false, false, false, false] },
-      { date: '10/09', time: [false, false, false, false, false, false, false, true, false, false, false, true, true, false, false, false] }
-    ],
     isCollect: false,
     showDialog: false,
     istrue: false,
-    isIphoneX: ''
-  },
+    isIphoneX: '',
+    data: '',
+    userHeaderImgUrl: app.globalData.userHeaderImgUrl,
+    dateArr: [],
+    timeList: ['08:00-09:00', '09:00-10:00', '10:00-11:00', '11:00-12:00', '12:00-13:00', '13:00-14:00', '14:00-15:00', '15:00-16:00', '16:00-17:00', '17:00-18:00', '18:00-19:00', '19:00-20:00', '20:00-21:00', '21:00-22:00', '22:00-23:00', '23:00-24:00']
+    },
   onLoad: function () {
     var _self = this;
     _self.setData({ isIphoneX: app.globalData.isIphoneX })
+    // 可预约时间
+    function addDate(dd, dadd) {
+      var a = new Date(dd)
+      a = a.valueOf()
+      a = a + dadd * 24 * 60 * 60 * 1000
+      a = new Date(a)
+      return a;
+    }
+    var now = new Date();
+    var dataTitle = [];//保存获取到的日期
+    var prev = '';
+    var arr = [];
+    var timeList = this.data.timeList;
+    for (var i = 0; i < 30; i++) {
+      var month = (now.getMonth() + 1) //now.getMonth()
+      var date = (month + "-" + now.getDate());
+      if (date == '12-31') {
+        prev = '12-31';
+      } else if (prev == '12-31') {
+        month = 1;
+      }
+      dataTitle[i] = (month + "-" + now.getDate());
+      now = addDate(month + "/" + now.getDate() + "/" + now.getFullYear(), 1);
+      var time = [];
+      for (var z = 0; z < 16; z++) {
+        var obj = {
+          date: dataTitle[i],
+          part: timeList[z],
+          state: false
+        }
+        time.push(obj);
+      }
+      arr.push(time);
+    }
+    this.setData({ dateArray: dataTitle, dateArr: arr})
+    // 请求页面全部数据
+    wx.request({
+      url: app.globalData.edition + '/teacher/detail?id=' + _self.data.id,
+      success: function (res) {
+        _self.setData({ data: res.data })
+        res.data.user_like.forEach(function (item, index) {
+          // console.log(item)
+        })
+        res.data.teacher_times.forEach(function (item, index) {
+          var start_time = (new Date(item.start_at * 1000)).toString();
+          var monthDay = new Date(item.date_at * 1000).getMonth() + 1 + '-' + new Date(item.date_at * 1000).getDate();
+          start_time = start_time.split(' ')[4].substring(0, 5);
+          _self.bianli(monthDay,start_time);
+        })
+      }
+    })
   },
   collect: function(){
     var isCollect = this.data.isCollect;
@@ -38,10 +79,23 @@ Page({
     this.setData({
       istrue: true
     })
+
   },
   closeDialog: function () {
     this.setData({
       istrue: false
     })
+  },
+  bianli: function(monthDay,hour){
+    var _self = this;
+    var dateArr = this.data.dateArr;
+    dateArr.forEach(function(item,index){
+      item.forEach(function(a,b){
+        if (a.date == monthDay && a.part.split('-')[0] == hour){
+          a.state = true;
+        }
+      })
+    })
+    this.setData({ dateArr: dateArr})
   }
 })

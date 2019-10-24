@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/details/details",
+    "pages/setTime/setTime",
     "pages/index/index",
     "pages/login/login",
     "pages/UserCancel/UserCancel",
@@ -9,7 +10,6 @@
     "pages/Cost/Cost",
     "pages/confirmOrder/confirmOrder",
     "pages/success/success", 
-    "pages/setTime/setTime",
     "pages/teacher/teacher",
     "pages/moreHistory/moreHistory",
     "pages/order/order",

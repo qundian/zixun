@@ -24,6 +24,9 @@ App({
   },
   globalData: {
     domain: 'http://zxt.hrpindao.com',
+    edition: 'http://zxt.hrpindao.com/api/v1',
+    getDataUrl: 'http://zxt.hrpindao.com/storage/',
+    userHeaderImgUrl: 'http://zxt.hrpindao.com/storage/',
     userInfo: null,
     isIphoneX: false,
     status: 'teacher'

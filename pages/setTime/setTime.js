@@ -54,6 +54,7 @@ Page({
       now = addDate(month + "/" + now.getDate() + "/" + now.getFullYear(), 1);
     }
     this.setData({ dateArray: dataTitle, arr: arr, witchPart: addArr})
+    console.log(arr)
 
     // 日历相关代码
     var now = new Date();

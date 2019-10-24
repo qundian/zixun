@@ -1,11 +1,10 @@
+var app = getApp();
 //index.js
 Page({
   data: {
     inputShowed: false,
     inputVal: "",
-    imgUrls: [
-      '/images/0706.jpg', '/images/0706.jpg', '/images/0706.jpg',
-    ],
+    imgUrls: [],
     indicatorDots: true,
     duration: 500,
     imgwidth: 750,
@@ -16,11 +15,7 @@ Page({
     ],  //评分图片
     grade: 3.5, //评分
     hotWords: ['薪酬设计','职业规划','人才发展'], //热词
-    teacherList: [ //老师数据
-      {
-
-      }
-    ],
+    teacherList: [],
     territory: [
       { name: '薪酬设计', check: false },
       { name: '职业规划', check: false },
@@ -41,6 +36,46 @@ Page({
   onReady:function(){
     this.animation1 = wx.createAnimation();
     this.animation2 = wx.createAnimation();
+  },
+  onLoad: function(){
+    var _self = this;
+    var imgUrls = [];
+    wx.request({
+      url: app.globalData.edition+'/banner/list',
+      success: function(res){
+        res.data.forEach(function(item,index){
+          imgUrls.push({ url: app.globalData.getDataUrl+item.pic_url,goods_id:item.goods_id})
+        })
+        _self.setData({ imgUrls: imgUrls})
+      }
+    })
+    var obj = {};
+    var opt = [];
+    wx.request({
+      url: app.globalData.edition + '/teacher/list',
+      success: function (res) {
+        res.data.forEach(function (item, index) {
+          obj = {
+            headerImg: app.globalData.getDataUrl + item.list_img_url,
+            name: item.name,
+            grade: item.score,
+            original: item.original_price,
+            price: item.price,
+            company: item.background,
+            territory: [],
+            num1: item.consultants,
+            num2: item.duration,
+            num3: item.eval_num,
+            id: item.id
+          }
+          item.tags.forEach(function(a,b){
+            obj.territory.push(a.tag);
+          })
+          opt.push(obj);
+        })
+        _self.setData({ teacherList: opt })
+      }
+    })
   },
   showInput: function () {
     this.setData({
