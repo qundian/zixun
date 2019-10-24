@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/details/details",
     "pages/setTime/setTime",
+    "pages/details/details",
     "pages/index/index",
     "pages/login/login",
     "pages/UserCancel/UserCancel",
