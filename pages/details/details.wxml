@@ -85,12 +85,10 @@
   </view>
   <view id="B-10081418">
     <view style="width:15%;" bindtap="collect">
-      <block wx:for="{{data.user_like}}" wx:key="{{index}}">
-        <image src="/images/like.png" style="display:{{item.pivot.teacher_id == data.id?'none':'block'}}"></image>
-        <image src="/images/love.png" style="display:{{item.pivot.teacher_id == data.id?'block':'none'}}"></image>
-      </block>
+      <image src="/images/like.png" wx:if="{{data.user_like_count == 0}}"></image>
+      <image src="/images/love.png" wx:if="{{data.user_like_count == 1}}"></image>
       <text>收藏</text>
-    </view>
+    </view>----
     <view style="width:15%;">
       <image src="/images/kefu.png"></image><text>客服</text>
     </view>

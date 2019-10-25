@@ -57,9 +57,6 @@ Page({
       url: app.globalData.edition + '/teacher/detail?id=' + _self.data.id,
       success: function (res) {
         _self.setData({ data: res.data })
-        res.data.user_like.forEach(function (item, index) {
-          // console.log(item)
-        })
         res.data.teacher_times.forEach(function (item, index) {
           var start_time = (new Date(item.start_at * 1000)).toString();
           var monthDay = new Date(item.date_at * 1000).getMonth() + 1 + '-' + new Date(item.date_at * 1000).getDate();

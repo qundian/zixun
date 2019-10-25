@@ -2,6 +2,8 @@
   "pages": [
     "pages/setTime/setTime",
     "pages/details/details",
+    "pages/order/order",
+    "pages/teacher/teacher",
     "pages/index/index",
     "pages/login/login",
     "pages/UserCancel/UserCancel",
@@ -10,9 +12,7 @@
     "pages/Cost/Cost",
     "pages/confirmOrder/confirmOrder",
     "pages/success/success", 
-    "pages/teacher/teacher",
     "pages/moreHistory/moreHistory",
-    "pages/order/order",
     "pages/userInfo/userInfo",
     "pages/logs/logs",
     "pages/history/history"

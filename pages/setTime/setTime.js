@@ -176,10 +176,10 @@ Page({
     var a = witchPart[witchDay].indexOf(index);
     if (a == -1) {
       witchPart[witchDay].push(index);
-      arr[witchDay][index].isSelect = 1; 
+      arr[witchDay][index].isSelect = true; 
     } else {
       witchPart[witchDay].splice(a, 1);
-      arr[witchDay][index].isSelect = 2;
+      arr[witchDay][index].isSelect = false;
     }
     this.setData({ arr: arr })
   }
