@@ -7,33 +7,36 @@
   </view>
   <view class="kong"></view>
   <view class="leader"><view></view><text>咨询老师</text></view>
-  <view class="teacherList">
+  <view class="teacherList" data-id="{{teacherInfo.id}}">
     <view class="teacherListImg">
-      <image src="/images/headerImg.jpg"></image>
+      <image src="{{teacherInfo.headerImg}}"></image>
     </view>
     <view class="tesacherListRight">
       <view class="teacherListP1">
-        <text>陈春花</text>
-        <block wx:for="{{gradeImg}}" wx:key="{{index}}">
-          <image src="{{item}}" wx:if="{{index<(grade%1 != 0?(grade-1):grade)}}"></image>
+        <text>{{teacherInfo.name}}</text>
+        <block wx:for="{{gradeImg}}" wx:key="index" wx:for-item="option">
+          <image src="{{option}}" wx:if="{{index<(teacherInfo.score%1 != 0?(teacherInfo.score-1):teacherInfo.score)}}"></image>
         </block>
-        <image src="/images/xxhalf.png" wx:if="{{grade%1 != 0}}"></image>
+        <image src="/images/xxhalf.png" wx:if="{{teacherInfo.score%1 != 0}}"></image>
         <view class="teacherListPrice">
-          <text style='color:#aaa;text-decoration:line-through;'>￥400/</text>
-          <text style="font-size:.5em;">￥</text><text style="font-weight:bold;font-size:1.2em;">300</text>/小时
+          <text style='color:#aaa;text-decoration:line-through;'>￥{{teacherInfo.original_price}}/</text>
+          <text style="font-size:.5em;">￥</text><text style="font-weight:bold;font-size:1.2em;">{{teacherInfo.price}}</text>/小时
         </view>
       </view>
-      <view class="teacherListShow">原阿里巴巴有限公司CHO</view>
+      <view class="teacherListShow">{{teacherInfo.company}}</view>
       <view class="teacherListBest">
-        <text>职业规划</text><text>个人成长</text><text>组织变革</text>
+        <block wx:for="{{teacherInfo.tags}}" wx:for-item="itm" wx:key="idx">
+          <text>{{itm.tag}}</text>
+        </block>
       </view>
       <view style="height:1.3em;">
-        <view class="teacherListDate">帮助<text>200</text>人</view>
-        <view class="teacherListDate">咨询<text>40</text>小时</view>
+        <view class="teacherListDate">帮助<text>{{teacherInfo.consultants}}</text>人</view>
+        <view class="teacherListDate">咨询<text>{{teacherInfo.duration}}</text>小时</view>
       </view>
       <view style="height:1.3em;">
-        <view class="teacherListDate"><text>24</text>条评价</view>
+        <view class="teacherListDate"><text>{{teacherInfo.eval_num}}</text>条评价</view>
       </view>
+      <button class="teacherListBtn">预约咨询</button>
     </view>
   </view>
   <view class="leader"><view></view><text>本次咨询主题</text></view>
@@ -48,18 +51,19 @@
   </view>
   <view class="kong" style="height:1.35em;"></view>
   <view class="B-10091334">
-    <text>咨询费用：</text><text style="float:right;margin-top:.3em;font-weight:bold;">￥300</text>
+    <text>咨询费用：</text><text style="float:right;margin-top:.3em;font-weight:bold;">￥{{teacherInfo.price*timeNum}}</text>
   </view>
   <view class="B-10091334">
-    <text>账户余额：</text><text style="color:#FD3E3E;font-size:.75em;">(您的余额不足以支持本次咨询)</text><text style="float:right;margin-top:.3em;font-weight:bold;">￥100</text>
+    <text>账户余额：</text><text style="color:#FD3E3E;font-size:.75em;">(您的余额不足以支持本次咨询)</text><text style="float:right;margin-top:.3em;font-weight:bold;">￥{{account}}</text>
   </view>
   <view class="B-10091334" style="border:none;">
-    <text>咨询优惠：</text><text style="float:right;margin-top:.3em;font-weight:bold;">-￥100</text>
+  {{original_price-price}}
+    <text>咨询优惠：</text><text style="float:right;margin-top:.3em;font-weight:bold;">-￥{{(original_price-price)*timeNum}}</text>
   </view>
   <view class="kong" style="height:1.35em;"></view>
   <view id="B-10081418">
     <view style="width:70%;font-size:1em;line-height:2.6em;">
-      待支付：<text style="display:inline;color:#FF0000;font-size:1.1em;">￥1200</text>
+      待支付：<text style="display:inline;color:#FF0000;font-size:1.1em;">￥{{price*timeNum}}</text>
     </view>
     <view style="width:30%;"><navigator hover-class="none" url="/pages/order/order">去支付</navigator></view>
     <view style="height:1em;width:100%;" wx:if="{{isIphoneX}}"></view>

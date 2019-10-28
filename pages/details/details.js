@@ -1,7 +1,7 @@
 var app = getApp();
 Page({
   data: {
-    id:1,
+    id:'',
     gradeImg: [
       '/images/xx.png', '/images/xx.png', '/images/xx.png', '/images/xx.png', '/images/xx.png'
     ],  //评分图片
@@ -14,9 +14,9 @@ Page({
     dateArr: [],
     timeList: ['08:00-09:00', '09:00-10:00', '10:00-11:00', '11:00-12:00', '12:00-13:00', '13:00-14:00', '14:00-15:00', '15:00-16:00', '16:00-17:00', '17:00-18:00', '18:00-19:00', '19:00-20:00', '20:00-21:00', '21:00-22:00', '22:00-23:00', '23:00-24:00']
     },
-  onLoad: function () {
+  onLoad: function (options) {
     var _self = this;
-    _self.setData({ isIphoneX: app.globalData.isIphoneX })
+    _self.setData({ isIphoneX: app.globalData.isIphoneX, id: options.id })
     // 可预约时间
     function addDate(dd, dadd) {
       var a = new Date(dd)
@@ -67,9 +67,14 @@ Page({
     })
   },
   collect: function(){
-    var isCollect = this.data.isCollect;
+    var data = this.data.data;
+    if (data.user_like_count == 0){
+      data.user_like_count = 1;
+    }else{
+      data.user_like_count = 0;
+    }
     this.setData({
-      isCollect: !isCollect
+      data: data
     })
   },
   openDialog: function () {

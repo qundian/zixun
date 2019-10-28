@@ -1,27 +1,22 @@
 var app = getApp();
 Page({
   data: {
+    id: '',
+    account:0,
+    price:0,
+    timeNum:0, //时间段数量
     gradeImg: [
       '/images/xx.png', '/images/xx.png', '/images/xx.png', '/images/xx.png', '/images/xx.png'
     ],  //评分图片
-    grade: 3.5, //评分
-    territory: [
-      { name: '薪酬设计', check: false },
-      { name: '职业规划', check: false },
-      { name: '人才发展', check: false },
-      { name: '组织变革', check: false }
-    ],
+    territory: [], //热门主题
+    teacherInfo: '',
     isIphoneX: '',
-    witchDay: '0',
-    witchPart: [],
+    witchDay: '0', //选中的哪天
+    witchPart: [], //选的哪个时间段
+    original_price: 0,
+    price: 0,
     arr: [
-      { date: '09/28', time: [{ state: true }, { state: true }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: true }, { state: false }, { state: true }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }]},
-      { date: '09/29', time: [{ state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: true }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }] },
-      { date: '09/30', time: [{ state: false }, { state: true }, { state: true }, { state: false }, { state: false }, { state: false }, { state: true }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: true }] },
-      { date: '10/01', time: [{ state: false }, { state: false }, { state: true }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: true }, { state: false }] },
-      { date: '10/02', time: [{ state: false }, { state: false }, { state: true }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: true }, { state: false }, { state: false }, { state: false }, { state: false }] },
-      { date: '10/03', time: [{ state: true }, { state: true }, { state: true }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: true }, { state: false }, { state: false }, { state: false }, { state: false }, { state: true }, { state: true }, { state: true }] },
-      { date: '10/04', time: [{ state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }] }
+      { date: '09/28', time: [{ state: true }, { state: true }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: true }, { state: false }, { state: true }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }]}
     ],
     showDialog: false,
     istrue: false, //时间弹出
@@ -29,9 +24,10 @@ Page({
     waring: '每次预约只可选择同一天内的单个或者连续的时间段',
     timeList:['8:00-9:00','9:00-10:00','10:00-11:00','11:00-12:00','12:00-13:00','13:00-14:00','14:00-15:00','15:00-16:00','16:00-17:00','17:00-18:00','18:00-19:00','19:00-20:00','20:00-21:00','21:00-22:00','22:00-23:00','23:00-24:00']
   },
-  onLoad: function(){
+  onLoad: function (options){
+    // wx.hideShareMenu();
     var _self = this;
-    _self.setData({ isIphoneX: app.globalData.isIphoneX})
+    _self.setData({ isIphoneX: app.globalData.isIphoneX, id: options.id })
     var arr = this.data.arr;
     var timeList = this.data.timeList;
     arr.forEach(function(item,index){
@@ -45,6 +41,42 @@ Page({
       })
     })
     this.setData({arr:arr})
+    // 获取老师信息
+    if (options.id){
+      wx.request({
+        url: app.globalData.edition + '/teacher/list?id=' + options.id, //options.id
+        success: function(res){
+          _self.setData({ teacherInfo: res.data[0], original_price: parseInt(res.data[0].original_price), price: parseInt(res.data[0].price)})
+        }
+      })
+    }
+    // 获取热门主题
+    var territory = [];
+    wx.request({
+      url: app.globalData.edition + '/tag/list?page=1&per_page=4',
+      success: function (res) {
+        res.data.data.forEach(function(item,index){
+          territory.push({name:item.tag,check:false});
+        })
+        _self.setData({ territory: territory})
+      }
+    })
+    // 获取账户余额
+    if (wx.getStorageSync('userInfo') && wx.getStorageSync('userInfo')){
+      wx.request({
+        url: app.globalData.edition + '/user/account',
+        header: {
+          "Content-Type": "application/json",
+          'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
+        },
+        success: function (res) {
+          _self.setData({ account: res.data})
+        }
+      })
+    }
+  },
+  onShow: function(){
+    // console.log(wx.getStorageSync('user_info'))
   },
   addSelect: function (event) {
     var arr = this.data.territory;
@@ -85,6 +117,7 @@ Page({
     var arr = this.data.arr;
     var witchPart = _self.data.witchPart;
     var witchDay = this.data.witchDay;
+    var timeNum = this.data.timeNum;
     // 给选中的时间段添加选中状态
     var a = witchPart.indexOf(index);
     if (a == -1) {
@@ -134,6 +167,6 @@ Page({
         }
       })
     })
-    this.setData({arr:arr})
+    this.setData({ arr: arr, timeNum: witchPart.length})
   }
 })

@@ -13,7 +13,6 @@ Page({
     gradeImg: [
       '/images/xx.png', '/images/xx.png', '/images/xx.png', '/images/xx.png', '/images/xx.png'
     ],  //评分图片
-    grade: 3.5, //评分
     hotWords: ['薪酬设计','职业规划','人才发展'], //热词
     teacherList: [],
     territory: [
@@ -74,6 +73,17 @@ Page({
           opt.push(obj);
         })
         _self.setData({ teacherList: opt })
+      }
+    })
+    // 获取热门主题
+    var hotWords = [];
+    wx.request({
+      url: app.globalData.edition + '/tag/list?page=1&per_page=4',
+      success: function (res) {
+        res.data.data.forEach(function (item, index) {
+          hotWords.push(item.tag);
+        })
+        _self.setData({ hotWords: hotWords })
       }
     })
   },

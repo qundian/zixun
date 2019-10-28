@@ -2,24 +2,24 @@
   <view id="B-10091651">
     <view class="B-10091334" >
       <text space="ensp">预 约 人</text><text style="color:red"> *</text>
-      <input type="text" value=""></input>
+      <input type="text" value="" bindinput="changeValue" data-name="name"></input>
     </view>
     <view class="B-10091334" >
       <text space="ensp">手 机 号</text><text style="color:red"> *</text>
-      <input type="text" value="" placeholder="咨询时通话用"></input>
+      <input type="number" value="" placeholder="咨询时通话用" bindinput="changeValue" data-name="tel"></input>
     </view>
     <view class="B-10091334" >
       <text space="ensp">职    位</text><text style="color:red"> *</text>
-      <input type="text" value="" placeholder="方便老师准备资料"></input>
+      <input type="text" value="" placeholder="方便老师准备资料" bindinput="changeValue" data-name="position"></input>
     </view>
     <view class="B-10091334" >
       <text>公司名称</text>
-      <input type="text" value=""></input>
+      <input type="text" value="" bindinput="changeValue" data-name="company"></input>
     </view>
     <view class="B-10091334" >
       <text space="ensp">邮    箱</text>
-      <input type="text" value=""></input>
+      <input type="number" value="" bindinput="changeValue" data-name="email"></input>
     </view>
   </view>
-  <button>确认</button>
+  <button bindtap="sendInfo">确认</button>
 </view> 

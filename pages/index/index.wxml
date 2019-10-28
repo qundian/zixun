@@ -45,8 +45,8 @@
   <view class="leader"><view></view><text>老师列表</text></view>
   <view>
     <!-- 老师列表循环 -->
-    <navigator url="/pages/details/details" hover-class="none">
-      <block wx:for="{{teacherList}}" wx:key="s">
+    <block wx:for="{{teacherList}}" wx:key="s">
+      <navigator url="/pages/details/details?id={{item.id}}" hover-class="none">
         <view class="teacherList" data-id="{{item.id}}">
           <view class="teacherListImg">
             <image src="{{item.headerImg}}"></image>
@@ -79,8 +79,8 @@
             <button class="teacherListBtn">预约咨询</button>
           </view>
         </view>
-      </block>
-    </navigator>
+      </navigator>
+    </block>
   </view>
   <!-- 筛选弹窗 -->
   <view id="mask" bindtap="translateHide" animation="{{animation2}}" style="display:{{display}}"></view>

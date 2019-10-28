@@ -88,14 +88,14 @@
       <image src="/images/like.png" wx:if="{{data.user_like_count == 0}}"></image>
       <image src="/images/love.png" wx:if="{{data.user_like_count == 1}}"></image>
       <text>收藏</text>
-    </view>----
+    </view>
     <view style="width:15%;">
       <image src="/images/kefu.png"></image><text>客服</text>
     </view>
     <view style="width:40%;font-size:1em;line-height:2.6em;">
       <text style="display:inline;color:#FF0000;font-size:1.1em;">￥{{data.price}}</text>/小时
     </view>
-    <view style="width:30%;"><navigator hover-class="none" url="/pages/order/order">预约咨询</navigator></view>
+    <view style="width:30%;"><navigator hover-class="none" url="/pages/order/order?id={{id}}">预约咨询</navigator></view>
     <view style="height:1em;width:100%;" wx:if="{{isIphoneX}}"></view>
   </view>
   <view class="page__bd">
