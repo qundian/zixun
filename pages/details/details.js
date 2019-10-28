@@ -1,7 +1,7 @@
 var app = getApp();
 Page({
   data: {
-    id:'',
+    id: '',
     gradeImg: [
       '/images/xx.png', '/images/xx.png', '/images/xx.png', '/images/xx.png', '/images/xx.png'
     ],  //评分图片
@@ -54,7 +54,14 @@ Page({
     this.setData({ dateArray: dataTitle, dateArr: arr})
     // 请求页面全部数据
     wx.request({
-      url: app.globalData.edition + '/teacher/detail?id=' + _self.data.id,
+      url: app.globalData.edition + '/teacher/detail?id=' + this.data.id,
+      method: 'get',
+      dataType: "json",
+      header: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
+      },
       success: function (res) {
         _self.setData({ data: res.data })
         res.data.teacher_times.forEach(function (item, index) {
@@ -67,11 +74,42 @@ Page({
     })
   },
   collect: function(){
+    var id = this.data.id;
     var data = this.data.data;
     if (data.user_like_count == 0){
       data.user_like_count = 1;
+      wx.request({
+        url: app.globalData.edition + '/teacher/post_like_teacher?id=' + id,
+        method: 'get',
+        dataType: "json",
+        header: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
+        },
+        success: function (res) {
+          if (res) {
+
+          }
+        }
+      })
     }else{
       data.user_like_count = 0;
+      wx.request({
+        url: app.globalData.edition + '/teacher/delete_like_teacher?id=' + id,
+        method: 'get',
+        dataType: "json",
+        header: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
+        },
+        success: function (res) {
+          if (res) {
+
+          }
+        }
+      })
     }
     this.setData({
       data: data

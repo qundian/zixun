@@ -1,3 +1,4 @@
+var app = getApp();
 Page({
   data: {
     showDialog: false,
@@ -13,48 +14,44 @@ Page({
     witchDay: '0',
     witchPart: [],
     arr: [],
-    timeList: ['8:00-9:00', '9:00-10:00', '10:00-11:00', '11:00-12:00', '12:00-13:00', '13:00-14:00', '14:00-15:00', '15:00-16:00', '16:00-17:00', '17:00-18:00', '18:00-19:00', '19:00-20:00', '20:00-21:00', '21:00-22:00', '22:00-23:00', '23:00-24:00']
+    timeList: ['08:00-09:00', '09:00-10:00', '10:00-11:00', '11:00-12:00', '12:00-13:00', '13:00-14:00', '14:00-15:00', '15:00-16:00', '16:00-17:00', '17:00-18:00', '18:00-19:00', '19:00-20:00', '20:00-21:00', '21:00-22:00', '22:00-23:00', '23:00-24:00']
   },
   onLoad: function(){
-    function addDate(dd, dadd) {
-      var a = new Date(dd)
-      a = a.valueOf()
-      a = a + dadd * 24 * 60 * 60 * 1000
-      a = new Date(a)
-      return a;
-    }
-
     var now = new Date();
     var dataTitle = [];//保存获取到的日期
     var prev = '';
     var arr = [];
     var timeList = this.data.timeList;
     var addArr = this.data.witchPart;
-    for (var i = 0; i < 30; i++) {
+
+    var startDate = new Date();
+    var endDate = new Date();
+    endDate.setDate(startDate.getDate() + 30);
+    var dataArr = [];
+    while ((endDate.getTime() - startDate.getTime()) >= 0) {
+      var year = new Date().getFullYear();
+      var month = (startDate.getMonth() + 1).toString().length == 1 ? "0" + (startDate.getMonth() + 1).toString() : (startDate.getMonth() + 1);
+      var months = startDate.getMonth() + 1;
+      var day = startDate.getDate().toString().length == 1 ? "0" + startDate.getDate() : startDate.getDate();
+      var days = startDate.getDate();
+      dataArr.push(months + "-" + days);
+      startDate.setDate(startDate.getDate() + 1);
+
       var time = [];
       for (var z = 0; z < 16; z++) {
         var obj = {
           part: timeList[z],
-          state: true,
-          isSelect: false
+          isSelect: false,
+          date_at: year+''+month+''+day,
+          start_at: timeList[z].substring(0,5),
+          end_at: timeList[z].substring(6,11)
         }
         time.push(obj);
       }
       arr.push(time);
       addArr.push([]);
-      var month = (now.getMonth() + 1) //now.getMonth()
-      var date = (month + "-" + now.getDate());
-      if (date == '12-31') {
-        prev = '12-31';
-
-      } else if (prev == '12-31') {
-        month = 1;
-      }
-      dataTitle[i] = (month + "-" + now.getDate());
-      now = addDate(month + "/" + now.getDate() + "/" + now.getFullYear(), 1);
     }
-    this.setData({ dateArray: dataTitle, arr: arr, witchPart: addArr})
-    console.log(arr)
+    this.setData({ dateArray: dataArr, arr: arr, witchPart: addArr})
 
     // 日历相关代码
     var now = new Date();
@@ -63,7 +60,7 @@ Page({
     this.dateInit();
     this.setData({
       year: year,
-      month: month,
+      month: month < 10 ? '0'+month : month,
       isToday:  month +"-"+ now.getDate()
     })
   },
@@ -92,9 +89,10 @@ Page({
         var state = this.data.dateArray.indexOf(ops);
         obj = {
           isToday: (month + 1) +"-"+ num,
-          dateNum: num,
+          dateNum: num < 10 ? '0'+ num:num,
           weight: 5,
-          canSelect: state == -1 ? false : true
+          canSelect: state == -1 ? false : true,
+          year: new Date().getFullYear()
         }
       } else {
         obj = {};
@@ -151,10 +149,36 @@ Page({
   clickDate: function(event){
     var state = event.currentTarget.dataset.state;
     var witch = event.currentTarget.dataset.date;
+    var dateat = event.currentTarget.dataset.dateat;
     this.setData({ witchDay: this.data.dateArray.indexOf(witch)})
     if(state){
       this.setData({istrue:true})
     }
+    wx.request({
+      url: app.globalData.edition + '/teacher/get_time',
+      method: 'get',
+      data: {
+        date_at: dateat
+      },
+      dataType: "json",
+      header: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
+      },
+      success: function (res) {
+        console.log(res.data)
+        if (res.data.code == 0) {
+          res.data.data.forEach(function (item, index) {
+            var start_time = (new Date(item.start_at * 1000)).toString();
+            var monthDay = new Date(item.date_at * 1000).getMonth() + 1 + '-' + new Date(item.date_at * 1000).getDate();
+            start_time = start_time.split(' ')[4].substring(0, 5);
+            console.log(monthDay)
+            // _self.bianli(monthDay, start_time);
+          })
+        }
+      }
+    })
   },
   openDialog: function () {
     this.setData({
@@ -182,5 +206,56 @@ Page({
       arr[witchDay][index].isSelect = false;
     }
     this.setData({ arr: arr })
+  },
+  submit: function(){
+    var _self = this;
+    var arr = _self.data.arr;
+    var witchPart = _self.data.witchPart;
+    var witchDay = _self.data.witchDay;
+    witchPart[witchDay].sort(function (x, y) {
+      return x - y;
+    });
+    var timeArr = [];
+    arr[witchDay].forEach(function(item,index){
+      if(witchPart[witchDay].indexOf(index) != -1){
+        timeArr.push({ start_at: item.date_at + ' ' + item.start_at, end_at: item.date_at + ' ' +item.end_at});
+      }
+    })
+    console.log(timeArr)
+    wx.request({
+      url: app.globalData.edition + '/teacher/set_time',
+      method: 'post',
+      data: {
+        date_at: arr[witchDay][0].date_at,
+        arr: timeArr
+      },
+      dataType: "json",
+      header: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
+      },
+      success: function (res) {
+        console.log(res.data)
+        if (!res.data.message) {
+          
+        }
+      }
+    })
+    this.setData({
+      istrue: false
+    })
+  },
+  bianli: function (monthDay, hour) {
+    var _self = this;
+    var dateArr = this.data.dateArr;
+    dateArr.forEach(function (item, index) {
+      item.forEach(function (a, b) {
+        if (a.date == monthDay && a.part.split('-')[0] == hour) {
+          a.state = true;
+        }
+      })
+    })
+    this.setData({ dateArr: dateArr })
   }
 })

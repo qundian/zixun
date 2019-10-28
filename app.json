@@ -1,10 +1,10 @@
 {
   "pages": [
-    "pages/index/index",
-    "pages/order/order",
-    "pages/details/details",
-    "pages/userInfo/userInfo",
     "pages/setTime/setTime",
+    "pages/index/index",
+    "pages/details/details",
+    "pages/order/order",
+    "pages/userInfo/userInfo",
     "pages/teacher/teacher",
     "pages/login/login",
     "pages/UserCancel/UserCancel",

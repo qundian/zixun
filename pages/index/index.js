@@ -8,7 +8,7 @@ Page({
     indicatorDots: true,
     duration: 500,
     imgwidth: 750,
-    imgheights: [],
+    imgheights: [], 
     current: 0,
     gradeImg: [
       '/images/xx.png', '/images/xx.png', '/images/xx.png', '/images/xx.png', '/images/xx.png'
@@ -27,10 +27,7 @@ Page({
     territoryVal: '',
     price: [12,43],
     time: [9,9,12],
-    teacherList:[
-      { headerImg: '/images/headerImg.jpg', name: '陈楚华', grade: 3.5, original: 400, price: 300, company: '阿里巴巴有限公司CEO', territory:['职业规划','组织发展','职业晋升'],num1:234,num2:534,num3:45},
-      { headerImg: '/images/xiaohu.jpg', name: '小虎', grade:5, original: 400, price: 300, company: '阿里巴巴有限公司CEO', territory: ['职业规划', '组织发展', '职业晋升'], num1: 234, num2: 534, num3: 45 }
-    ]
+    teacherList:[]
   },
   onReady:function(){
     this.animation1 = wx.createAnimation();
