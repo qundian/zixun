@@ -17,6 +17,7 @@ Page({
     timeList: ['08:00-09:00', '09:00-10:00', '10:00-11:00', '11:00-12:00', '12:00-13:00', '13:00-14:00', '14:00-15:00', '15:00-16:00', '16:00-17:00', '17:00-18:00', '18:00-19:00', '19:00-20:00', '20:00-21:00', '21:00-22:00', '22:00-23:00', '23:00-24:00']
   },
   onLoad: function(){
+    var _self = this;
     var now = new Date();
     var dataTitle = [];//保存获取到的日期
     var prev = '';
@@ -62,6 +63,27 @@ Page({
       year: year,
       month: month < 10 ? '0'+month : month,
       isToday:  month +"-"+ now.getDate()
+    })
+    // 查询所有设置时间的日期
+      url: app.globalData.edition + '/teacher/get_time',
+      method: 'get',
+      dataType: "json",
+      header: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
+      },
+      success: function (res) {
+        if (res.data.code == 0) {
+          var year = new Date().getFullYear();
+          res.data.data.forEach(function (item, index) {
+            var start_time = (new Date(item.start_at * 1000)).toString();
+            var monthDay = new Date(item.date_at * 1000).getMonth() + 1 + '' + new Date(item.date_at * 1000).getDate();
+            start_time = start_time.split(' ')[4].substring(0, 5);
+            _self.bianli(year + '' + monthDay, start_time);
+          })
+        }
+      }
     })
   },
   dateInit: function (setYear, setMonth) {
@@ -147,38 +169,15 @@ Page({
     this.dateInit(year, month);
   },
   clickDate: function(event){
+    var _self = this;
     var state = event.currentTarget.dataset.state;
     var witch = event.currentTarget.dataset.date;
     var dateat = event.currentTarget.dataset.dateat;
     this.setData({ witchDay: this.data.dateArray.indexOf(witch)})
-    if(state){
-      this.setData({istrue:true})
+    
+    if (state) {
+      this.setData({ istrue: true })
     }
-    wx.request({
-      url: app.globalData.edition + '/teacher/get_time',
-      method: 'get',
-      data: {
-        date_at: dateat
-      },
-      dataType: "json",
-      header: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-        'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
-      },
-      success: function (res) {
-        console.log(res.data)
-        if (res.data.code == 0) {
-          res.data.data.forEach(function (item, index) {
-            var start_time = (new Date(item.start_at * 1000)).toString();
-            var monthDay = new Date(item.date_at * 1000).getMonth() + 1 + '-' + new Date(item.date_at * 1000).getDate();
-            start_time = start_time.split(' ')[4].substring(0, 5);
-            console.log(monthDay)
-            // _self.bianli(monthDay, start_time);
-          })
-        }
-      }
-    })
   },
   openDialog: function () {
     this.setData({
@@ -218,10 +217,10 @@ Page({
     var timeArr = [];
     arr[witchDay].forEach(function(item,index){
       if(witchPart[witchDay].indexOf(index) != -1){
+        console.log(item)
         timeArr.push({ start_at: item.date_at + ' ' + item.start_at, end_at: item.date_at + ' ' +item.end_at});
       }
     })
-    console.log(timeArr)
     wx.request({
       url: app.globalData.edition + '/teacher/set_time',
       method: 'post',
@@ -247,15 +246,24 @@ Page({
     })
   },
   bianli: function (monthDay, hour) {
-    var _self = this;
-    var dateArr = this.data.dateArr;
-    dateArr.forEach(function (item, index) {
-      item.forEach(function (a, b) {
-        if (a.date == monthDay && a.part.split('-')[0] == hour) {
-          a.state = true;
+    var arr = this.data.arr;
+    var witchPart = this.data.witchPart;
+    arr.forEach(function(item,index){
+      item.forEach(function(a,b){
+        if(a.date_at == monthDay && hour == a.start_at){
+          a.isSelect = true;
+          witchPart[index].push(b);
         }
       })
-    })
-    this.setData({ dateArr: dateArr })
+    })    
+    this.setData({witchPart:witchPart,arr:arr})
+  },
+  nextDay: function getNextDate(date, day) {
+    var dd = new Date(date);
+    dd.setDate(dd.getDate() + day);
+    var y = dd.getFullYear();
+    var m = dd.getMonth() + 1 < 10 ? "0" + (dd.getMonth() + 1) : dd.getMonth() + 1;
+    var d = dd.getDate() < 10 ? "0" + dd.getDate() : dd.getDate();
+    return y + "" + m + "" + d;
   }
 })
