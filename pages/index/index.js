@@ -33,7 +33,7 @@ Page({
     this.animation1 = wx.createAnimation();
     this.animation2 = wx.createAnimation();
   },
-  onLoad: function(){
+  onShow: function(){
     var _self = this;
     var imgUrls = [];
     wx.request({

@@ -1,8 +1,10 @@
 var app = getApp();
 Page({
   data: {
+    id: '',
     showDialog: false,
     istrue: false, //时间弹出
+    isShowModel: false, //提示框
     dateArray:[],
     year: 0,
     month: 0,
@@ -16,8 +18,27 @@ Page({
     arr: [],
     timeList: ['08:00-09:00', '09:00-10:00', '10:00-11:00', '11:00-12:00', '12:00-13:00', '13:00-14:00', '14:00-15:00', '15:00-16:00', '16:00-17:00', '17:00-18:00', '18:00-19:00', '19:00-20:00', '20:00-21:00', '21:00-22:00', '22:00-23:00', '23:00-24:00']
   },
-  onLoad: function(){
+  onShow: function(){
     var _self = this;
+    // 请求用户信息
+    wx.request({
+      url: app.globalData.edition + '/teacher/my_teacher_info',
+      method: 'get',
+      dataType: "json",
+      header: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
+      },
+      success: function (res) {
+        console.log(res)
+        if(res.data.data){
+          _self.setData({id:res.data.data.id})
+        }
+        _self.getTeacherTime();
+      }
+    })
+
     var now = new Date();
     var dataTitle = [];//保存获取到的日期
     var prev = '';
@@ -32,9 +53,9 @@ Page({
     while ((endDate.getTime() - startDate.getTime()) >= 0) {
       var year = new Date().getFullYear();
       var month = (startDate.getMonth() + 1).toString().length == 1 ? "0" + (startDate.getMonth() + 1).toString() : (startDate.getMonth() + 1);
-      var months = startDate.getMonth() + 1;
+      var months = (startDate.getMonth() + 1) < 10 ? '0' + (startDate.getMonth() + 1) : (startDate.getMonth() + 1);
       var day = startDate.getDate().toString().length == 1 ? "0" + startDate.getDate() : startDate.getDate();
-      var days = startDate.getDate();
+      var days = startDate.getDate() < 10 ? '0' + startDate.getDate() : startDate.getDate();
       dataArr.push(months + "-" + days);
       startDate.setDate(startDate.getDate() + 1);
 
@@ -45,7 +66,9 @@ Page({
           isSelect: false,
           date_at: year+''+month+''+day,
           start_at: timeList[z].substring(0,5),
-          end_at: timeList[z].substring(6,11)
+          end_at: timeList[z].substring(6,11),
+          date: month + '-' + day,
+          status: 10
         }
         time.push(obj);
       }
@@ -59,32 +82,14 @@ Page({
     var year = now.getFullYear();
     var month = now.getMonth() + 1;
     this.dateInit();
+    var c_month = month < 10 ? '0' + month : month;
+    var c_day = now.getDate() < 10 ? '0' + now.getDate() : now.getDate()
     this.setData({
       year: year,
       month: month < 10 ? '0'+month : month,
-      isToday:  month +"-"+ now.getDate()
+      isToday: c_month + "-" + c_day
     })
-    // 查询所有设置时间的日期
-      url: app.globalData.edition + '/teacher/get_time',
-      method: 'get',
-      dataType: "json",
-      header: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-        'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
-      },
-      success: function (res) {
-        if (res.data.code == 0) {
-          var year = new Date().getFullYear();
-          res.data.data.forEach(function (item, index) {
-            var start_time = (new Date(item.start_at * 1000)).toString();
-            var monthDay = new Date(item.date_at * 1000).getMonth() + 1 + '' + new Date(item.date_at * 1000).getDate();
-            start_time = start_time.split(' ')[4].substring(0, 5);
-            _self.bianli(year + '' + monthDay, start_time);
-          })
-        }
-      }
-    })
+    
   },
   dateInit: function (setYear, setMonth) {
     //全部时间的月份都是按0~11基准，显示月份才+1
@@ -95,7 +100,8 @@ Page({
     var nextYear = 0;
     var month = setMonth || now.getMonth();                 //没有+1方便后面计算当月总天数
     var nextMonth = (month + 1) > 11 ? 1 : (month + 1);
-    var startWeek = new Date(year + ',' + (month + 1) + ',' + 1).getDay();                          //目标月1号对应的星期
+    var c_month = (month + 1) < 10 ? '0' + (month + 1) : (month + 1);
+    var startWeek = new Date(year + '-' + c_month + '-' + '01').getDay();                          //目标月1号对应的星期
     var dayNums = new Date(year, nextMonth, 0).getDate();               //获取目标月有多少天
     var obj = {};
     var num = 0;
@@ -107,14 +113,17 @@ Page({
     for (var i = 0; i < arrLen; i++) {
       if (i >= startWeek) {
         num = i - startWeek + 1;
-        var ops = (month + 1)+"-"+num;
+        var c_month = (month + 1) < 10 ? '0' + (month + 1) : (month + 1);
+        var c_day = num < 10 ? '0' + num : num;
+        var ops = c_month +"-"+ c_day;
         var state = this.data.dateArray.indexOf(ops);
         obj = {
-          isToday: (month + 1) +"-"+ num,
+          isToday: c_month + "-" + c_day,
           dateNum: num < 10 ? '0'+ num:num,
           weight: 5,
           canSelect: state == -1 ? false : true,
-          year: new Date().getFullYear()
+          year: new Date().getFullYear(),
+          isBlue: false
         }
       } else {
         obj = {};
@@ -154,6 +163,7 @@ Page({
       month: (month + 1)
     })
     this.dateInit(year, month);
+    this.addBlue();
   },
   /**
    * 下月切换
@@ -167,6 +177,7 @@ Page({
       month: (month + 1)
     })
     this.dateInit(year, month);
+    this.addBlue();
   },
   clickDate: function(event){
     var _self = this;
@@ -189,6 +200,11 @@ Page({
       istrue: false
     })
   },
+  closeModel: function () {
+    this.setData({
+      isShowModel: false
+    })
+  },
   selectTime: function (event) {
     var _that = this
     var index = event.currentTarget.dataset.index;
@@ -201,8 +217,12 @@ Page({
       witchPart[witchDay].push(index);
       arr[witchDay][index].isSelect = true; 
     } else {
-      witchPart[witchDay].splice(a, 1);
-      arr[witchDay][index].isSelect = false;
+      if (arr[witchDay][index].status == 10){
+        witchPart[witchDay].splice(a, 1);
+        arr[witchDay][index].isSelect = false;
+      }else{
+        this.setData({isShowModel: true})
+      }
     }
     this.setData({ arr: arr })
   },
@@ -217,8 +237,13 @@ Page({
     var timeArr = [];
     arr[witchDay].forEach(function(item,index){
       if(witchPart[witchDay].indexOf(index) != -1){
-        console.log(item)
-        timeArr.push({ start_at: item.date_at + ' ' + item.start_at, end_at: item.date_at + ' ' +item.end_at});
+        var date =  item.date_at.substring(0, 4) + '-' + item.date_at.substring(4, 6) + '-' + item.date_at.substring(6, 9)
+        if(item.end_at == '24:00'){
+          var date = _self.nextDay(date, 1);
+          timeArr.push({ start_at: item.date_at + ' ' + item.start_at, end_at: date + ' ' + '00:00' });  
+        }else{
+          timeArr.push({ start_at: item.date_at + ' ' + item.start_at, end_at: item.date_at + ' ' +item.end_at});
+        }
       }
     })
     wx.request({
@@ -236,8 +261,8 @@ Page({
       },
       success: function (res) {
         console.log(res.data)
-        if (!res.data.message) {
-          
+        if (res.data.code == 0) {
+          _self.addBlue();
         }
       }
     })
@@ -265,5 +290,65 @@ Page({
     var m = dd.getMonth() + 1 < 10 ? "0" + (dd.getMonth() + 1) : dd.getMonth() + 1;
     var d = dd.getDate() < 10 ? "0" + dd.getDate() : dd.getDate();
     return y + "" + m + "" + d;
+  },
+  addBlue: function(){
+    var _self = this;
+    var dateArr = _self.data.dateArr
+    setTimeout(function(){
+      _self.data.arr.forEach(function(item,index){
+        item.forEach(function(a,b){
+          if(a.isSelect){
+            dateArr.forEach(function(z,x){
+              if(z.isToday == a.date){
+                z.isBlue = true;
+              }
+            })
+          }
+        })
+      })
+      _self.setData({ dateArr: dateArr})
+    },1000)
+  },
+  getTeacherTime: function(){
+    var _self = this;
+    // 查询所有设置时间的日期
+    var userInfo = wx.getStorageSync('userInfo');
+    var token = wx.getStorageSync('userInfo');
+    wx.request({
+      url: app.globalData.edition + '/teacher/get_time?id=' + _self.data.id,
+      method: 'get',
+      dataType: "json",
+      header: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
+      },
+      success: function (res) {
+        console.log(res)
+        if (res.data.code == 0) {
+          var year = new Date().getFullYear();
+          var arr = _self.data.arr;
+          res.data.data.forEach(function (item, index) {
+            var status = item.status;
+            var start_time = (new Date(item.start_at * 1000)).toString();
+            var c_month = (new Date(item.date_at * 1000).getMonth() + 1) < 10 ? '0' + (new Date(item.date_at * 1000).getMonth() + 1) : (new Date(item.date_at * 1000).getMonth() + 1);
+            var c_day = new Date(item.date_at * 1000).getDate() < 10 ? '0' + new Date(item.date_at * 1000).getDate() : new Date(item.date_at * 1000).getDate()
+            var monthDay = c_month + '' + c_day;
+            start_time = start_time.split(' ')[4].substring(0, 5);
+            _self.bianli(year + '' + monthDay, start_time);
+            _self.addBlue();
+            // 修改arr的status
+            arr.forEach(function (item, index) {
+              item.forEach(function (a, b) {
+                if (a.date == (c_month + '-' + c_day) && start_time == a.start_at) {
+                  a.status = status;
+                }
+              })
+            })
+          })
+          _self.setData({ arr: arr })
+        }
+      }
+    })
   }
 })

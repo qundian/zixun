@@ -15,36 +15,93 @@ Page({
     witchPart: [], //选的哪个时间段
     original_price: 0,
     price: 0,
-    arr: [
-      { date: '09/28', time: [{ state: true }, { state: true }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: true }, { state: false }, { state: true }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }, { state: false }]}
-    ],
+    arr: [],
     showDialog: false,
     istrue: false, //时间弹出
     isShowModel: false, //警告弹出
     waring: '每次预约只可选择同一天内的单个或者连续的时间段',
-    timeList:['8:00-9:00','9:00-10:00','10:00-11:00','11:00-12:00','12:00-13:00','13:00-14:00','14:00-15:00','15:00-16:00','16:00-17:00','17:00-18:00','18:00-19:00','19:00-20:00','20:00-21:00','21:00-22:00','22:00-23:00','23:00-24:00']
+    timeList:['08:00-09:00','09:00-10:00','10:00-11:00','11:00-12:00','12:00-13:00','13:00-14:00','14:00-15:00','15:00-16:00','16:00-17:00','17:00-18:00','18:00-19:00','19:00-20:00','20:00-21:00','21:00-22:00','22:00-23:00','23:00-24:00']
   },
   onLoad: function (options){
+    var _self = this;
+    _self.setData({ isIphoneX: app.globalData.isIphoneX, id: 1 }) //options.id
+  },
+  onShow: function (options){
     // wx.hideShareMenu();
     var _self = this;
-    _self.setData({ isIphoneX: app.globalData.isIphoneX, id: options.id })
-    var arr = this.data.arr;
+    var now = new Date();
+    var dataTitle = [];//保存获取到的日期
+    var prev = '';
+    var arr = [];
     var timeList = this.data.timeList;
-    arr.forEach(function(item,index){
-      item.time.forEach(function(itm,idx){
-        // 给日期添加时间段
-        itm.part = timeList[idx];
-        // 给日期添加预约状态
-        if(itm.state){
-          item.state = true;
+    var emptyArr = [];
+
+    var startDate = new Date();
+    var endDate = new Date();
+    endDate.setDate(startDate.getDate() + 30);
+    var dataArr = [];
+    while ((endDate.getTime() - startDate.getTime()) >= 0) {
+      var year = new Date().getFullYear();
+      var month = (startDate.getMonth() + 1).toString().length == 1 ? "0" + (startDate.getMonth() + 1).toString() : (startDate.getMonth() + 1);
+      var months = (startDate.getMonth() + 1) < 10 ? '0' + (startDate.getMonth() + 1) : (startDate.getMonth() + 1);
+      var day = startDate.getDate().toString().length == 1 ? "0" + startDate.getDate() : startDate.getDate();
+      var days = startDate.getDate() < 10 ? '0' + startDate.getDate() : startDate.getDate();
+      dataArr.push(months + "-" + days);
+      startDate.setDate(startDate.getDate() + 1);
+
+      var time = [];
+      for (var z = 0; z < 16; z++) {
+        var obj = {
+          part: timeList[z],
+          isSelect: false,
+          date_at: year + '' + month + '' + day,
+          start_at: timeList[z].substring(0, 5),
+          end_at: timeList[z].substring(6, 11),
+          date: month + '-' + day,
+          status: false,
+          state: true
         }
-      })
+        time.push(obj);
+      }
+      arr.push(time);
+      emptyArr.push([]);
+    }
+    this.setData({ arr: arr, witchPart: emptyArr})
+
+    // 请求用户信息
+    wx.request({
+      url: app.globalData.edition + '/teacher/my_teacher_info',
+      method: 'get',
+      dataType: "json",
+      header: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
+      },
+      success: function (res) {
+        if (res.data.data) {
+          _self.setData({ id: res.data.data.id })
+        }
+      }
     })
-    this.setData({arr:arr})
+  
+    // var arr = this.data.arr;
+    // var timeList = this.data.timeList;
+    // arr.forEach(function(item,index){
+    //   item.time.forEach(function(itm,idx){
+    //     // 给日期添加时间段
+    //     itm.part = timeList[idx];
+    //     // 给日期添加预约状态
+    //     if(itm.state){
+    //       item.state = true;
+    //     }
+    //   })
+    // })
+    // this.setData({arr:arr})
     // 获取老师信息
-    if (options.id){
+    if (this.data.id){
       wx.request({
-        url: app.globalData.edition + '/teacher/list?id=' + options.id, //options.id
+        url: app.globalData.edition + '/teacher/list?id=' + _self.data.id,
         success: function(res){
           _self.setData({ teacherInfo: res.data[0], original_price: parseInt(res.data[0].original_price), price: parseInt(res.data[0].price)})
         }
@@ -74,9 +131,6 @@ Page({
         }
       })
     }
-  },
-  onShow: function(){
-    // console.log(wx.getStorageSync('user_info'))
   },
   addSelect: function (event) {
     var arr = this.data.territory;
@@ -109,64 +163,96 @@ Page({
   },
   selectDay: function(event){
     var index = event.currentTarget.dataset.index;
-    this.setData({witchDay:index,witchPart:[]});
+    this.setData({witchDay:index});
   },
   selectTime: function(event){
     var _self = this;
     var index = event.currentTarget.dataset.index;
     var arr = this.data.arr;
-    var witchPart = _self.data.witchPart;
     var witchDay = this.data.witchDay;
-    var timeNum = this.data.timeNum;
+    var selectArr = this.data.witchPart[witchDay];
     // 给选中的时间段添加选中状态
-    var a = witchPart.indexOf(index);
-    if (a == -1) {
-      if(witchPart.length == 0){
-        witchPart.push(index);
-      }else{
-        witchPart.forEach(function(item,ind){
-          if(Math.abs(index - item) <= 1){
-            witchPart.push(index);
-          }
-        })
-      }
-    } else {
-      witchPart.splice(a,1);
-    }       
-    // if (index - witchPart[witchPart.length - 1] > 1 || index - witchPart[witchPart.length - 1] < 0) {
-    //   this.setData({ waring: '每次预约只可选择同一天内的单个或者连续的时间段', isShowModel: true })
-    // }
-    witchPart.sort();
-    witchPart.forEach(function(item,indexs){              
+    var a = selectArr.indexOf(index);
+    if(arr[witchDay][index].state){
+      if (a == -1) {
+        if(selectArr.length == 0){
+          selectArr.push(index);
+        }else{
+          selectArr.forEach(function(item,ind){
+            if(Math.abs(index - item) <= 1){
+              selectArr.push(index);
+            }
+          })
+        }
+      } else {
+        selectArr.splice(a,1);
+      }       
+    }
+    selectArr.sort(function (x, y) {
+      return x - y;
+    });
+    selectArr.forEach(function(item,indexs){              
       var next = indexs+1;
       if(next>=15){
         next = 15;
       }
-      if (Math.abs(item - witchPart[next]) > 1 && Math.abs(item - witchPart[next])){
-        // _self.setData({ waring: '本次操作将清除此时间段之后的所有已选择时间段', isShowModel: true })
-        witchPart.splice(next,16);
+      if (Math.abs(item - selectArr[next]) > 1 && Math.abs(item - selectArr[next])){
+        selectArr.splice(next,16);
       }
     })
-    arr[witchDay].time.forEach(function(item,indexs){
-      if(witchPart.indexOf(indexs) != -1){
+    arr[witchDay].forEach(function(item,indexs){
+      if(selectArr.indexOf(indexs) != -1){
         item.isSelect = true;
       }else{
         item.isSelect = false;
       }
     })
     // 清楚其他日期时间段的选中状态
-    // var clearIsSelect = false;
     arr.forEach(function(item,idx){
-      item.time.forEach(function(option,seat){
+      if(idx != witchDay){
+        _self.data.witchPart[idx] = [];
+      }
+      item.forEach(function(option,seat){
         if(idx != _self.data.witchDay){
-          // if(option.isSelect && !clearIsSelect){
-          //   _self.setData({ waring:'每次预约只可选择同一天内的单个或者连续的时间段，此次操作会将您之前的选择清除',isShowModel:true})
-          // }
           option.isSelect = false;
-          // clearIsSelect = true;
         }
       })
     })
-    this.setData({ arr: arr, timeNum: witchPart.length})
+    this.setData({ arr: arr, timeNum: selectArr.length})
+  },
+  getTeacherTime: function () {
+    var _self = this;
+    // 查询所有设置时间的日期
+    var userInfo = wx.getStorageSync('userInfo');
+    var token = wx.getStorageSync('userInfo');
+    wx.request({
+      url: app.globalData.edition + '/teacher/get_time?id=' + _self.data.id,
+      method: 'get',
+      dataType: "json",
+      header: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
+      },
+      success: function (res) {
+        console.log(res)
+        if (res.data.code == 0) {
+          var year = new Date().getFullYear();
+          var arr = _self.data.arr;
+          res.data.data.forEach(function (item, index) {
+            var start_time = (new Date(item.start_at * 1000)).toString();
+            var c_month = (new Date(item.date_at * 1000).getMonth() + 1) < 10 ? '0' + (new Date(item.date_at * 1000).getMonth() + 1) : (new Date(item.date_at * 1000).getMonth() + 1);
+            var c_day = new Date(item.date_at * 1000).getDate() < 10 ? '0' + new Date(item.date_at * 1000).getDate() : new Date(item.date_at * 1000).getDate()
+            var monthDay = c_month + '' + c_day;
+            start_time = start_time.split(' ')[4].substring(0, 5);
+            _self.bianli(year + '' + monthDay, start_time);
+          })
+          _self.setData({ arr: arr })
+        }
+      }
+    })
+  },
+  pay: function(event){
+
   }
 })
