@@ -65,7 +65,7 @@
     <view style="width:70%;font-size:1em;line-height:2.6em;">
       待支付：<text style="display:inline;color:#FF0000;font-size:1.1em;">￥{{price*timeNum}}</text>
     </view>
-    <view style="width:30%;" bindtap="pay">去支付</view>
+    <view style="width:30%;" bindtap="pay"><view id="pay">去支付</view></view>
     <view style="height:1em;width:100%;" wx:if="{{isIphoneX}}"></view>
   </view>
   <view class="page__bd">

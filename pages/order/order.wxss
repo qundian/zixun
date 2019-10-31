@@ -61,7 +61,7 @@ textarea{
   font-size:.75em;
   color:#333;
 }
-#B-10081418 navigator{
+#pay{
   background: #2F69F8;
   box-shadow: 0 8px 12px 0 rgba(47,105,248,0.40);
   border-radius: 6px;
