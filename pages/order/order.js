@@ -272,7 +272,6 @@ Page({
       url: app.globalData.edition + '/order/post_order?teacher_id='+ _self.data.id,
       method: 'post',
       data:{
-        teacher_id: 2,
         times: c,
         subject: e ? _self.data.text:'未填写咨询主题'
       },

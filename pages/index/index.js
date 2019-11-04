@@ -27,7 +27,8 @@ Page({
     territoryVal: '',
     price: [12,43],
     time: [9,9,12],
-    teacherList:[]
+    teacherList:[],
+    isTeacher: false
   },
   onReady:function(){
     this.animation1 = wx.createAnimation();
@@ -47,6 +48,7 @@ Page({
     })
     var obj = {};
     var opt = [];
+    // 请求老师列表信息
     wx.request({
       url: app.globalData.edition + '/teacher/list',
       success: function (res) {
@@ -70,6 +72,15 @@ Page({
           opt.push(obj);
         })
         _self.setData({ teacherList: opt })
+      },
+      complete: function (res) {
+        if (res.data.message) {
+          wx.showModal({
+            title: '错误',
+            content: res.data.message,
+            showCancel: false
+          })
+        }
       }
     })
     // 获取热门主题
@@ -81,6 +92,40 @@ Page({
           hotWords.push(item.tag);
         })
         _self.setData({ hotWords: hotWords })
+      },
+      complete: function (res) {
+        if (res.data.message) {
+          wx.showModal({
+            title: '错误',
+            content: res.data.message,
+            showCancel: false
+          })
+        }
+      }
+    })
+    // 判断用户身份
+    wx.request({
+      url: app.globalData.edition + '/teacher/my_teacher_info',
+      method: 'get',
+      dataType: "json",
+      header: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
+      },
+      success: function (res) {
+        if(res.data.data){
+          _self.setData({isTeacher: true})
+        }
+      },
+      complete: function (res) {
+        if (res.data.message) {
+          wx.showModal({
+            title: '错误',
+            content: res.data.message,
+            showCancel: false
+          })
+        }
       }
     })
   },

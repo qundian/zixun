@@ -1,8 +1,11 @@
 <view style="padding-bottom:4em;">
   <view style="position:relative;">
+    <navigator url="/pages/setTime/setTime" wx:if="{{isTeacher}}">
+      <image src="/images/set.png" id="set"></image>
+    </navigator>
     <image src="/images/userbg.png" aspectFit id="userBg"></image>
-    <image src="/images/headerImg.jpg" id="headerImg"></image>
-    <view id="userName">陈楚华</view>
+    <image src="{{userInfo.avatarUrl}}" id="headerImg"></image>
+    <view id="userName">{{userInfo.nickName}}</view>
     <view id="userBot">
       <view class="C-09261532" style="width:29.5%;">
         <text style="font-size:1.1em;font-weight:bold;">300元</text><text style="font-size:.85em;color:#999;">账户余额</text>

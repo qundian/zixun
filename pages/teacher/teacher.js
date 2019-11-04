@@ -1,5 +1,8 @@
+var app = getApp();
 Page({
   data: {
+    isTeacher: false,
+    userInfo: '',
     orderList: [
       { teacherName: '张三', price: '300', time: '9月4日 6:00-7:00', ques:'如何做好招聘',state:true},
       { teacherName: '张三', price: '200', time: '9月7日 6:00-7:00', ques: '如何做好招聘', state: true }
@@ -13,6 +16,36 @@ Page({
     ],  //评分图片
     showDialog: false,
     istrue: false
+  },
+  onShow: function(){
+    var _self = this;
+    // 判断用户身份
+    wx.request({
+      url: app.globalData.edition + '/teacher/my_teacher_info',
+      method: 'get',
+      dataType: "json",
+      header: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
+      },
+      success: function (res) {
+        if (res.data.data) {
+          _self.setData({ isTeacher: true })
+        }
+      },
+      complete: function(res){
+        if (res.data.message){
+          wx.showModal({
+            title: '错误',
+            content: res.data.message,
+            showCancel: false
+          })
+        }
+      }
+    })
+    var userInfo = wx.getStorageSync('userInfo');
+    this.setData({userInfo:userInfo})
   },
   change: function(event){
     this.setData({

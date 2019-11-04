@@ -100,11 +100,3 @@
   height: .9em;
   margin-right:.3em;
 }
-#set{
-  position: absolute;
-  top:1em;
-  right:1em;
-  z-index:10;
-  width:1.5em;
-  height:1.5em;
-}

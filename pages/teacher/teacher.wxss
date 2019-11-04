@@ -109,3 +109,11 @@
   visibility:visible;
   opacity:1;
 }
+#set{
+  position: absolute;
+  top:1em;
+  right:1em;
+  z-index:10;
+  width:1.5em;
+  height:1.5em;
+}
