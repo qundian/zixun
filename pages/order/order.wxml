@@ -40,7 +40,7 @@
     </view>
   </view>
   <view class="leader"><view></view><text>本次咨询主题</text></view>
-  <textarea ></textarea>
+  <textarea bindinput="changeValue"></textarea>
   <view style="padding:1.2em 6%;font-size:.75em;overflow:hidden;padding-bottom:.6em;">
     <text style="width:20%;float:left;line-height:2.5em;">热门主题：</text>
     <view style="float:left;width:80%;">
@@ -57,7 +57,6 @@
     <text>账户余额：</text><text style="color:#FD3E3E;font-size:.75em;">(您的余额不足以支持本次咨询)</text><text style="float:right;margin-top:.3em;font-weight:bold;">￥{{account}}</text>
   </view>
   <view class="B-10091334" style="border:none;">
-  {{original_price-price}}
     <text>咨询优惠：</text><text style="float:right;margin-top:.3em;font-weight:bold;">-￥{{(original_price-price)*timeNum}}</text>
   </view>
   <view class="kong" style="height:1.35em;"></view>

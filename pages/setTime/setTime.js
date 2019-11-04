@@ -50,7 +50,7 @@ Page({
     var endDate = new Date();
     endDate.setDate(startDate.getDate() + 30);
     var dataArr = [];
-    while ((endDate.getTime() - startDate.getTime()) >= 0) {
+    while ((endDate.getTime() - startDate.getTime()) > 0) {
       var year = new Date().getFullYear();
       var month = (startDate.getMonth() + 1).toString().length == 1 ? "0" + (startDate.getMonth() + 1).toString() : (startDate.getMonth() + 1);
       var months = (startDate.getMonth() + 1) < 10 ? '0' + (startDate.getMonth() + 1) : (startDate.getMonth() + 1);

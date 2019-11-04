@@ -9,6 +9,7 @@ Page({
       '/images/xx.png', '/images/xx.png', '/images/xx.png', '/images/xx.png', '/images/xx.png'
     ],  //评分图片
     territory: [], //热门主题
+    text: '',
     teacherInfo: '',
     isIphoneX: '',
     witchDay: '0', //选中的哪天
@@ -24,7 +25,7 @@ Page({
   },
   onLoad: function (options){
     var _self = this;
-    _self.setData({ isIphoneX: app.globalData.isIphoneX, id: 1 }) //options.id
+    _self.setData({ isIphoneX: app.globalData.isIphoneX, id: options.id }) //options.id
   },
   onShow: function (options){
     // wx.hideShareMenu();
@@ -40,7 +41,7 @@ Page({
     var endDate = new Date();
     endDate.setDate(startDate.getDate() + 30);
     var dataArr = [];
-    while ((endDate.getTime() - startDate.getTime()) >= 0) {
+    while ((endDate.getTime() - startDate.getTime()) > 0) {
       var year = new Date().getFullYear();
       var month = (startDate.getMonth() + 1).toString().length == 1 ? "0" + (startDate.getMonth() + 1).toString() : (startDate.getMonth() + 1);
       var months = (startDate.getMonth() + 1) < 10 ? '0' + (startDate.getMonth() + 1) : (startDate.getMonth() + 1);
@@ -59,7 +60,8 @@ Page({
           end_at: timeList[z].substring(6, 11),
           date: month + '-' + day,
           status: false,
-          state: true
+          state: false,
+          id: ''
         }
         time.push(obj);
       }
@@ -68,36 +70,6 @@ Page({
     }
     this.setData({ arr: arr, witchPart: emptyArr})
 
-    // 请求用户信息
-    wx.request({
-      url: app.globalData.edition + '/teacher/my_teacher_info',
-      method: 'get',
-      dataType: "json",
-      header: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-        'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
-      },
-      success: function (res) {
-        if (res.data.data) {
-          _self.setData({ id: res.data.data.id })
-        }
-      }
-    })
-  
-    // var arr = this.data.arr;
-    // var timeList = this.data.timeList;
-    // arr.forEach(function(item,index){
-    //   item.time.forEach(function(itm,idx){
-    //     // 给日期添加时间段
-    //     itm.part = timeList[idx];
-    //     // 给日期添加预约状态
-    //     if(itm.state){
-    //       item.state = true;
-    //     }
-    //   })
-    // })
-    // this.setData({arr:arr})
     // 获取老师信息
     if (this.data.id){
       wx.request({
@@ -127,10 +99,12 @@ Page({
           'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
         },
         success: function (res) {
-          _self.setData({ account: res.data})
+          _self.setData({ account: res.data.account})
         }
       })
     }
+    // 获取可预约时间
+    this.getTeacherTime();
   },
   addSelect: function (event) {
     var arr = this.data.territory;
@@ -238,21 +212,102 @@ Page({
         console.log(res)
         if (res.data.code == 0) {
           var year = new Date().getFullYear();
-          var arr = _self.data.arr;
           res.data.data.forEach(function (item, index) {
             var start_time = (new Date(item.start_at * 1000)).toString();
             var c_month = (new Date(item.date_at * 1000).getMonth() + 1) < 10 ? '0' + (new Date(item.date_at * 1000).getMonth() + 1) : (new Date(item.date_at * 1000).getMonth() + 1);
             var c_day = new Date(item.date_at * 1000).getDate() < 10 ? '0' + new Date(item.date_at * 1000).getDate() : new Date(item.date_at * 1000).getDate()
             var monthDay = c_month + '' + c_day;
             start_time = start_time.split(' ')[4].substring(0, 5);
-            _self.bianli(year + '' + monthDay, start_time);
+            _self.bianli(year + '' + monthDay, start_time, item.id, item.status);
           })
-          _self.setData({ arr: arr })
         }
       }
     })
   },
+  bianli: function (monthDay, hour, id, status) {
+    var arr = this.data.arr;
+    var year = new Date().getFullYear();
+    var c_month = (new Date().getMonth() + 1) < 10 ? '0' + (new Date().getMonth() + 1) : (new Date().getMonth() + 1);
+    var c_day = new Date().getDate() < 10 ? '0' + new Date().getDate() : new Date().getDate()
+    var witchPart = this.data.witchPart;
+    arr.forEach(function (item, index) {
+      item.forEach(function (a, b) {
+        if (a.date_at == monthDay && hour == a.start_at) {
+          if (parseInt(hour.substring(0, 2)) <= (new Date().getHours() + 1) && monthDay == (year + '' + c_month + '' + c_day) ){
+            a.status = true;
+          }else{
+            if (status == 10){
+              a.state = true;
+              a.status = true;
+              a.id = id;
+            }
+          }
+        }
+      })
+    })
+    this.setData({ witchPart: witchPart, arr: arr })
+  },
   pay: function(event){
-
+    var _self = this;
+    var a = this.data.witchPart;
+    var b = this.data.arr;
+    var c = [];
+    var d = this.data.territory;
+    var e = this.data.text;
+    d.forEach(function(item,index){
+      if(item.check){
+        e+=item.name;
+      }
+    })
+    a.forEach(function(item,index){
+      if(item.length > 0){
+        b[index].forEach(function(itm,idx){
+          if(itm.isSelect){
+            c.push(itm.id);
+          }
+        })
+      }
+    })
+    wx.request({
+      url: app.globalData.edition + '/order/post_order?teacher_id='+ _self.data.id,
+      method: 'post',
+      data:{
+        teacher_id: 2,
+        times: c,
+        subject: e ? _self.data.text:'未填写咨询主题'
+      },
+      dataType: "json",
+      header: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
+      },
+      success: function (res) {
+        if (res.data.code == 0) {
+          wx.requestPayment({
+            timeStamp: String(res.data.data.timeStamp),
+            nonceStr: res.data.data.nonceStr,
+            package: res.data.data.package,
+            signType: 'MD5',
+            paySign: res.data.data.paySign,
+            success(res) {
+              wx.showModal({
+                title: '错误',
+                content: res.data.msg,
+                showCancel: false
+              })
+            },
+            fail(res) {
+              console.log(res)
+            }
+          })
+        } else {
+          console.log(res)
+        }
+      }
+    })
+  },
+  changeValue: function(event){
+    this.setData({ text: event.detail.value})
   }
 })

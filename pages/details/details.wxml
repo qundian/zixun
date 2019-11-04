@@ -1,6 +1,6 @@
 <view style="padding-bottom:4em;">
   <view style="position:relative;">
-    <image src="/images/person.jpg" aspectFit style="width:100%;height:15.625em;"></image>
+    <image src="{{userHeaderImgUrl+data.details_img_url}}" aspectFit style="width:100%;height:15.625em;"></image>
     <text id="teacherName">{{data.name}}</text>
     <view id="C-09281003">
       <text>{{data.title}}</text>

@@ -1,5 +1,8 @@
 <view style="padding-bottom:4em;">
   <view style="position:relative;">
+    <navigator url="/pages/setTime/setTime">
+      <image src="/images/set.png" id="set"></image>
+    </navigator>
     <image src="/images/userbg.png" aspectFit id="userBg"></image>
     <image src="/images/headerImg.jpg" id="headerImg"></image>
     <view id="userName">张三</view>
