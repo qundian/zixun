@@ -31,11 +31,10 @@ Page({
         'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
       },
       success: function (res) {
-        console.log(res)
         if(res.data.data){
           _self.setData({id:res.data.data.id})
+          _self.getTeacherTime();
         }
-        _self.getTeacherTime();
       },
       complete: function (res) {
         if (res.data.message) {
@@ -216,6 +215,22 @@ Page({
   },
   selectTime: function (event) {
     var _that = this
+    // 判断选择时间是否小于当前时间
+    var date = event.currentTarget.dataset.date;
+    var start_at = event.currentTarget.dataset.start.substring(0,2);
+    var c_year = new Date().getFullYear();
+    var c_month = (new Date().getMonth() + 1) < 10 ? "0" + (new Date().getMonth() + 1) : (new Date().getMonth() + 1);
+    var c_day = new Date().getDate() < 10 ? "0" + new Date().getDate() : new Date().getDate();
+    var c_date = c_year + '' + c_month + '' + c_day;
+    if (c_date == date && (new Date().getHours()+1) >= start_at){
+      wx.showModal({
+        title: '提示',
+        content: '小于当前时间，不可选择',
+        showCancel: false
+      })
+      return;
+    }
+
     var index = event.currentTarget.dataset.index;
     var arr = _that.data.arr;
     var witchPart = _that.data.witchPart;
@@ -269,9 +284,13 @@ Page({
         'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
       },
       success: function (res) {
-        console.log(res.data)
         if (res.data.code == 0) {
           _self.addBlue();
+          wx.showToast({
+            title: '设置成功',
+            icon: 'success',
+            duration: 2000
+          })
         }
       },
       complete: function (res) {
@@ -342,7 +361,6 @@ Page({
         'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
       },
       success: function (res) {
-        console.log(res)
         if (res.data.code == 0) {
           var year = new Date().getFullYear();
           var arr = _self.data.arr;

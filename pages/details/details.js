@@ -34,14 +34,15 @@ Page({
     var arr = [];
     var timeList = this.data.timeList;
     for (var i = 0; i < 30; i++) {
-      var month = (now.getMonth() + 1) //now.getMonth()
+      var month = (now.getMonth() + 1) < 10 ? "0" + (now.getMonth() + 1) : (now.getMonth() + 1); 
       var date = (month + "-" + now.getDate());
       if (date == '12-31') {
         prev = '12-31';
       } else if (prev == '12-31') {
         month = 1;
       }
-      dataTitle[i] = (month + "-" + now.getDate());
+      var c_day = now.getDate() < 10 ? "0" + now.getDate() : now.getDate();
+      dataTitle[i] = (month + "-" + c_day);
       now = addDate(month + "/" + now.getDate() + "/" + now.getFullYear(), 1);
       var time = [];
       for (var z = 0; z < 16; z++) {
@@ -69,7 +70,9 @@ Page({
         _self.setData({ data: res.data })
         res.data.teacher_times.forEach(function (item, index) {
           var start_time = (new Date(item.start_at * 1000)).toString();
-          var monthDay = new Date(item.date_at * 1000).getMonth() + 1 + '-' + new Date(item.date_at * 1000).getDate();
+          var c_month = (new Date(item.date_at * 1000).getMonth() + 1) < 10 ? "0" + (new Date(item.date_at * 1000).getMonth() + 1) : (new Date(item.date_at * 1000).getMonth() + 1);
+          var c_day = (new Date(item.date_at * 1000).getDate()) < 10 ? "0" + (new Date(item.date_at * 1000).getDate()) : (new Date(item.date_at * 1000).getDate());
+          var monthDay = c_month + '-' + c_day;
           start_time = start_time.split(' ')[4].substring(0, 5);
           _self.bianli(monthDay,start_time);
         })
@@ -154,11 +157,18 @@ Page({
   },
   bianli: function(monthDay,hour){
     var _self = this;
+    var c_month = (new Date().getMonth() + 1) < 10 ? "0" + (new Date().getMonth() + 1) : (new Date().getMonth() + 1);
+    var c_day = new Date().getDate() < 10 ? "0" + new Date().getDate() : new Date().getDate();
+    var c_date = c_month + '-' + c_day;
     var dateArr = this.data.dateArr;
     dateArr.forEach(function(item,index){
       item.forEach(function(a,b){
         if (a.date == monthDay && a.part.split('-')[0] == hour){
-          a.state = true;
+          if(monthDay == c_date && hour.substring(0,2) < new Date().getHours()){
+            
+          }else{
+            a.state = true;
+          }
         }
       })
     })

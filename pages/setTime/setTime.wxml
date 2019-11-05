@@ -61,7 +61,7 @@
             <view style="position:relative;">
               <view class="C-09291042-right" wx:if="{{idx == witchDay}}">
                 <block wx:for="{{i}}" wx:for-item="z" wx:for-index="zdx" wx:key="zdx">
-                  <view class="E-bg {{z.isSelect?'select':''}}" data-index="{{zdx}}" bindtap="selectTime">
+                  <view class="E-bg {{z.isSelect?'select':''}}" data-index="{{zdx}}" data-date="{{z.date_at}}" data-start="{{z.start_at}}" bindtap="selectTime">
                     <text style="font-size:.8em;font-weight:bold;">{{z.part}}</text>
                   </view>
                 </block>
