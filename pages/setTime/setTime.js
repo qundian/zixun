@@ -36,6 +36,15 @@ Page({
           _self.setData({id:res.data.data.id})
         }
         _self.getTeacherTime();
+      },
+      complete: function (res) {
+        if (res.data.message) {
+          wx.showModal({
+            title: '错误',
+            content: res.data.message,
+            showCancel: false
+          })
+        }
       }
     })
 
@@ -264,6 +273,15 @@ Page({
         if (res.data.code == 0) {
           _self.addBlue();
         }
+      },
+      complete: function (res) {
+        if (res.data.message) {
+          wx.showModal({
+            title: '错误',
+            content: res.data.message,
+            showCancel: false
+          })
+        }
       }
     })
     this.setData({
@@ -347,6 +365,15 @@ Page({
             })
           })
           _self.setData({ arr: arr })
+        }
+      },
+      complete: function (res) {
+        if (res.data.message) {
+          wx.showModal({
+            title: '错误',
+            content: res.data.message,
+            showCancel: false
+          })
         }
       }
     })

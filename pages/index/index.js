@@ -36,6 +36,7 @@ Page({
   },
   onShow: function(){
     var _self = this;
+    // 请求图片轮播图
     var imgUrls = [];
     wx.request({
       url: app.globalData.edition+'/banner/list',
@@ -44,6 +45,15 @@ Page({
           imgUrls.push({ url: app.globalData.getDataUrl+item.pic_url,goods_id:item.goods_id})
         })
         _self.setData({ imgUrls: imgUrls})
+      },
+      complete: function (res) {
+        if (res.data.message) {
+          wx.showModal({
+            title: '错误',
+            content: res.data.message,
+            showCancel: false
+          })
+        }
       }
     })
     var obj = {};

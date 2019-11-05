@@ -76,6 +76,15 @@ Page({
         url: app.globalData.edition + '/teacher/list?id=' + _self.data.id,
         success: function(res){
           _self.setData({ teacherInfo: res.data[0], original_price: parseInt(res.data[0].original_price), price: parseInt(res.data[0].price)})
+        },
+        complete: function (res) {
+          if (res.data.message) {
+            wx.showModal({
+              title: '错误',
+              content: res.data.message,
+              showCancel: false
+            })
+          }
         }
       })
     }
@@ -88,6 +97,15 @@ Page({
           territory.push({name:item.tag,check:false});
         })
         _self.setData({ territory: territory})
+      },
+      complete: function (res) {
+        if (res.data.message) {
+          wx.showModal({
+            title: '错误',
+            content: res.data.message,
+            showCancel: false
+          })
+        }
       }
     })
     // 获取账户余额
@@ -100,6 +118,15 @@ Page({
         },
         success: function (res) {
           _self.setData({ account: res.data.account})
+        },
+        complete: function (res) {
+          if (res.data.message) {
+            wx.showModal({
+              title: '错误',
+              content: res.data.message,
+              showCancel: false
+            })
+          }
         }
       })
     }
@@ -221,6 +248,15 @@ Page({
             _self.bianli(year + '' + monthDay, start_time, item.id, item.status);
           })
         }
+      },
+      complete: function (res) {
+        if (res.data.message) {
+          wx.showModal({
+            title: '错误',
+            content: res.data.message,
+            showCancel: false
+          })
+        }
       }
     })
   },
@@ -269,9 +305,10 @@ Page({
       }
     })
     wx.request({
-      url: app.globalData.edition + '/order/post_order?teacher_id='+ _self.data.id,
+      url: app.globalData.edition + '/order/post_order',
       method: 'post',
       data:{
+        teacher_id: _self.data.id,
         times: c,
         subject: e ? _self.data.text:'未填写咨询主题'
       },
@@ -296,12 +333,27 @@ Page({
                 showCancel: false
               })
             },
-            fail(res) {
-              console.log(res)
+            complete: function (res) {
+              if (res.data.message) {
+                wx.showModal({
+                  title: '错误',
+                  content: res.data.message,
+                  showCancel: false
+                })
+              }
             }
           })
         } else {
           console.log(res)
+        }
+      },
+      complete: function (res) {
+        if (res.data.message) {
+          wx.showModal({
+            title: '错误',
+            content: res.data.message,
+            showCancel: false
+          })
         }
       }
     })

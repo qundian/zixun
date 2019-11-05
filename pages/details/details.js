@@ -73,6 +73,15 @@ Page({
           start_time = start_time.split(' ')[4].substring(0, 5);
           _self.bianli(monthDay,start_time);
         })
+      },
+      complete: function (res) {
+        if (res.data.message) {
+          wx.showModal({
+            title: '错误',
+            content: res.data.message,
+            showCancel: false
+          })
+        }
       }
     })
   },
@@ -91,8 +100,15 @@ Page({
           'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
         },
         success: function (res) {
-          if (res) {
-
+          
+        },
+        complete: function (res) {
+          if (res.data.message) {
+            wx.showModal({
+              title: '错误',
+              content: res.data.message,
+              showCancel: false
+            })
           }
         }
       })
@@ -108,8 +124,15 @@ Page({
           'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
         },
         success: function (res) {
-          if (res) {
-
+          
+        },
+        complete: function (res) {
+          if (res.data.message) {
+            wx.showModal({
+              title: '错误',
+              content: res.data.message,
+              showCancel: false
+            })
           }
         }
       })
