@@ -68,7 +68,7 @@ Page({
       arr.push(time);
       emptyArr.push([]);
     }
-    this.setData({ arr: arr, witchPart: emptyArr})
+    this.setData({ arr: arr, witchPart: emptyArr, timeNum:0})
 
     // 获取老师信息
     if (this.data.id){

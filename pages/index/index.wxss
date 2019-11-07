@@ -20,10 +20,11 @@
   margin-top: 200px;
 }
 .weui-search-bar{
-  width:85%;
+  width:77%;
   background-color:#fff;
   padding:8px 4%;
   padding-right:0;
+  left:8%;
 }
 .weui-search-bar__label,.weui-search-bar__box{
   background:#eee;
@@ -35,9 +36,30 @@
   position:fixed;
   right:4%;
   top:13px;
-  z-index:1;
+  z-index:11;
   width:1.8em;
   height:1.5em;
+}
+#msg{
+  position:fixed;
+  left:0;
+  top:0;
+  z-index:11;
+  padding:.8em 4%;
+}
+#msg image{
+  width:1.5em;
+  height:1.5em;
+}
+#red{
+  position:absolute;
+  top:0;
+  right:0;
+  z-index:1;
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:red;
 }
 .slide-image{
   width:100%;
@@ -99,4 +121,12 @@ swiper{
 .select{
   border-color: #2F69F8 !important;
   background: #DCE5FC;
+}
+.page__bd{
+  position:fixed;
+  left:0;
+  top:0;
+  z-index:10;
+  width:100%;
+  background:#fff;
 }

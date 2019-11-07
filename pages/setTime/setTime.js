@@ -21,31 +21,35 @@ Page({
   onShow: function(){
     var _self = this;
     // 请求用户信息
-    wx.request({
-      url: app.globalData.edition + '/teacher/my_teacher_info',
-      method: 'get',
-      dataType: "json",
-      header: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-        'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
-      },
-      success: function (res) {
-        if(res.data.data){
-          _self.setData({id:res.data.data.id})
-          _self.getTeacherTime();
+    var userInfo = wx.getStorageSync('userInfo');
+    var token = wx.getStorageSync('userInfo');
+    if (userInfo && token) {
+      wx.request({
+        url: app.globalData.edition + '/teacher/my_teacher_info',
+        method: 'get',
+        dataType: "json",
+        header: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
+        },
+        success: function (res) {
+          if(res.data.data){
+            _self.setData({id:res.data.data.id})
+            _self.getTeacherTime();
+          }
+        },
+        complete: function (res) {
+          if (res.data.message) {
+            wx.showModal({
+              title: '错误',
+              content: res.data.message,
+              showCancel: false
+            })
+          }
         }
-      },
-      complete: function (res) {
-        if (res.data.message) {
-          wx.showModal({
-            title: '错误',
-            content: res.data.message,
-            showCancel: false
-          })
-        }
-      }
-    })
+      })
+    }
 
     var now = new Date();
     var dataTitle = [];//保存获取到的日期
@@ -349,8 +353,6 @@ Page({
   getTeacherTime: function(){
     var _self = this;
     // 查询所有设置时间的日期
-    var userInfo = wx.getStorageSync('userInfo');
-    var token = wx.getStorageSync('userInfo');
     wx.request({
       url: app.globalData.edition + '/teacher/get_time?id=' + _self.data.id,
       method: 'get',

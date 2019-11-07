@@ -45,6 +45,15 @@ Page({
           wx.setStorageSync('user_info', res.data)
           wx.navigateBack();
         }
+      },
+      complete: function (res) {
+        if (res.data.message) {
+          wx.showModal({
+            title: '错误',
+            content: res.data.message,
+            showCancel: false
+          })
+        }
       }
     })
   }

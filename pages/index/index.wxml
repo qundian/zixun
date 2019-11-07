@@ -18,11 +18,18 @@
         </view>
         <view class="weui-search-bar__cancel-btn" hidden="{{!inputShowed}}" bindtap="hideInput">取消</view>
     </view>
-    <!-- 筛选按钮 -->
   </view>
+  <!-- 筛选按钮 -->
   <image src="/images/sx.png" id="sx" bindtap="translateShow"></image>
+  <!-- 消息提醒 -->
+  <navigator url="/pages/user/user" hover-class="none" id="msg">
+    <view style="position:relative;">
+      <view id="red"></view>
+      <image src="/images/message.png" ></image>
+    </view>
+  </navigator>
   <!-- 热词 -->
-  <view id="hotWords">
+  <view id="hotWords" style="margin-top:3em;">
     <text>热词：</text>
     <block wx:for="{{hotWords}}" wx:key="{{index}}">
       <navigator url="/pages/details/details" hover-class="none" style="display:inline-block;">

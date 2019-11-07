@@ -89,7 +89,7 @@
       <image src="/images/love.png" wx:if="{{data.user_like_count == 1}}"></image>
       <text>收藏</text>
     </view>
-    <view style="width:15%;">
+    <view style="width:15%;" bindtap="callTel">
       <image src="/images/kefu.png"></image><text>客服</text>
     </view>
     <view style="width:40%;font-size:1em;line-height:2.6em;">

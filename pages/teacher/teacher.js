@@ -20,30 +20,34 @@ Page({
   onShow: function(){
     var _self = this;
     // 判断用户身份
-    wx.request({
-      url: app.globalData.edition + '/teacher/my_teacher_info',
-      method: 'get',
-      dataType: "json",
-      header: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-        'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
-      },
-      success: function (res) {
-        if (res.data.data) {
-          _self.setData({ isTeacher: true })
+    var userInfo = wx.getStorageSync('userInfo');
+    var token = wx.getStorageSync('userInfo');
+    if (userInfo && token) {
+      wx.request({
+        url: app.globalData.edition + '/teacher/my_teacher_info',
+        method: 'get',
+        dataType: "json",
+        header: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
+        },
+        success: function (res) {
+          if (res.data.data) {
+            _self.setData({ isTeacher: true })
+          }
+        },
+        complete: function(res){
+          if (res.data.message){
+            wx.showModal({
+              title: '错误',
+              content: res.data.message,
+              showCancel: false
+            })
+          }
         }
-      },
-      complete: function(res){
-        if (res.data.message){
-          wx.showModal({
-            title: '错误',
-            content: res.data.message,
-            showCancel: false
-          })
-        }
-      }
-    })
+      })
+    }
     var userInfo = wx.getStorageSync('userInfo');
     this.setData({userInfo:userInfo})
   },

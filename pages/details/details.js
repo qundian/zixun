@@ -57,36 +57,40 @@ Page({
     }
     this.setData({ dateArray: dataTitle, dateArr: arr})
     // 请求页面全部数据
-    wx.request({
-      url: app.globalData.edition + '/teacher/detail?id=' + this.data.id,
-      method: 'get',
-      dataType: "json",
-      header: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-        'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
-      },
-      success: function (res) {
-        _self.setData({ data: res.data })
-        res.data.teacher_times.forEach(function (item, index) {
-          var start_time = (new Date(item.start_at * 1000)).toString();
-          var c_month = (new Date(item.date_at * 1000).getMonth() + 1) < 10 ? "0" + (new Date(item.date_at * 1000).getMonth() + 1) : (new Date(item.date_at * 1000).getMonth() + 1);
-          var c_day = (new Date(item.date_at * 1000).getDate()) < 10 ? "0" + (new Date(item.date_at * 1000).getDate()) : (new Date(item.date_at * 1000).getDate());
-          var monthDay = c_month + '-' + c_day;
-          start_time = start_time.split(' ')[4].substring(0, 5);
-          _self.bianli(monthDay,start_time);
-        })
-      },
-      complete: function (res) {
-        if (res.data.message) {
-          wx.showModal({
-            title: '错误',
-            content: res.data.message,
-            showCancel: false
+    var userInfo = wx.getStorageSync('userInfo');
+    var token = wx.getStorageSync('userInfo');
+    if (userInfo && token) {
+      wx.request({
+        url: app.globalData.edition + '/teacher/detail?id=' + this.data.id,
+        method: 'get',
+        dataType: "json",
+        header: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
+        },
+        success: function (res) {
+          _self.setData({ data: res.data })
+          res.data.teacher_times.forEach(function (item, index) {
+            var start_time = (new Date(item.start_at * 1000)).toString();
+            var c_month = (new Date(item.date_at * 1000).getMonth() + 1) < 10 ? "0" + (new Date(item.date_at * 1000).getMonth() + 1) : (new Date(item.date_at * 1000).getMonth() + 1);
+            var c_day = (new Date(item.date_at * 1000).getDate()) < 10 ? "0" + (new Date(item.date_at * 1000).getDate()) : (new Date(item.date_at * 1000).getDate());
+            var monthDay = c_month + '-' + c_day;
+            start_time = start_time.split(' ')[4].substring(0, 5);
+            _self.bianli(monthDay,start_time);
           })
+        },
+        complete: function (res) {
+          if (res.data.message) {
+            wx.showModal({
+              title: '错误',
+              content: res.data.message,
+              showCancel: false
+            })
+          }
         }
-      }
-    })
+      })
+    }
   },
   collect: function(){
     var id = this.data.id;
@@ -173,5 +177,27 @@ Page({
       })
     })
     this.setData({ dateArr: dateArr})
+  },
+  callTel: function(){
+    wx.showModal({
+      title: '提示',
+      content: '是否拨打电话咨询客服',
+      success(res) {
+        if (res.confirm) {
+          wx.makePhoneCall({
+            phoneNumber: '15010568939',
+            success: function(res){
+              console.log(res)
+            },
+            complete: function(res){
+              console.log(res)
+            }
+          })
+        } else if (res.cancel) {
+          
+        }
+      }
+    })
+    
   }
 })
