@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/index/index",
     "pages/msg/msg",
+    "pages/index/index",
     "pages/setTime/setTime",
     "pages/order/order",
     "pages/user/user",
@@ -9,9 +9,9 @@
     "pages/userInfo/userInfo",
     "pages/teacher/teacher",
     "pages/login/login",
-    "pages/UserCancel/UserCancel",
+    "pages/userCancel/userCancel",
     "pages/divideInto/divideInto",
-    "pages/Cost/Cost",
+    "pages/cost/cost",
     "pages/confirmOrder/confirmOrder",
     "pages/success/success", 
     "pages/moreHistory/moreHistory",

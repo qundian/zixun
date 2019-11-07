@@ -25,5 +25,5 @@
       </block>
     </view>
   </view>
-  <button wx:if="{{status == 'user'}}">拨打电话</button>
+  <button>拨打电话</button>
 </view> 

@@ -2,7 +2,7 @@
   <view id="B-10171010">
     <view style="position:relative;">
       <view style="text-align:center;margin-top:1em;padding-bottom:1.5em;">
-        <view style="font-weight:bold;">订单确认通知</view>
+        <view style="font-weight:bold;">咨询分成通知</view>
         <view style="margin-top:.5em;text-align:left;padding:0 1em;color:#666;fon-size:.85em;">亲爱的陈老师，您与张三的一对一咨询服务已经结束，费用已打入您的个人中心，具体详情如下：</view>
       </view>
       <view class="kong"></view>

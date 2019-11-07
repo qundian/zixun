@@ -1,0 +1,16 @@
+<view>
+  <view id="B-10171010">
+    <view style="position:relative;">
+      <view style="margin-top:1em;padding:1em;">
+        <view style="margin-top:.5em;font-size:.85em;">您成功取消与张三的一对一咨询，因为您的取消行为，导致用户权益受到损失，前三次免除惩罚，第四次开始扣除一定的评分并且扣除一定的费用，请注意！</view>
+      </view>
+      <view class="kong"></view>
+      <view class="teacherList" style="box-shadow:none;">
+        <view><text>扣除评分：</text><text class="C-09270945">-{{user.pingfen}}</text></view>
+        <view><text>扣除费用：</text><text class="C-09270945">￥{{user.cost}}</text></view>
+        <view><text>剩余费用：</text><text class="C-09270945">￥{{user.surplus}}</text></view>
+      </view>
+    </view>
+  </view>
+  <navigator url="/pages/user/user" hover-class="none"><button>个人账户</button></navigator>
+</view> 

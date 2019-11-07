@@ -1,32 +1,56 @@
 <view>
-  <view class="list">
-    <image src="/images/jiaoyi.png"></image>
-    <text class="text">交易订单通知</text>
-    <text class="num">1</text>
-    <text class="date">2019-05-21</text>
-  </view>
-  <view class="list">
-    <image src="/images/order.png"></image>
-    <text class="text">咨询预约通知</text>
-    <text class="num">1</text>
-    <text class="date">2019-05-21</text>
-  </view>
-  <view class="list">
-    <image src="/images/order.png"></image>
-    <text class="text">预约成功通知</text>
-    <text class="num">1</text>
-    <text class="date">2019-05-21</text>
-  </view>
-  <view class="list">
-    <image src="/images/koufeimingxi.png"></image>
-    <text class="text">结束扣费通知</text>
-    <text class="num">1</text>
-    <text class="date">2019-05-21</text>
-  </view>
-  <view class="list">
-    <image src="/images/koufeimingxi.png"></image>
-    <text class="text">结束分成通知</text>
-    <text class="num">1</text>
-    <text class="date">2019-05-21</text>
-  </view>
+  <!-- 通知老师咨询通知 -->
+  <navigator url="/pages/confirmOrder/confirmOrder">
+    <view class="list">
+      <image src="/images/order.png"></image>
+      <text class="text">咨询预约通知</text>
+      <text class="num">1</text>
+      <text class="date">2019-05-21</text>
+    </view>
+  </navigator>
+  <!-- 老师和用户共用一个成功通知 -->
+  <navigator url="/pages/success/success">
+    <view class="list">
+      <image src="/images/order.png"></image>
+      <text class="text">预约成功通知</text>
+      <text class="num">1</text>
+      <text class="date">2019-05-21</text>
+    </view>
+  </navigator>
+  <!-- 用户扣费加评分通知 -->
+  <navigator url="/pages/cost/cost">
+    <view class="list">
+      <image src="/images/koufeimingxi.png"></image>
+      <text class="text">结束扣费通知</text>
+      <text class="num">1</text>
+      <text class="date">2019-05-21</text>
+    </view>
+  </navigator>
+  <!-- 老师分成通知 -->
+  <navigator url="/pages/divideInto/divideInto">
+    <view class="list">
+      <image src="/images/koufeimingxi.png"></image>
+      <text class="text">结束分成通知</text>
+      <text class="num">1</text>
+      <text class="date">2019-05-21</text>
+    </view>
+  </navigator>
+  <!-- 用户取消咨询 -->
+  <navigator url="/pages/userCancel/userCancel">
+    <view class="list">
+      <image src="/images/koufeimingxi.png"></image>
+      <text class="text">取消咨询通知</text>
+      <text class="num">1</text>
+      <text class="date">2019-05-21</text>
+    </view>
+  </navigator>
+  <!-- 老师取消咨询 -->
+  <navigator url="/pages/teacherCancel/teacherCancel">
+    <view class="list">
+      <image src="/images/koufeimingxi.png"></image>
+      <text class="text">取消咨询通知</text>
+      <text class="num">1</text>
+      <text class="date">2019-05-21</text>
+    </view>
+  </navigator>
 </view>
