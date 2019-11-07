@@ -54,7 +54,7 @@
     <text>咨询费用：</text><text style="float:right;margin-top:.3em;font-weight:bold;">￥{{teacherInfo.price*timeNum}}</text>
   </view>
   <view class="B-10091334">
-    <text>账户余额：</text><text style="color:#FD3E3E;font-size:.75em;">(您的余额不足以支持本次咨询)</text><text style="float:right;margin-top:.3em;font-weight:bold;">￥{{account}}</text>
+    <text>账户余额：</text><text style="float:right;margin-top:.3em;font-weight:bold;">￥{{account}}</text>
   </view>
   <view class="B-10091334" style="border:none;">
     <text>咨询优惠：</text><text style="float:right;margin-top:.3em;font-weight:bold;">-￥{{(original_price-price)*timeNum}}</text>

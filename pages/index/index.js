@@ -28,7 +28,9 @@ Page({
     price: [12,43],
     time: [9,9,12],
     teacherList:[],
-    isTeacher: false
+    isTeacher: false,
+    follow: false,
+    notReady: 0
   },
   onReady:function(){
     this.animation1 = wx.createAnimation();
@@ -36,6 +38,11 @@ Page({
   },
   onShow: function(){
     var _self = this;
+    wx.getSystemInfo({
+      success(res) {
+        console.log(res.model)
+      }
+    })
     // 请求图片轮播图
     var imgUrls = [];
     wx.request({
@@ -129,6 +136,31 @@ Page({
         success: function (res) {
           if(res.data.data){
             _self.setData({isTeacher: true})
+          }
+        },
+        complete: function (res) {
+          if (res.data.message) {
+            wx.showModal({
+              title: '错误',
+              content: res.data.message,
+              showCancel: false
+            })
+          }
+        }
+      })
+      // 请求未读消息
+      wx.request({
+        url: app.globalData.edition + '/message/unreadCount',
+        method: 'get',
+        dataType: "json",
+        header: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
+        },
+        success: function (res) {
+          if (res.data) {
+            _self.setData({ notReady: res.data })
           }
         },
         complete: function (res) {
@@ -252,6 +284,8 @@ Page({
         }
       }
     })
-
+  },
+  showKong: function(){
+    this.setData({follow:true})
   }
 })

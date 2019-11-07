@@ -269,7 +269,8 @@ Page({
     arr.forEach(function (item, index) {
       item.forEach(function (a, b) {
         if (a.date_at == monthDay && hour == a.start_at) {
-          if (parseInt(hour.substring(0, 2)) <= (new Date().getHours() + 1) && monthDay == (year + '' + c_month + '' + c_day) ){
+          // parseInt(hour.substring(0, 2)) <= (new Date().getHours() + 1) && monthDay == (year + '' + c_month + '' + c_day)
+          if (parseInt(hour.substring(0, 2)) <= new Date().getHours() && monthDay == (year + '' + c_month + '' + c_day) ){
             a.status = true;
           }else{
             if (status == 10){
@@ -304,13 +305,29 @@ Page({
         })
       }
     })
+    if(c.length == 0){
+      wx.showModal({
+        title: '提示',
+        content: '请选择预约时间！',
+        showCancel: false
+      })
+      return;
+    }
+    if (!wx.getStorageSync('user_info')){
+      wx.showModal({
+        title: '提示',
+        content: '请填写基本信息',
+        showCancel: false
+      })
+      return;
+    }
     wx.request({
       url: app.globalData.edition + '/order/post_order',
       method: 'post',
       data:{
         teacher_id: _self.data.id,
         times: c,
-        subject: e ? _self.data.text:'未填写咨询主题'
+        subject: e
       },
       dataType: "json",
       header: {
@@ -319,6 +336,8 @@ Page({
         'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
       },
       success: function (res) {
+        console.log(res)
+        var orser_num = res.data.order_no;
         if (res.data.code == 0) {
           wx.requestPayment({
             timeStamp: String(res.data.data.timeStamp),
@@ -327,24 +346,32 @@ Page({
             signType: 'MD5',
             paySign: res.data.data.paySign,
             success(res) {
-              wx.showModal({
-                title: '错误',
-                content: res.data.msg,
-                showCancel: false
-              })
+              console.log(res)
             },
             complete: function (res) {
-              if (res.data.message) {
+              if (res.errMsg == 'requestPayment:fail cancel'){
+                wx.navigateTo({
+                  url: '/pages/waitPay/waitPay?order_no=' + orser_num
+                })
+              } else if (res.errMsg == 'requestPayment:ok'){
+                wx.navigateTo({
+                  url: '/pages/success/success?order_no=' + orser_num
+                })
+              }else{
                 wx.showModal({
-                  title: '错误',
-                  content: res.data.message,
+                  title: '提示',
+                  content: '支付失败',
                   showCancel: false
                 })
               }
             }
           })
         } else {
-          console.log(res)
+          wx.showModal({
+            title: '提示',
+            content: '已被预约出去了，请选择其他时间段',
+            showCancel: false
+          })
         }
       },
       complete: function (res) {

@@ -77,7 +77,7 @@ Page({
             var c_day = (new Date(item.date_at * 1000).getDate()) < 10 ? "0" + (new Date(item.date_at * 1000).getDate()) : (new Date(item.date_at * 1000).getDate());
             var monthDay = c_month + '-' + c_day;
             start_time = start_time.split(' ')[4].substring(0, 5);
-            _self.bianli(monthDay,start_time);
+            _self.bianli(monthDay, start_time, item.status);
           })
         },
         complete: function (res) {
@@ -159,7 +159,7 @@ Page({
       istrue: false
     })
   },
-  bianli: function(monthDay,hour){
+  bianli: function (monthDay, hour, status){
     var _self = this;
     var c_month = (new Date().getMonth() + 1) < 10 ? "0" + (new Date().getMonth() + 1) : (new Date().getMonth() + 1);
     var c_day = new Date().getDate() < 10 ? "0" + new Date().getDate() : new Date().getDate();
@@ -168,10 +168,12 @@ Page({
     dateArr.forEach(function(item,index){
       item.forEach(function(a,b){
         if (a.date == monthDay && a.part.split('-')[0] == hour){
-          if(monthDay == c_date && hour.substring(0,2) < new Date().getHours()){
+          if(monthDay == c_date && hour.substring(0,2) < (new Date().getHours()+1)){
             
           }else{
-            a.state = true;
+            if (status == 10){
+              a.state = true; 
+            }
           }
         }
       })
@@ -198,6 +200,13 @@ Page({
         }
       }
     })
-    
-  }
+  },
+  onShareAppMessage: function (res) {
+    //通过右上角菜单触发
+    return {
+      title: '职接问(HR一对一咨询)',
+      path: "/pages/details/details?id="+this.data.id,
+      imageUrl: '/images/logo.png'
+    };
+  },
 })

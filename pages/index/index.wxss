@@ -130,3 +130,13 @@ swiper{
   width:100%;
   background:#fff;
 }
+#kefu{
+  position:fixed;
+  bottom:6em;
+  right:1em;
+  z-index:2;
+  width:3em;
+  height:3em;
+  border-radius:50%;
+  border:1px solid #2F69F8;
+}

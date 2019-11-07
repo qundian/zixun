@@ -226,7 +226,8 @@ Page({
     var c_month = (new Date().getMonth() + 1) < 10 ? "0" + (new Date().getMonth() + 1) : (new Date().getMonth() + 1);
     var c_day = new Date().getDate() < 10 ? "0" + new Date().getDate() : new Date().getDate();
     var c_date = c_year + '' + c_month + '' + c_day;
-    if (c_date == date && (new Date().getHours()+1) >= start_at){
+    // c_date == date && (new Date().getHours()+1) >= start_at
+    if (c_date == date && new Date().getHours() >= start_at){
       wx.showModal({
         title: '提示',
         content: '小于当前时间，不可选择',

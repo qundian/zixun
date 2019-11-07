@@ -1,5 +1,5 @@
 <!--index.wxml-->
-<view style="padding-bottom:4em;">
+<view style="padding-bottom:6em;">
 <!-- 搜索框 -->
   <view class="page__bd">
     <view class="weui-search-bar">
@@ -24,7 +24,7 @@
   <!-- 消息提醒 -->
   <navigator url="/pages/msg/msg" hover-class="none" id="msg">
     <view style="position:relative;">
-      <view id="red"></view>
+      <view id="red" wx:if="{{notReady > 0}}"></view>
       <image src="/images/message.png" ></image>
     </view>
   </navigator>
@@ -48,6 +48,9 @@
       </swiper-item>
     </block>
   </swiper>
+  <view class="kong" wx:if="{{follow}}"></view>
+  <!-- 关注公众号组件 -->
+  <official-account bindload="showKong"></official-account>
   <view class="kong"></view>
   <view class="leader"><view></view><text>老师列表</text></view>
   <view>
@@ -106,8 +109,8 @@
     <view id="B-09261136">
       <input type="number" placeholder="8"></input><text style="padding-right:0;">点</text><text>—</text><input type="number" placeholder="22"></input><text style="padding-right:0;">点</text>
     </view>
-    <navigator url="/pages/kefu" hover-class="none" style="text-align:center;font-size:.75em;padding:1em 5.9%;">没有找到适合老师，可以向客服反应呦 点击联系客服</navigator>
-    <button id="B-09261151" bindtap="translateHide">确定</button> 
+    <view bindtap="callTel" style="text-align:center;font-size:.75em;padding:1em 5.9%;">没有找到适合老师，可以向客服反应呦 点击联系客服</view>
+    <button id="B-09261151" bindtap="translateHide">确定</button>
   </view>
   <!-- 底部导航栏 -->
   <view class="weui-tabbar">
@@ -122,7 +125,7 @@
         <navigator url="/pages/teacher/teacher" hover-class="none" open-type="redirectTo">
           <view style="position: relative;display:inline-block;">
             <image src="/images/user.png" class="weui-tabbar__icon"></image>
-            <view class="weui-badge weui-badge_dot" style="position:absolute;top:-2px;left:calc(100% - 3px);"></view>
+            <!-- <view class="weui-badge weui-badge_dot" style="position:absolute;top:-2px;left:calc(100% - 3px);"></view> -->
           </view>
           <view class="weui-tabbar__label">个人中心</view>
         </navigator>
@@ -131,11 +134,13 @@
         <navigator url="/pages/user/user" hover-class="none" open-type="redirectTo">
           <view style="position: relative;display:inline-block;">
             <image src="/images/user.png" class="weui-tabbar__icon"></image>
-            <view class="weui-badge weui-badge_dot" style="position:absolute;top:-2px;left:calc(100% - 3px);"></view>
+            <!-- <view class="weui-badge weui-badge_dot" style="position:absolute;top:-2px;left:calc(100% - 3px);"></view> -->
           </view>
           <view class="weui-tabbar__label">个人中心</view>
         </navigator>
       </block>
     </view>
   </view>
+  <!-- 客服 -->
+  <image src="/images/kefu0215.png" bindtap="callTel" id="kefu"></image>
 </view>

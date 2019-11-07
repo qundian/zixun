@@ -40,7 +40,6 @@ Page({
         'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
       },
       success: function(res){
-        console.log(res.data)
         if(!res.data.message){
           wx.setStorageSync('user_info', res.data)
           wx.navigateBack();
