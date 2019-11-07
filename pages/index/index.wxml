@@ -22,7 +22,7 @@
   <!-- 筛选按钮 -->
   <image src="/images/sx.png" id="sx" bindtap="translateShow"></image>
   <!-- 消息提醒 -->
-  <navigator url="/pages/user/user" hover-class="none" id="msg">
+  <navigator url="/pages/msg/msg" hover-class="none" id="msg">
     <view style="position:relative;">
       <view id="red"></view>
       <image src="/images/message.png" ></image>

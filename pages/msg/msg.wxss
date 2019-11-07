@@ -1,0 +1,36 @@
+.list{
+  clear: both;
+  padding:.8em 1em;
+  border-bottom:1px solid #dcdcdc;
+  overflow: hidden;
+  color: #999;
+}
+.text{
+  color: #3f3f3f;
+  font-size: 1.1em;
+  vertical-align: middle;
+  margin-left:.4em;
+}
+.date{
+  font-size: .85em;
+  margin-top: .7em;
+  vertical-align: middle;
+  float:right;
+}
+.list image{
+  width:2.5em;
+  height:2.5em;
+  vertical-align: middle;
+}
+.num{
+  font-size: .85em;
+  color:#fff;
+  background:#2F69F8;
+  width:1.2em;
+  height:1.2em;
+  display:inline-block;
+  border-radius:50%;
+  text-align:center;
+  line-height:1.2em;
+  margin-left: .3em;
+}
