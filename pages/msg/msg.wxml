@@ -18,7 +18,7 @@
     </view>
   </navigator>
   <!-- 用户扣费加评分通知 -->
-  <navigator url="/pages/cost/cost">
+  <navigator url="/pages/Cost/Cost">
     <view class="list">
       <image src="/images/koufeimingxi.png"></image>
       <text class="text">结束扣费通知</text>
@@ -36,7 +36,7 @@
     </view>
   </navigator>
   <!-- 用户取消咨询 -->
-  <navigator url="/pages/userCancel/userCancel">
+  <navigator url="/pages/UserCancel/UserCancel">
     <view class="list">
       <image src="/images/koufeimingxi.png"></image>
       <text class="text">取消咨询通知</text>
