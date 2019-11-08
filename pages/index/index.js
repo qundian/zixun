@@ -27,10 +27,11 @@ Page({
     territoryVal: '',
     price: [12,43],
     time: [9,9,12],
-    teacherList:[],
     isTeacher: false,
     follow: false,
-    notReady: 0
+    notReady: 0,
+    nowPage: 1,
+    allPage: 1
   },
   onReady:function(){
     this.animation1 = wx.createAnimation();
@@ -63,43 +64,7 @@ Page({
         }
       }
     })
-    var obj = {};
-    var opt = [];
-    // 请求老师列表信息
-    wx.request({
-      url: app.globalData.edition + '/teacher/list',
-      success: function (res) {
-        res.data.forEach(function (item, index) {
-          obj = {
-            headerImg: app.globalData.getDataUrl + item.list_img_url,
-            name: item.name,
-            grade: item.score,
-            original: item.original_price,
-            price: item.price,
-            company: item.background,
-            territory: [],
-            num1: item.consultants,
-            num2: item.duration,
-            num3: item.eval_num,
-            id: item.id
-          }
-          item.tags.forEach(function(a,b){
-            obj.territory.push(a.tag);
-          })
-          opt.push(obj);
-        })
-        _self.setData({ teacherList: opt })
-      },
-      complete: function (res) {
-        if (res.data.message) {
-          wx.showModal({
-            title: '错误',
-            content: res.data.message,
-            showCancel: false
-          })
-        }
-      }
-    })
+    this.getList(1);
     // 获取热门主题
     var hotWords = [];
     wx.request({
@@ -287,5 +252,46 @@ Page({
   },
   showKong: function(){
     this.setData({follow:true})
+  },
+  getList: function(option){
+    var _self = this;
+    // 请求老师列表信息
+    var obj = {};
+    var opt = this.data.teacherList;
+    wx.request({
+      url: app.globalData.edition + '/teacher/list?page=' + option,
+      success: function (res) {
+        console.log(res)
+        res.data.data.forEach(function (item, index) {
+          obj = {
+            headerImg: app.globalData.getDataUrl + item.list_img_url,
+            name: item.name,
+            grade: item.score,
+            original: item.original_price,
+            price: item.price,
+            company: item.background,
+            territory: [],
+            num1: item.consultants,
+            num2: item.duration,
+            num3: item.eval_num,
+            id: item.id
+          }
+          item.tags.forEach(function (a, b) {
+            obj.territory.push(a.tag);
+          })
+          opt.push(obj);
+        })
+        _self.setData({ teacherList: opt, nowPage: res.data.current_page, allPage: res.data.last_page })
+      },
+      complete: function (res) {
+        if (res.data.message) {
+          wx.showModal({
+            title: '错误',
+            content: res.data.message,
+            showCancel: false
+          })
+        }
+      }
+    })
   }
 })
