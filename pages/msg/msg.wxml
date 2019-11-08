@@ -10,7 +10,10 @@
         </view>
       </navigator>
     </block>
-    <block wx:elif="{{item.type == 'order_pay_success' && !isTeacher}}">
+    <block wx:else>
+      1
+    </block>
+    <!-- wx:elif="{{item.type == 'order_pay_success' && !isTeacher}}" -->
       <!-- 用户预约成功 -->
       <navigator url="/pages/success/success?order_no=item.data.order_no&id=item.id">
         <view class="list">
@@ -19,10 +22,6 @@
           <text class="date">2019-05-21</text>
         </view>
       </navigator>
-    </block>
-    <block wx:else>
-      1
-    </block>
   </block>
   <!-- 用户扣费加评分通知 -->
   <navigator url="/pages/Cost/Cost">

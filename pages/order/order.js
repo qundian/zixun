@@ -75,7 +75,8 @@ Page({
       wx.request({
         url: app.globalData.edition + '/teacher/list?id=' + _self.data.id,
         success: function(res){
-          _self.setData({ teacherInfo: res.data[0], original_price: parseInt(res.data[0].original_price), price: parseInt(res.data[0].price)})
+          console.log(res)
+          _self.setData({ teacherInfo: res.data.data[0], original_price: parseInt(res.data.data[0].original_price), price: parseInt(res.data.data[0].price)})
         },
         complete: function (res) {
           if (res.data.message) {

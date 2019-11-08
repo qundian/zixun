@@ -6,7 +6,7 @@ Page({
     nowPage: 1,
     allPage: 1
   },
-  onShow: function(){
+  onLoad: function(){
     var _self = this;
     var userInfo = wx.getStorageSync('userInfo');
     var token = wx.getStorageSync('userInfo');
