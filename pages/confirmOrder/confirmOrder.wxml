@@ -7,11 +7,11 @@
       </view>
       <view class="kong"></view>
       <view class="teacherList" style="box-shadow:none;">
-        <view><text>咨询用户：</text><text class="C-09270945">{{user.name}}</text></view>
-        <view><text>用户职位：</text><text class="C-09270945">{{user.position}}</text></view>
-        <view><text>咨询费用：</text><text class="C-09270945">￥{{user.price}}</text></view>
-        <view><text>咨询时间：</text><text class="C-09270945">{{user.time}}</text></view>
-        <view><text>咨询主题：</text><text class="C-09270945">{{user.content}}</text></view>
+        <view><text>咨询用户：</text><text class="C-09270945">{{info.user_info.name}}</text></view>
+        <view><text>用户职位：</text><text class="C-09270945">{{info.user_info.post}}</text></view>
+        <view><text>咨询费用：</text><text class="C-09270945">￥{{info.total_fee}}</text></view>
+        <view><text>咨询时间：</text><text class="C-09270945">{{info.date_at}}</text></view>
+        <view><text>咨询主题：</text><text class="C-09270945">{{info.subject?info.subject:'未填写咨询主题'}}</text></view>
       </view>
     </view>
   </view>

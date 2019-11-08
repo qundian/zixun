@@ -1,9 +1,14 @@
 <view style="padding-bottom:3.2em;">
   <view class="B-10091334">
-    <navigator url="/pages/userInfo/userInfo" hover-class="none"><text>填写基本信息</text><image src="/images/right.png"></image></navigator>
+    <navigator url="/pages/userInfo/userInfo" hover-class="none">
+      <text>填写基本信息</text>
+      <image src="/images/right.png"></image>
+      <text wx:if="{{userinfo}}" style="color:#aaa;font-size:.85em;float:right;margin-top:.3em;">{{userinfo.name}},{{userinfo.phone}}</text>
+    </navigator>
   </view>
   <view class="B-10091334" style="border:none;" bindtap="openDialog">
-    <text>选择预约时间</text><image src="/images/right.png"></image>
+    <text>选择预约时间</text>
+    <image src="/images/right.png"></image>
   </view>
   <view class="kong"></view>
   <view class="leader"><view></view><text>咨询老师</text></view>

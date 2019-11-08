@@ -27,13 +27,7 @@ Page({
           }
         },
         complete: function (res) {
-          if (res.data.message) {
-            wx.showModal({
-              title: '错误',
-              content: res.data.message,
-              showCancel: false
-            })
-          }
+          app.warning(res);
         }
       })
       this.getList(1)
@@ -61,13 +55,7 @@ Page({
         }
       },
       complete: function (res) {
-        if (res.data.message) {
-          wx.showModal({
-            title: '错误',
-            content: res.data.message,
-            showCancel: false
-          })
-        }
+        app.warning(res);
       }
     })
   },
@@ -85,13 +73,7 @@ Page({
         console.log(res)
       },
       complete: function (res) {
-        if (res.data.message) {
-          wx.showModal({
-            title: '错误',
-            content: res.data.message,
-            showCancel: false
-          })
-        }
+        app.warning(res);
       }
     })
   },
@@ -109,13 +91,7 @@ Page({
         console.log(res)
       },
       complete: function (res) {
-        if (res.data.message) {
-          wx.showModal({
-            title: '错误',
-            content: res.data.message,
-            showCancel: false
-          })
-        }
+        app.warning(res);
       }
     })
   },
@@ -133,13 +109,7 @@ Page({
         console.log(res)
       },
       complete: function (res) {
-        if (res.data.message) {
-          wx.showModal({
-            title: '错误',
-            content: res.data.message,
-            showCancel: false
-          })
-        }
+        app.warning(res);
       }
     })
   }

@@ -19,57 +19,13 @@ Page({
     var userInfo = wx.getStorageSync('userInfo');
     var token = wx.getStorageSync('userInfo');
     if (userInfo && token) {
-      // 设置消息已读
-      wx.request({
-        url: app.globalData.edition + '/message/markAsRead?id=' + this.data.id,
-        method: 'get',
-        dataType: "json",
-        header: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-          'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
-        },
-        success: function (res) {
-          console.log(res)
-        },
-        complete: function (res) {
-          if (res.data.message) {
-            wx.showModal({
-              title: '错误',
-              content: res.data.message,
-              showCancel: false
-            })
-          }
-        }
-      })
-      // 请求订单消息
-      wx.request({
-        url: app.globalData.edition + '/order/order_info?order_no=' + this.data.order_no,
-        method: 'get',
-        dataType: "json",
-        header: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-          'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
-        },
-        success: function (res) {
-          console.log(res)
-        },
-        complete: function (res) {
-          if (res.data.message) {
-            wx.showModal({
-              title: '错误',
-              content: res.data.message,
-              showCancel: false
-            })
-          }
-        }
-      })
+      app.readMsg(this.data.id, this);
+      app.getOrderMsg(this.data.order_no, this);
     }
   },
   call: function(){
     wx.request({
-      url: app.globalData.edition + '/order/order_info?order_no=' + this.data.order_no,
+      url: app.globalData.edition + '/call/bindAx?order_no=' + this.data.order_no,
       method: 'get',
       dataType: "json",
       header: {
@@ -78,16 +34,26 @@ Page({
         'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
       },
       success: function (res) {
-        console.log(res)
-      },
-      complete: function (res) {
-        if (res.data.message) {
+        if (res.data.resultcode == 0){
+          wx.makePhoneCall({
+            phoneNumber: res.data.privateNum.toString(),
+            success: function (res) {
+              console.log(res)
+            },
+            complete: function (res) {
+              console.log(res)
+            }
+          })
+        }else{
           wx.showModal({
-            title: '错误',
-            content: res.data.message,
+            title: '提示',
+            content: res.data.msg,
             showCancel: false
           })
         }
+      },
+      complete: function (res) {
+        app.warning(res);
       }
     })
   }

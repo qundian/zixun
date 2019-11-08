@@ -81,13 +81,7 @@ Page({
           })
         },
         complete: function (res) {
-          if (res.data.message) {
-            wx.showModal({
-              title: '错误',
-              content: res.data.message,
-              showCancel: false
-            })
-          }
+          app.warning(res);
         }
       })
     }
@@ -110,13 +104,7 @@ Page({
           
         },
         complete: function (res) {
-          if (res.data.message) {
-            wx.showModal({
-              title: '错误',
-              content: res.data.message,
-              showCancel: false
-            })
-          }
+          app.warning(res);
         }
       })
     }else{
@@ -134,13 +122,7 @@ Page({
           
         },
         complete: function (res) {
-          if (res.data.message) {
-            wx.showModal({
-              title: '错误',
-              content: res.data.message,
-              showCancel: false
-            })
-          }
+          app.warning(res);
         }
       })
     }
@@ -192,7 +174,7 @@ Page({
               console.log(res)
             },
             complete: function(res){
-              console.log(res)
+              app.warning(res);
             }
           })
         } else if (res.cancel) {

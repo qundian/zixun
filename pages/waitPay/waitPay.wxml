@@ -3,16 +3,18 @@
     <view style="position:relative;">
       <view style="text-align:center;margin-top:1em;padding-bottom:1.5em;">
         <view style="font-weight:bold;color:#2F69F8;">待支付</view>
-        <view style="margin-top:.5em;">请在十分钟之内付款，您也可以去个人中心-待支付那里支付！</view>
+        <view style="margin-top:.5em;padding:0 2em;">请在十分钟之内付款，您也可以去个人中心支付！</view>
       </view>
       <view class="kong"></view>
       <view class="teacherList" style="box-shadow:none;">
-        <view><text>咨询老师：</text><text class="C-09270945">{{teacher.name}}</text></view>
-        <view><text>咨询费用：</text><text class="C-09270945">￥{{teacher.price}}</text></view>
-        <view><text>咨询时间：</text><text class="C-09270945">{{teacher.time}}</text></view>
-        <view><text>咨询主题：</text><text class="C-09270945">{{teacher.content}}</text></view>
+        <view><text>咨询用户：</text><text class="C-09270945">{{info.user_info.name}}</text></view>
+        <view><text>手机号：</text><text class="C-09270945">{{info.user_info.phone}}</text></view>
+        <view><text>咨询老师：</text><text class="C-09270945">{{info.user_info.name}}</text></view>
+        <view><text>咨询费用：</text><text class="C-09270945">￥{{info.total_fee}}</text></view>
+        <view><text>咨询时间：</text><text class="C-09270945">{{info.date_at}}</text></view>
+        <view><text>咨询主题：</text><text class="C-09270945">{{info.subject?info.subject:'未填写咨询主题'}}</text></view>
       </view>
     </view>
   </view>
-  <button>继续支付</button>
+  <button bindtap="rePay">继续支付</button>
 </view> 

@@ -21,7 +21,8 @@ Page({
     istrue: false, //时间弹出
     isShowModel: false, //警告弹出
     waring: '每次预约只可选择同一天内的单个或者连续的时间段',
-    timeList:['08:00-09:00','09:00-10:00','10:00-11:00','11:00-12:00','12:00-13:00','13:00-14:00','14:00-15:00','15:00-16:00','16:00-17:00','17:00-18:00','18:00-19:00','19:00-20:00','20:00-21:00','21:00-22:00','22:00-23:00','23:00-24:00']
+    timeList:['08:00-09:00','09:00-10:00','10:00-11:00','11:00-12:00','12:00-13:00','13:00-14:00','14:00-15:00','15:00-16:00','16:00-17:00','17:00-18:00','18:00-19:00','19:00-20:00','20:00-21:00','21:00-22:00','22:00-23:00','23:00-24:00'],
+    userinfo: ''
   },
   onLoad: function (options){
     var _self = this;
@@ -34,13 +35,7 @@ Page({
           _self.setData({ teacherInfo: res.data.data[0], original_price: parseInt(res.data.data[0].original_price), price: parseInt(res.data.data[0].price) })
         },
         complete: function (res) {
-          if (res.data.message) {
-            wx.showModal({
-              title: '错误',
-              content: res.data.message,
-              showCancel: false
-            })
-          }
+          app.warning(res);
         }
       })
     }
@@ -98,13 +93,7 @@ Page({
         _self.setData({ territory: territory})
       },
       complete: function (res) {
-        if (res.data.message) {
-          wx.showModal({
-            title: '错误',
-            content: res.data.message,
-            showCancel: false
-          })
-        }
+        app.warning(res);
       }
     })
     // 获取账户余额
@@ -119,13 +108,7 @@ Page({
           _self.setData({ account: res.data.account})
         },
         complete: function (res) {
-          if (res.data.message) {
-            wx.showModal({
-              title: '错误',
-              content: res.data.message,
-              showCancel: false
-            })
-          }
+          app.warning(res);
         }
       })
       // 获取用户基本信息
@@ -136,22 +119,17 @@ Page({
           'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
         },
         success: function (res) {
-          console.log(res)
+          if(res.data){
+            _self.setData({ userinfo:res.data})
+          }
         },
         complete: function (res) {
-          if (res.data.message) {
-            wx.showModal({
-              title: '错误',
-              content: res.data.message,
-              showCancel: false
-            })
-          }
+          app.warning(res);
         }
       })
+      // 获取可预约时间
+      this.getTeacherTime();
     }
-    // 获取可预约时间
-    this.getTeacherTime();
-
   },
   addSelect: function (event) {
     var arr = this.data.territory;
@@ -244,8 +222,6 @@ Page({
   getTeacherTime: function () {
     var _self = this;
     // 查询所有设置时间的日期
-    var userInfo = wx.getStorageSync('userInfo');
-    var token = wx.getStorageSync('userInfo');
     wx.request({
       url: app.globalData.edition + '/teacher/get_time?id=' + _self.data.id,
       method: 'get',
@@ -269,13 +245,7 @@ Page({
         }
       },
       complete: function (res) {
-        if (res.data.message) {
-          wx.showModal({
-            title: '错误',
-            content: res.data.message,
-            showCancel: false
-          })
-        }
+        app.warning(res);
       }
     })
   },
@@ -324,6 +294,14 @@ Page({
         })
       }
     })
+    if (this.data.userinfo.user_id == this.data.teacherInfo.user_id){
+      wx.showModal({
+        title: '提示',
+        content: '禁止刷单呦~',
+        showCancel: false
+      })
+      return;
+    }
     if(c.length == 0){
       wx.showModal({
         title: '提示',
@@ -332,7 +310,7 @@ Page({
       })
       return;
     }
-    if (!wx.getStorageSync('user_info')){
+    if (!this.data.userinfo){
       wx.showModal({
         title: '提示',
         content: '请填写基本信息',
@@ -355,7 +333,7 @@ Page({
         'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
       },
       success: function (res) {
-        var orser_num = res.data.order_no;
+        var order_num = res.data.order_no;
         if (res.data.code == 0) {
           wx.requestPayment({
             timeStamp: String(res.data.data.timeStamp),
@@ -369,11 +347,11 @@ Page({
             complete: function (res) {
               if (res.errMsg == 'requestPayment:fail cancel'){
                 wx.navigateTo({
-                  url: '/pages/waitPay/waitPay?order_no=' + orser_num
+                  url: '/pages/waitPay/waitPay?order_no=' + order_num
                 })
               } else if (res.errMsg == 'requestPayment:ok'){
                 wx.navigateTo({
-                  url: '/pages/success/success?order_no=' + orser_num
+                  url: '/pages/success/success?order_no=' + order_num
                 })
               }else{
                 wx.showModal({
@@ -393,13 +371,7 @@ Page({
         }
       },
       complete: function (res) {
-        if (res.data.message) {
-          wx.showModal({
-            title: '错误',
-            content: res.data.message,
-            showCancel: false
-          })
-        }
+        app.warning(res);
       }
     })
   },

@@ -40,13 +40,7 @@ Page({
           }
         },
         complete: function (res) {
-          if (res.data.message) {
-            wx.showModal({
-              title: '错误',
-              content: res.data.message,
-              showCancel: false
-            })
-          }
+          app.warning(res);
         }
       })
     }
@@ -299,13 +293,7 @@ Page({
         }
       },
       complete: function (res) {
-        if (res.data.message) {
-          wx.showModal({
-            title: '错误',
-            content: res.data.message,
-            showCancel: false
-          })
-        }
+        app.warning(res);
       }
     })
     this.setData({
@@ -389,13 +377,7 @@ Page({
         }
       },
       complete: function (res) {
-        if (res.data.message) {
-          wx.showModal({
-            title: '错误',
-            content: res.data.message,
-            showCancel: false
-          })
-        }
+        app.warning(res);
       }
     })
   }

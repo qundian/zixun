@@ -58,13 +58,7 @@ Page({
         _self.setData({ imgUrls: imgUrls})
       },
       complete: function (res) {
-        if (res.data.message) {
-          wx.showModal({
-            title: '错误',
-            content: res.data.message,
-            showCancel: false
-          })
-        }
+        app.warning(res);
       }
     })
     
@@ -79,13 +73,7 @@ Page({
         _self.setData({ hotWords: hotWords })
       },
       complete: function (res) {
-        if (res.data.message) {
-          wx.showModal({
-            title: '错误',
-            content: res.data.message,
-            showCancel: false
-          })
-        }
+        app.warning(res);
       }
     })
     // 判断用户身份
@@ -107,13 +95,7 @@ Page({
           }
         },
         complete: function (res) {
-          if (res.data.message) {
-            wx.showModal({
-              title: '错误',
-              content: res.data.message,
-              showCancel: false
-            })
-          }
+          app.warning(res);
         }
       })
       // 请求未读消息
@@ -132,13 +114,7 @@ Page({
           }
         },
         complete: function (res) {
-          if (res.data.message) {
-            wx.showModal({
-              title: '错误',
-              content: res.data.message,
-              showCancel: false
-            })
-          }
+          app.warning(res);
         }
       })
     }
@@ -244,7 +220,7 @@ Page({
               console.log(res)
             },
             complete: function (res) {
-              console.log(res)
+              app.warning(res);
             }
           })
         } else if (res.cancel) {
@@ -286,13 +262,7 @@ Page({
         _self.setData({ teacherList: opt, nowPage: res.data.current_page, allPage: res.data.last_page })
       },
       complete: function (res) {
-        if (res.data.message) {
-          wx.showModal({
-            title: '错误',
-            content: res.data.message,
-            showCancel: false
-          })
-        }
+        app.warning(res);
       }
     })
   }
