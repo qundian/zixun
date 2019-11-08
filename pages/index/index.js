@@ -37,6 +37,9 @@ Page({
     this.animation1 = wx.createAnimation();
     this.animation2 = wx.createAnimation();
   },
+  onLoad: function(){
+    this.getList(1);
+  },
   onShow: function(){
     var _self = this;
     wx.getSystemInfo({
@@ -64,7 +67,7 @@ Page({
         }
       }
     })
-    this.getList(1);
+    
     // 获取热门主题
     var hotWords = [];
     wx.request({

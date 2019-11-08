@@ -26,6 +26,25 @@ Page({
   onLoad: function (options){
     var _self = this;
     _self.setData({ isIphoneX: app.globalData.isIphoneX, id: options.id }) //options.id
+    // 获取老师信息
+    if (this.data.id) {
+      wx.request({
+        url: app.globalData.edition + '/teacher/list?id=' + _self.data.id,
+        success: function (res) {
+          console.log(res)
+          _self.setData({ teacherInfo: res.data.data[0], original_price: parseInt(res.data.data[0].original_price), price: parseInt(res.data.data[0].price) })
+        },
+        complete: function (res) {
+          if (res.data.message) {
+            wx.showModal({
+              title: '错误',
+              content: res.data.message,
+              showCancel: false
+            })
+          }
+        }
+      })
+    }
   },
   onShow: function (options){
     // wx.hideShareMenu();
@@ -70,25 +89,6 @@ Page({
     }
     this.setData({ arr: arr, witchPart: emptyArr, timeNum:0})
 
-    // 获取老师信息
-    if (this.data.id){
-      wx.request({
-        url: app.globalData.edition + '/teacher/list?id=' + _self.data.id,
-        success: function(res){
-          console.log(res)
-          _self.setData({ teacherInfo: res.data.data[0], original_price: parseInt(res.data.data[0].original_price), price: parseInt(res.data.data[0].price)})
-        },
-        complete: function (res) {
-          if (res.data.message) {
-            wx.showModal({
-              title: '错误',
-              content: res.data.message,
-              showCancel: false
-            })
-          }
-        }
-      })
-    }
     // 获取热门主题
     var territory = [];
     wx.request({
