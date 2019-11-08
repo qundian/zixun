@@ -31,7 +31,6 @@ Page({
       wx.request({
         url: app.globalData.edition + '/teacher/list?id=' + _self.data.id,
         success: function (res) {
-          console.log(res)
           _self.setData({ teacherInfo: res.data.data[0], original_price: parseInt(res.data.data[0].original_price), price: parseInt(res.data.data[0].price) })
         },
         complete: function (res) {
@@ -47,7 +46,6 @@ Page({
     }
   },
   onShow: function (options){
-    // wx.hideShareMenu();
     var _self = this;
     var now = new Date();
     var dataTitle = [];//保存获取到的日期
@@ -130,9 +128,30 @@ Page({
           }
         }
       })
+      // 获取用户基本信息
+      wx.request({
+        url: app.globalData.edition + '/user/user_info',
+        header: {
+          "Content-Type": "application/json",
+          'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
+        },
+        success: function (res) {
+          console.log(res)
+        },
+        complete: function (res) {
+          if (res.data.message) {
+            wx.showModal({
+              title: '错误',
+              content: res.data.message,
+              showCancel: false
+            })
+          }
+        }
+      })
     }
     // 获取可预约时间
     this.getTeacherTime();
+
   },
   addSelect: function (event) {
     var arr = this.data.territory;
@@ -237,7 +256,6 @@ Page({
         'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
       },
       success: function (res) {
-        console.log(res)
         if (res.data.code == 0) {
           var year = new Date().getFullYear();
           res.data.data.forEach(function (item, index) {
@@ -337,7 +355,6 @@ Page({
         'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
       },
       success: function (res) {
-        console.log(res)
         var orser_num = res.data.order_no;
         if (res.data.code == 0) {
           wx.requestPayment({

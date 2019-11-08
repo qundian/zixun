@@ -44,7 +44,7 @@ Page({
     var _self = this;
     wx.getSystemInfo({
       success(res) {
-        console.log(res.model)
+        
       }
     })
     // 请求图片轮播图
@@ -264,7 +264,6 @@ Page({
     wx.request({
       url: app.globalData.edition + '/teacher/list?page=' + option,
       success: function (res) {
-        console.log(res)
         res.data.data.forEach(function (item, index) {
           obj = {
             headerImg: app.globalData.getDataUrl + item.list_img_url,

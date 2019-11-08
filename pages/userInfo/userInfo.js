@@ -24,7 +24,7 @@ Page({
   sendInfo: function(){
     var _self = this;
     wx.request({
-      url: app.globalData.edition +'/userinfo/postUser',
+      url: app.globalData.edition +'/user/post_user_info',
       method: 'post',
       data: {
         name: _self.data.name,
