@@ -42,7 +42,7 @@
     autoplay="{{autoplay}}" duration="{{duration}}" circular='true' indicator-active-color='#fff' indicator-color='rgba(200, 200, 200, .6)' style="height:{{imgheights[current]}}px;" bindchange="bindchange">
     <block wx:for="{{imgUrls}}" wx:key="{{index}}">
       <swiper-item>
-        <navigator url="/pages/details/details" hover-class="none">
+        <navigator url="/pages/details/details?id={{item.goods_id}}" hover-class="none">
           <image src="{{item.url}}" data-goods_id='{{item.goods_id}}' data-id="{{index}}" class="slide-image" mode="widthFix" bindload="imageLoad"/>
         </navigator>
       </swiper-item>

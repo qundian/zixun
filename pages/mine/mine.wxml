@@ -47,10 +47,10 @@
         <view><text>咨询费用：</text><text class="C-09270945">￥{{item.total_fee}}</text></view>
         <view><text>通话时间：</text><text class="C-09270945">{{item.time}}</text></view>
         <view><text>咨询主题：</text><text class="C-09270945">{{item.subject?item.subject:'未填写咨询主题'}}</text></view>
-        <block wx:if="{{item.state == 1}}">
+        <block wx:if="{{item.state == 2}}">
           <button bindtap="call" data-orderno="{{item.order_no}}"><text>拨打电话</text></button>
         </block>
-        <block wx:elif="{{item.state == 2}}">
+        <block wx:elif="{{item.state == 1}}">
           <button style="background:#fa5151;" bindtap="cancel" data-orderno="{{order_no}}"><text>取消预约</text></button>
         </block>
       </view>

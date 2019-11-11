@@ -16,10 +16,10 @@
       </view>
     </view>
   </view>
-  <block wx:if="{{info.state == 1}}">
+  <block wx:if="{{info.state == 2}}">
     <button bindtap="call">拨打电话</button>
   </block>
-  <block wx:elif="{{info.state == 2}}">
+  <block wx:elif="{{info.state == 1}}">
     <button style="background:#fa5151;" bindtap="cancel"><text>取消预约</text></button>
   </block>
 </view> 
