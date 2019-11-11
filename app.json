@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/userInfo/userInfo",
     "pages/msg/msg",
     "pages/mine/mine",
     "pages/confirmOrder/confirmOrder",
@@ -8,7 +9,6 @@
     "pages/setTime/setTime",
     "pages/order/order",
     "pages/details/details",
-    "pages/userInfo/userInfo",
     "pages/login/login",
     "pages/UserCancel/UserCancel",
     "pages/divideInto/divideInto",

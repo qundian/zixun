@@ -2,23 +2,23 @@
   <view id="B-10091651">
     <view class="B-10091334" >
       <text space="ensp">预 约 人</text><text style="color:red"> *</text>
-      <input type="text" value="" bindinput="changeValue" data-name="name"></input>
+      <input type="text" value="" bindinput="changeValue" data-name="name" value="{{userinfo.name}}"></input>
     </view>
     <view class="B-10091334" >
       <text space="ensp">手 机 号</text><text style="color:red"> *</text>
-      <input type="number" value="" placeholder="咨询时通话用" bindinput="changeValue" data-name="tel"></input>
+      <input type="number" value="" placeholder="咨询时通话用" bindinput="changeValue" data-name="tel" value="{{userinfo.phone}}"></input>
     </view>
     <view class="B-10091334" >
       <text space="ensp">职    位</text><text style="color:red"> *</text>
-      <input type="text" value="" placeholder="方便老师准备资料" bindinput="changeValue" data-name="position"></input>
+      <input type="text" value="" placeholder="方便老师准备资料" bindinput="changeValue" data-name="position" value="{{userinfo.post}}"></input>
     </view>
     <view class="B-10091334" >
       <text>公司名称</text>
-      <input type="text" value="" bindinput="changeValue" data-name="company"></input>
+      <input type="text" value="" bindinput="changeValue" data-name="company" value="{{userinfo.company}}"></input>
     </view>
     <view class="B-10091334" >
       <text space="ensp">邮    箱</text>
-      <input type="number" value="" bindinput="changeValue" data-name="email"></input>
+      <input type="number" value="" bindinput="changeValue" data-name="email" value="{{userinfo.email}}"></input>
     </view>
   </view>
   <button bindtap="sendInfo">确认</button>

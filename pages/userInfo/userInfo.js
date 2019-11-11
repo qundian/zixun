@@ -5,33 +5,64 @@ Page({
     tel:'',
     position:'',
     company:'',
-    email:''
+    email:'',
+   userinfo: {}
+  },
+  onShow: function(){
+    var _self = this;
+    wx.request({
+      url: app.globalData.edition + '/user/user_info',
+      header: {
+        "Content-Type": "application/json",
+        'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
+      },
+      success: function (res) {
+        console.log(res)
+        if (res.data) {
+          _self.setData({ userinfo: res.data })
+        }
+      },
+      complete: function (res) {
+        app.warning(res);
+      }
+    })
   },
   changeValue: function(event){
     var dataName = event.currentTarget.dataset.name;
+    var info = this.data.userinfo;
     if(dataName == 'name'){
-      this.setData({ name: event.detail.value })
+      info.name = event.detail.value;
     }else if(dataName == 'tel'){
-      this.setData({ tel: event.detail.value })
+      info.phone = event.detail.value;
     }else if(dataName == 'position'){
-      this.setData({ position: event.detail.value })
+      info.post = event.detail.value;
     }else if(dataName == 'company'){
-      this.setData({ company: event.detail.value})
+      info.company = event.detail.value;
     }else if(dataName == 'email'){
-      this.setData({ email: event.detail.value})
+      info.email = event.detail.value;
     }
+    this.setData({userinfo:info})
   },
   sendInfo: function(){
     var _self = this;
+    var info = this.data.userinfo;
+    if(!info.name || !info.phone || !info.post){
+      wx.showModal({
+        title: '提示',
+        content: '必填项不能为空！',
+        showCancel: false
+      })
+      return;
+    }
     wx.request({
       url: app.globalData.edition +'/user/post_user_info',
       method: 'post',
       data: {
-        name: _self.data.name,
-        post: _self.data.position,
-        phone: _self.data.tel,
-        email: _self.data.email,
-        company: _self.data.company
+        name: info.name,
+        post: info.post,
+        phone: info.phone,
+        email: info.email,
+        company: info.company
       },
       dataType: "json",
       header: {
