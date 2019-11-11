@@ -3,7 +3,7 @@
     <view style="position:relative;">
       <view style="text-align:center;margin-top:1em;padding-bottom:1.5em;">
         <view style="font-weight:bold;color:#2F69F8;">预约成功</view>
-        <view style="margin-top:.5em;">恭喜您成功预约与<text>{{status == 'teacher'?user.name:teacher.name}}</text>的一对一咨询</view>
+        <view style="margin-top:.5em;">恭喜您成功预约与<text>{{info.teacher.name}}</text>的一对一咨询</view>
       </view>
       <view class="kong"></view>
       <view class="teacherList" style="box-shadow:none;">
