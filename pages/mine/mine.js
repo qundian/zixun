@@ -86,6 +86,12 @@ Page({
     this.setData({userInfo:userInfo})
   },
   change: function(event){
+    this.setData({
+      listState: event.currentTarget.dataset.name,
+      nowArr: [], nowPage: 1, nowAllPage: 1,
+      onceArr: [], oncePage: 1, onceAllPage: 1,
+      waitArr: [], waitPage: 1, waitAllPage: 1,
+    })
     if (event.currentTarget.dataset.name == 'now'){
       this.getList(1,20,'nowArr');
     } else if (event.currentTarget.dataset.name == 'once'){
@@ -93,9 +99,6 @@ Page({
     }else{
       this.getList(1, 10, 'waitArr');
     }
-    this.setData({
-      listState: event.currentTarget.dataset.name
-    })
   },
   openDialog: function () {
     this.setData({
