@@ -4,11 +4,11 @@
       <image src="/images/set.png" id="set"></image>
     </navigator>
     <image src="/images/userbg.png" aspectFit id="userBg"></image>
-    <image src="{{userInfo.avatarUrl}}" id="headerImg"></image>
-    <view id="userName">{{userInfo.nickName}}</view>
+    <image src="{{userHeaderImgUrl+'Public/upload/user_head/'+info.head_image}}" id="headerImg"></image>
+    <view id="userName">{{info.username}}</view>
     <view id="userBot">
       <view class="C-09261532" style="width:29.5%;">
-        <text style="font-size:1.1em;font-weight:bold;">300元</text><text style="font-size:.85em;color:#999;">账户余额</text>
+        <text style="font-size:1.1em;font-weight:bold;">{{account}}元</text><text style="font-size:.85em;color:#999;">账户余额</text>
       </view>
       <view class="C-09261532" style="width:29.5%;">
         <text style="font-size:1.1em;font-weight:bold;">10小时</text><text style="font-size:.85em;color:#999;">累计咨询时长</text>
@@ -25,31 +25,51 @@
   </view>
   <view class="kong"></view>
   <view style="padding:1em .85em;">
-    <view class="C-09261610 {{listState == 'now'?'select':''}}" data-name="now" bindtap="change"><text>已预约咨询</text><view></view></view>
-    <view class="C-09261610 {{listState == 'once'?'select':''}}" data-name="once" bindtap="change"><text>咨询历史</text><view></view></view>
+    <view class="C-09261610 {{listState == 'now'?'select':''}}" data-name="now" bindtap="change">
+      <text>已预约咨询</text><view></view>
+    </view>
+    <view class="C-09261610 {{listState == 'once'?'select':''}}" data-name="once" bindtap="change">
+      <text>咨询历史</text><view></view>
+    </view>
+    <view class="C-09261610 {{listState == 'waitPay'?'select':''}}" data-name="waitPay" bindtap="change">
+      <text>待支付</text><view></view>
+    </view>
   </view>
   <view id="now" wx:if="{{listState == 'now'}}" wx:key="index">
-    <block wx:for="{{orderList}}" wx:key="s">
-      <view class="teacherList">
-        <view><text>咨询用户：</text><text class="C-09270945">{{item.teacherName}}</text></view>
-        <view><text>咨询费用：</text><text class="C-09270945">￥{{item.price}}</text></view>
+    <block wx:for="{{nowArr}}" wx:key="s">
+      <view class="teacherList" wx:if="{{item.status == 20}}">
+        <block wx:if="{{isTeacher}}">
+          <view><text>咨询用户：</text><text class="C-09270945">{{item.user_info.name}}</text></view>
+        </block>
+        <block wx:else>
+          <view><text>咨询老师：</text><text class="C-09270945">{{item.user_info.name}}</text></view>
+        </block>
+        <view><text>咨询费用：</text><text class="C-09270945">￥{{item.total_fee}}</text></view>
         <view><text>通话时间：</text><text class="C-09270945">{{item.time}}</text></view>
-        <view><text>咨询主题：</text><text class="C-09270945">{{item.ques}}</text></view>
-        <button wx:if="{{item.state}}" style="background:#fa5151;" bindtap="cancel"><text>取消预约</text></button>
-        <button wx:if="{{!item.state}}"><text>拨打电话</text></button>
+        <view><text>咨询主题：</text><text class="C-09270945">{{item.subject?item.subject:'未填写咨询主题'}}</text></view>
+        <block wx:if="{{item.state == 1}}">
+          <button bindtap="call" data-orderno="{{item.order_no}}"><text>拨打电话</text></button>
+        </block>
+        <block wx:elif="{{item.state == 2}}">
+          <button style="background:#fa5151;" bindtap="cancel" data-orderno="{{order_no}}"><text>取消预约</text></button>
+        </block>
       </view>
     </block>
   </view>
   <view id="once" wx:if="{{listState == 'once'}}" wx:key="index">
-    <block wx:for="{{onceList}}" wx:key="k">
-      <view class="teacherList">
-        <view><text>咨询用户：</text><text class="C-09270945">{{item.teacherName}}</text></view>
-        <view><text>咨询费用：</text><text class="C-09270945">￥{{item.price}}</text></view>
-        <view><text>分成所得：</text><text class="C-09270945">￥{{item.profit}}</text></view>
+    <block wx:for="{{onceArr}}" wx:key="k">
+      <view class="teacherList" wx:if="{{item.status == 30}}">
+        <block wx:if="{{isTeacher}}">
+          <view><text>咨询用户：</text><text class="C-09270945">{{item.user_info.name}}</text></view>
+          <view><text>分成所得：</text><text class="C-09270945">￥{{item.profit}}</text></view>
+        </block>
+        <block>
+          <view><text>咨询费用：</text><text class="C-09270945">￥{{item.total_fee}}</text></view>
+        </block>
         <view><text>违约扣除：</text><text class="C-09270945">￥{{item.punish}}</text></view>
         <view><text>通话时间：</text><text class="C-09270945">{{item.time}}</text></view>
         <view><text>通话时长：</text><text class="C-09270945">{{item.long}}分钟</text></view>
-        <view><text>咨询主题：</text><text class="C-09270945">{{item.ques}}</text></view>
+        <view><text>咨询主题：</text><text class="C-09270945">{{item.subject?item.subject:'未填写咨询主题'}}</text></view>
         <view><text>此次评分：</text>
         <view style="padding:0;width:70%;float:right;text-align:right;">
           <block wx:for="{{gradeImg}}" wx:key="index" wx:for-item="option">
@@ -59,6 +79,20 @@
         </view>
         </view>
         <view><text>此次评价：</text><text class="C-09270945" style="text-align:left;">{{item.discuss}}</text></view>
+        <navigator url="/pages/details/details?id={{item.teacher.id}}"><button><text>再次咨询</text></button></navigator>
+      </view>
+    </block>
+  </view>
+  <view id="now" wx:if="{{listState == 'waitPay'}}" wx:key="index">
+    <block wx:for="{{waitArr}}" wx:key="s">
+      <view class="teacherList" wx:if="{{item.status == 10}}">
+        <view><text>咨询用户：</text><text class="C-09270945">{{item.user_info.name}}</text></view>
+        <view><text>手机号：</text><text class="C-09270945">{{item.user_info.phone}}</text></view>
+        <view><text>咨询老师：</text><text class="C-09270945">{{item.teacher.name}}</text></view>
+        <view><text>咨询费用：</text><text class="C-09270945">￥{{item.total_fee}}</text></view>
+        <view><text>通话时间：</text><text class="C-09270945">{{item.time}}</text></view>
+        <view><text>咨询主题：</text><text class="C-09270945">{{item.subject?item.subject:'未填写咨询主题'}}</text></view>
+        <navigator url="/pages/waitPay/waitPay?order_no={{item.order_no}}"></navigator><button><text>继续支付</text></button>
       </view>
     </block>
   </view>

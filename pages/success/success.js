@@ -1,27 +1,40 @@
 var app = getApp();
 Page({
  data: {
-   status: app.globalData.status,
-   user:{
-     name: '张三', position: '主管', price: 300, time: '2019-11-12 6:00-7:00', content:'近日，可口可乐公司推出全球首款由海洋回收废塑料制成的饮料瓶。第一批塑料瓶共300个，原料中25%的塑料来自志愿者在西班牙和葡萄牙收集的海洋垃圾。从2020年开始，该公司计划在可乐瓶中推广这种回收材料'
-   },
-   teacher: {
-     name: '陈春华', price: 300, time: '2019-11-12 6:00-7:00', content: '近日，可口可乐公司推出全球首款由海洋回收废塑料制成的饮料瓶。第一批塑料瓶共300个，原料中25%的塑料来自志愿者在西班牙和葡萄牙收集的海洋垃圾。从2020年开始，该公司计划在可乐瓶中推广这种回收材料'
-   },
    id: '',
    order_no: '',
-   info: ''
+   info: '',
+   tims: '' //定时器
   },
   onLoad: function (options) {
     this.setData({ id: options.id, order_no: options.order_no })
   },
   onShow: function () {
+    var _self = this;
     var userInfo = wx.getStorageSync('userInfo');
     var token = wx.getStorageSync('userInfo');
     if (userInfo && token) {
-      app.readMsg(this.data.id, this);
-      app.getOrderMsg(this.data.order_no, this);
+      app.readMsg(this.data.id,this);
+      app.getOrderMsg(this.data.order_no,this);
+      var tims = setInterval(function(){
+        if(_self.data.info){
+          clearInterval(tims);
+          var item = _self.data.info;
+          if (item.start_at > new Date().getTime() / 1000) {
+            item.state = 1;
+          } else if (item.start_at <= new Date().getTime() / 1000 && item.end_at > new Date().getTime() / 1000) {
+            item.state = 2;
+          } else if (item.end_at < new Date().getTime() / 1000) {
+            item.state = 3;
+          }
+          _self.setData({info:item})
+        }
+      },1000)
+      this.setData({tims:tims})
     }
+  },
+  onUnload: function(){
+    clearInterval(this.data.tims)
   },
   call: function(){
     wx.request({

@@ -78,6 +78,7 @@ Page({
             }
             wx.setStorageSync('token', res.data.token)
             wx.setStorageSync('uid', res.data.data.uid)
+            wx.setStorageSync('info', res.data.data)
             // 回到原来的页面
             wx.navigateBack();
           }

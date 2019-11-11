@@ -121,24 +121,13 @@
       <view class="weui-tabbar__label" style="color:#2F69F8;">首页</view>
     </view>
     <view class="weui-tabbar__item">
-      <block wx:if="{{isTeacher}}">
-        <navigator url="/pages/teacher/teacher" hover-class="none" open-type="redirectTo">
-          <view style="position: relative;display:inline-block;">
-            <image src="/images/user.png" class="weui-tabbar__icon"></image>
-            <!-- <view class="weui-badge weui-badge_dot" style="position:absolute;top:-2px;left:calc(100% - 3px);"></view> -->
-          </view>
-          <view class="weui-tabbar__label">个人中心</view>
-        </navigator>
-      </block>
-      <block wx:else="{{!isTeacher}}">
-        <navigator url="/pages/user/user" hover-class="none" open-type="redirectTo">
-          <view style="position: relative;display:inline-block;">
-            <image src="/images/user.png" class="weui-tabbar__icon"></image>
-            <!-- <view class="weui-badge weui-badge_dot" style="position:absolute;top:-2px;left:calc(100% - 3px);"></view> -->
-          </view>
-          <view class="weui-tabbar__label">个人中心</view>
-        </navigator>
-      </block>
+      <navigator url="/pages/mine/mine" hover-class="none" open-type="redirectTo">
+        <view style="position: relative;display:inline-block;">
+          <image src="/images/user.png" class="weui-tabbar__icon"></image>
+          <!-- <view class="weui-badge weui-badge_dot" style="position:absolute;top:-2px;left:calc(100% - 3px);"></view> -->
+        </view>
+        <view class="weui-tabbar__label">个人中心</view>
+      </navigator>
     </view>
   </view>
   <!-- 客服 -->

@@ -46,7 +46,6 @@ Page({
         'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
       },
       success: function (res) {
-        console.log(res)
         if(res.data.data){
           res.data.data.forEach(function(item,index){
             arr.push(item)

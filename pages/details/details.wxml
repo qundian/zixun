@@ -75,7 +75,7 @@
       <view style="padding:0 6.1%;">
         <view class="C-10081354">
           <view class="D-10081400">
-            <image src="{{userHeaderImgUrl+item.user.head_image}}"></image><text>{{item.user.username}}</text>
+            <image src="{{userHeaderImgUrl+'Public/upload/user_head/'+item.user.head_image}}"></image><text>{{item.user.username}}</text>
             <text style="float:right;margin-top:.5em;font-size:.75em;color:#999;">{{item.created_at}}</text>
           </view>
           <view class="D-10081403">{{item.content}}</view>

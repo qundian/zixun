@@ -7,7 +7,7 @@
           <image src="/images/order.png"></image>
           <text class="text">咨询预约通知</text>
           <text wx:if="{{!item.read_at}}" class="num">1</text>
-          <text class="date">2019-05-21</text>
+          <text class="date">{{item. created_at}}</text>
         </view>
       </navigator>
     </block>
@@ -18,7 +18,7 @@
           <image src="/images/shijian.png"></image>
           <text class="text">预约成功通知</text>
           <text wx:if="{{!item.read_at}}" class="num">1</text>
-          <text class="date">2019-05-21</text>
+          <text class="date">{{item. created_at}}</text>
         </view>
       </navigator>
     </block>
@@ -31,7 +31,7 @@
     <view class="list">
       <image src="/images/koufeimingxi.png"></image>
       <text class="text">结束扣费通知</text>
-      <text class="date">2019-05-21</text>
+      <text class="date">{{item. created_at}}</text>
     </view>
   </navigator>
   <!-- 老师分成通知 -->
@@ -39,7 +39,7 @@
     <view class="list">
       <image src="/images/koufeimingxi.png"></image>
       <text class="text">结束分成通知</text>
-      <text class="date">2019-05-21</text>
+      <text class="date">{{item. created_at}}</text>
     </view>
   </navigator>
   <!-- 用户取消咨询 -->
@@ -47,7 +47,7 @@
     <view class="list">
       <image src="/images/quxiao.png"></image>
       <text class="text">取消咨询通知</text>
-      <text class="date">2019-05-21</text>
+      <text class="date">{{item. created_at}}</text>
     </view>
   </navigator>
   <!-- 老师取消咨询 -->
@@ -55,7 +55,7 @@
     <view class="list">
       <image src="/images/quxiao.png"></image>
       <text class="text">取消咨询通知</text>
-      <text class="date">2019-05-21</text>
+      <text class="date">{{item. created_at}}</text>
     </view>
   </navigator>
 </view>

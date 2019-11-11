@@ -27,7 +27,6 @@ Page({
     territoryVal: '',
     price: [12,43],
     time: [9,9,12],
-    isTeacher: false,
     follow: false,
     notReady: 0,
     nowPage: 1,
@@ -76,28 +75,9 @@ Page({
         app.warning(res);
       }
     })
-    // 判断用户身份
     var userInfo = wx.getStorageSync('userInfo');
     var token = wx.getStorageSync('userInfo');
     if (userInfo && token) {
-      wx.request({
-        url: app.globalData.edition + '/teacher/my_teacher_info',
-        method: 'get',
-        dataType: "json",
-        header: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-          'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
-        },
-        success: function (res) {
-          if(res.data.data){
-            _self.setData({isTeacher: true})
-          }
-        },
-        complete: function (res) {
-          app.warning(res);
-        }
-      })
       // 请求未读消息
       wx.request({
         url: app.globalData.edition + '/message/unreadCount',

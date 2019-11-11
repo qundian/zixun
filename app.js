@@ -25,22 +25,22 @@ App({
   globalData: {
     domain: 'http://zxt.hrpindao.com',
     edition: 'http://zxt.hrpindao.com/api/v1',
-    getDataUrl: 'http://zxt.hrpindao.com/storage/',
-    userHeaderImgUrl: 'http://zxt.hrpindao.com/storage/',
+    getDataUrl: 'http://zxt.hrpindao.com/storage/',  //轮播图
+    userHeaderImgUrl: 'http://tt.hrpindao.com/',  //评论头像
     userInfo: null,
-    isIphoneX: false,
-    status: 'teacher'
+    isIphoneX: false
   },
   warning: function(option){
-    if (option.data.message) {
+    if (option.data.message || (option.data.msg && option.data.msg != '成功' && option.data.code != 0)) {
       wx.showModal({
-        title: '错误',
-        content: option.data.message,
+        title: '提示',
+        content: option.data.message || option.data.msg,
         showCancel: false
       })
     }
   },
-  readMsg: function(opt,_self){
+  readMsg: function(opt){
+    var _self = this;
     // 设置消息已读
     wx.request({
       url: this.globalData.edition + '/message/markAsRead?id=' + opt,
@@ -52,20 +52,15 @@ App({
         'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
       },
       success: function (res) {
-        console.log(res)
+        
       },
       complete: function (res) {
-        if (res.data.message) {
-          wx.showModal({
-            title: '错误',
-            content: res.data.message,
-            showCancel: false
-          })
-        }
+        _self.warning(res);
       }
     })
   },
   getOrderMsg: function (opt, _self){
+    var _that = this;
     // 请求订单消息
     wx.request({
       url: this.globalData.edition + '/order/order_info?order_no=' + opt,
@@ -89,13 +84,7 @@ App({
         _self.setData({ info: obj })
       },
       complete: function (res) {
-        if (res.data.message) {
-          wx.showModal({
-            title: '错误',
-            content: res.data.message,
-            showCancel: false
-          })
-        }
+        _that.warning(res);
       }
     })
   }
