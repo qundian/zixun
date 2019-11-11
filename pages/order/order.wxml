@@ -100,8 +100,8 @@
               <view class="C-09291042-right" wx:if="{{idx == witchDay}}">
                 <block wx:for="{{i}}" wx:for-item="z" wx:for-index="zdx" wx:key="zdx">
                   <view class="E-bg {{z.isSelect?'select':''}}" style="color:{{z.state?'#000':'#ccc'}}" data-index="{{zdx}}" bindtap="selectTime">
-                    <text style="font-size:.8em;font-weight:bold;">{{z.part}}</text>
-                    <text style="font-size:.8em;padding-top:.2em;">{{z.state?'可预约':'不可预约'}}</text>
+                    <text style="font-size:.75em;font-weight:bold;">{{z.part}}</text>
+                    <text style="font-size:.7em;padding-top:.2em;">{{z.state?'可预约':'不可预约'}}</text>
                   </view>
                 </block>
               </view>
