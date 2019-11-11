@@ -14,7 +14,7 @@
   <view class="leader"><view></view><text>咨询老师</text></view>
   <view class="teacherList" data-id="{{teacherInfo.id}}">
     <view class="teacherListImg">
-      <image src="{{teacherInfo.headerImg}}"></image>
+      <image src="{{'http://zxt.hrpindao.com/storage/'+teacherInfo.list_img_url}}"></image>
     </view>
     <view class="tesacherListRight">
       <view class="teacherListP1">
@@ -28,7 +28,7 @@
           <text style="font-size:.5em;">￥</text><text style="font-weight:bold;font-size:1.2em;">{{teacherInfo.price}}</text>/小时
         </view>
       </view>
-      <view class="teacherListShow">{{teacherInfo.company}}</view>
+      <view class="teacherListShow">{{teacherInfo.background}}</view>
       <view class="teacherListBest">
         <block wx:for="{{teacherInfo.tags}}" wx:for-item="itm" wx:key="idx">
           <text>{{itm.tag}}</text>
@@ -41,7 +41,6 @@
       <view style="height:1.3em;">
         <view class="teacherListDate"><text>{{teacherInfo.eval_num}}</text>条评价</view>
       </view>
-      <button class="teacherListBtn">预约咨询</button>
     </view>
   </view>
   <view class="leader"><view></view><text>本次咨询主题</text></view>
@@ -90,7 +89,7 @@
             <block wx:for="{{item}}" wx:for-item="i" wx:for-index="idx" wx:key="idx" wx:if="{{idx==0}}">
               <view class="C-09291042-left {{index == witchDay?'select':''}}" bindtap="selectDay" data-index="{{index}}" >
                 <text style="font-weight:bold;">{{i.date}}</text>
-                <text style="font-size:.9em;">{{i.status?'可预约':'不可预约'}}</text>
+                <!-- <text style="font-size:.9em;">{{i.status?'可预约':'不可预约'}}</text> -->
               </view>
             </block>
           </block>

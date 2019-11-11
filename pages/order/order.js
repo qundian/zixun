@@ -10,6 +10,7 @@ Page({
     ],  //评分图片
     territory: [], //热门主题
     text: '',
+    userHeaderImgUrl: app.globalData.userHeaderImgUrl,
     teacherInfo: '',
     isIphoneX: '',
     witchDay: '0', //选中的哪天
