@@ -19,7 +19,9 @@ Page({
     onceAllPage: 1,
     waitArr: [], //待支付
     waitPage: 1,
-    waitAllPage: 1
+    waitAllPage: 1,
+    isLogin: true,
+    getMore: ['点击加载更多', '点击加载更多', '点击加载更多']
   },
   onShow: function(){
     var _self = this;
@@ -27,7 +29,7 @@ Page({
     this.setData({ info: info })
     // 判断用户身份
     var userInfo = wx.getStorageSync('userInfo');
-    var token = wx.getStorageSync('userInfo');
+    var token = wx.getStorageSync('token');
     if (userInfo && token) {
       wx.request({
         url: app.globalData.edition + '/teacher/my_teacher_info',
@@ -81,6 +83,8 @@ Page({
       })
       // 请求咨询状态列表
       this.getList(1,20,'nowArr')
+    }else{
+      this.setData({isLogin:false})
     }
     var userInfo = wx.getStorageSync('userInfo');
     this.setData({userInfo:userInfo})
@@ -100,21 +104,43 @@ Page({
       this.getList(1, 10, 'waitArr');
     }
   },
-  openDialog: function () {
-    this.setData({
-      istrue: true
-    })
-  },
-  closeDialog: function () {
-    this.setData({
-      istrue: false
-    })
-  },
-  cancel: function(){
-    this.setData({istrue:true})
+  getMore: function(event){
+    var nowPage = this.data.nowPage;
+    var oncePage = this.data.oncePage;
+    var waitPage = this.data.oncePage;
+    var arrs = this.data.getMore;
+    if(event.currentTarget.dataset.name == 'now'){
+      if(arrs[0] == '点击加载更多'){
+        getList(nowPage,20,'nowArr');
+      }else{
+        wx.showToast({
+          title: '已全部加载',
+        })
+      }
+    } else if (event.currentTarget.dataset.name == 'once'){
+      if (arrs[1] == '点击加载更多'){
+        getList(oncePage, 30, 'onceArr');
+      }else{
+        wx.showToast({
+          title: '已全部加载',
+        })
+      }
+    }else{
+      if (arrs[2] == '点击加载更多'){
+        getList(waitPage, 10, 'waitArr');
+      }else{
+        wx.showToast({
+          title: '已全部加载',
+        })
+      }
+    }
   },
   getList: function(option1,option2,option3){
     var _self = this;
+    var nowPage = this.data.nowPage;
+    var oncePage = this.data.oncePage;
+    var waitPage = this.data.oncePage;
+    var arrs = this.data.getMore;
     // 获取咨询列表
     wx.request({
       url: app.globalData.edition + '/order/order_list',
@@ -143,19 +169,37 @@ Page({
               }
               arr.push(item);
             })
-            _self.setData({ nowArr: arr })
+            nowPage++;
+            if (nowPage > res.data.last_page) {
+              nowPage = res.data.last_page;
+              arrs[0] = '已全部加载';
+              _self.setData({ getMore: arrs })
+            }
+            _self.setData({ nowArr: arr, nowPage: nowPage, nowAllPage: res.data.last_page })
           }else if(option3 == 'onceArr'){
             var arr = _self.data.nowArr;
             res.data.data.forEach(function (item, index) {
               arr.push(item);
             })
-            _self.setData({ onceArr: arr })
+            oncePage++;
+            if (oncePage > res.data.last_page) {
+              oncePage = res.data.last_page;
+              arrs[1] = '已全部加载';
+              _self.setData({ getMore: arrs })
+            }
+            _self.setData({ onceArr: arr, oncePage: oncePage, onceAllPage: res.data.last_page })
           }else{
             var arr = _self.data.nowArr;
             res.data.data.forEach(function (item, index) {
               arr.push(item);
             })
-            _self.setData({ waitArr: arr })
+            waitPage++;
+            if (waitPage > res.data.last_page) {
+              waitPage = res.data.last_page;
+              arrs[2] = '已全部加载';
+              _self.setData({ getMore: arrs })
+            }
+            _self.setData({ waitArr: arr, waitPage: waitPage,waitAllPage:res.data.last_page })
           }
         }
       },
@@ -197,5 +241,16 @@ Page({
         app.warning(res);
       }
     })
+  },
+  setDate: function(item){
+    var start_time = (new Date(item.start_at * 1000)).toString();
+    start_time = start_time.split(' ')[4].substring(0, 5);
+    var end_time = (new Date(item.end_at * 1000)).toString();
+    end_time = end_time.split(' ')[4].substring(0, 5);
+    var c_year = new Date().getFullYear();
+    var c_month = (new Date(item.start_at * 1000).getMonth() + 1) < 10 ? '0' + (new Date(item.start_at * 1000).getMonth() + 1) : (new Date(item.start_at * 1000).getMonth() + 1);
+    var c_day = new Date(item.start_at * 1000).getDate() < 10 ? '0' + new Date(item.start_at * 1000).getDate() : new Date(item.start_at * 1000).getDate()
+    var time = c_year + '-' + c_month + '-' + c_day + ' ' + start_time + '-' + end_time
+    item.date_at = time;
   }
 })

@@ -24,4 +24,5 @@
       <button style="background:#fa5151;" bindtap="cancel"><text>取消预约</text></button>
     </block>
   </block>
+  <navigator url="/pages/index/index" hover-class="none"><button><text>返回首页</text></button></navigator>
 </view> 

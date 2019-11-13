@@ -23,7 +23,13 @@ Page({
     isShowModel: false, //警告弹出
     waring: '每次预约只可选择同一天内的单个或者连续的时间段',
     timeList:['08:00-09:00','09:00-10:00','10:00-11:00','11:00-12:00','12:00-13:00','13:00-14:00','14:00-15:00','15:00-16:00','16:00-17:00','17:00-18:00','18:00-19:00','19:00-20:00','20:00-21:00','21:00-22:00','22:00-23:00','23:00-24:00'],
-    userinfo: ''
+    userinfo: '',
+    infoModel: false,
+    name: '',
+    tel: '',
+    position: '',
+    company: '',
+    email: '',
   },
   onLoad: function (options){
     var _self = this;
@@ -82,7 +88,6 @@ Page({
       emptyArr.push([]);
     }
     this.setData({ arr: arr, witchPart: emptyArr, timeNum:0})
-
     // 获取热门主题
     var territory = [];
     wx.request({
@@ -98,7 +103,7 @@ Page({
       }
     })
     // 获取账户余额
-    if (wx.getStorageSync('userInfo') && wx.getStorageSync('userInfo')){
+    if (wx.getStorageSync('userInfo') && wx.getStorageSync('token')){
       wx.request({
         url: app.globalData.edition + '/user/account',
         header: {
@@ -160,6 +165,14 @@ Page({
     this.setData({
       isShowModel: false
     })
+  },
+  showInfoModel: function(){
+    this.setData({
+      infoModel: true
+    })
+  },
+  closeInfoModel: function(){
+    this.setData({infoModel:false})
   },
   selectDay: function(event){
     var index = event.currentTarget.dataset.index;
@@ -378,5 +391,59 @@ Page({
   },
   changeValue: function(event){
     this.setData({ text: event.detail.value})
+  },
+  changeValue: function (event) {
+    var dataName = event.currentTarget.dataset.name;
+    var info = this.data.userinfo;
+    if (dataName == 'name') {
+      info.name = event.detail.value;
+    } else if (dataName == 'tel') {
+      info.phone = event.detail.value;
+    } else if (dataName == 'position') {
+      info.post = event.detail.value;
+    } else if (dataName == 'company') {
+      info.company = event.detail.value;
+    } else if (dataName == 'email') {
+      info.email = event.detail.value;
+    }
+    this.setData({ userinfo: info })
+  },
+  sendInfo: function () {
+    var _self = this;
+    var info = this.data.userinfo;
+    if (!info.name || !info.phone || !info.post) {
+      wx.showModal({
+        title: '提示',
+        content: '必填项不能为空！',
+        showCancel: false
+      })
+      return;
+    }
+    wx.request({
+      url: app.globalData.edition + '/user/post_user_info',
+      method: 'post',
+      data: {
+        name: info.name,
+        post: info.post,
+        phone: info.phone,
+        email: info.email,
+        company: info.company
+      },
+      dataType: "json",
+      header: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
+      },
+      success: function (res) {
+        if (res.data) {
+          wx.setStorageSync('user_info', res.data);
+          _self.setData({infoModel:false})
+        }
+      },
+      complete: function (res) {
+        app.warning(res);
+      }
+    })
   }
 })

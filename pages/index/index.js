@@ -30,14 +30,15 @@ Page({
     follow: false,
     notReady: 0,
     nowPage: 1,
-    allPage: 1
+    allPage: 1,
+    getMore: ['点击加载更多']
   },
   onReady:function(){
     this.animation1 = wx.createAnimation();
     this.animation2 = wx.createAnimation();
   },
   onLoad: function(){
-    this.getList(1);
+    this.getList();
   },
   onShow: function(){
     var _self = this;
@@ -76,7 +77,7 @@ Page({
       }
     })
     var userInfo = wx.getStorageSync('userInfo');
-    var token = wx.getStorageSync('userInfo');
+    var token = wx.getStorageSync('token');
     if (userInfo && token) {
       // 请求未读消息
       wx.request({
@@ -214,36 +215,50 @@ Page({
   },
   getList: function(option){
     var _self = this;
+    var nowPage = this.data.nowPage;
     // 请求老师列表信息
     var obj = {};
     var opt = this.data.teacherList;
-    wx.request({
-      url: app.globalData.edition + '/teacher/list?page=' + option,
-      success: function (res) {
-        res.data.data.forEach(function (item, index) {
-          obj = {
-            headerImg: app.globalData.getDataUrl + item.list_img_url,
-            name: item.name,
-            grade: item.score,
-            original: item.original_price,
-            price: item.price,
-            company: item.background,
-            territory: [],
-            num1: item.consultants,
-            num2: item.duration,
-            num3: item.eval_num,
-            id: item.id
-          }
-          item.tags.forEach(function (a, b) {
-            obj.territory.push(a.tag);
+    if (this.data.getMore[0] == '点击加载更多') {
+      wx.request({
+        url: app.globalData.edition + '/teacher/list?page=' + nowPage,
+        success: function (res) {
+          res.data.data.forEach(function (item, index) {
+            obj = {
+              headerImg: app.globalData.getDataUrl + item.list_img_url,
+              name: item.name,
+              grade: item.score,
+              original: item.original_price,
+              price: item.price,
+              company: item.background,
+              territory: [],
+              num1: item.consultants,
+              num2: item.duration,
+              num3: item.eval_num,
+              id: item.id
+            }
+            item.tags.forEach(function (a, b) {
+              obj.territory.push(a.tag);
+            })
+            opt.push(obj);
           })
-          opt.push(obj);
-        })
-        _self.setData({ teacherList: opt, nowPage: res.data.current_page, allPage: res.data.last_page })
-      },
-      complete: function (res) {
-        app.warning(res);
-      }
-    })
+          nowPage++;
+          if (nowPage > res.data.last_page) {
+            nowPage = res.data.last_page;
+            var arrs = [];
+            arrs[0] = '已全部加载';
+            _self.setData({ getMore: arrs })
+          }
+          _self.setData({ teacherList: opt, nowPage: nowPage, allPage: res.data.last_page })
+        },
+        complete: function (res) {
+          app.warning(res);
+        }
+      })
+    } else {
+      wx.showToast({
+        title: '已全部加载',
+      })
+    }
   }
 })

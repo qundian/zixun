@@ -11,7 +11,7 @@ Page({
   },
   onShow: function () {
     var userInfo = wx.getStorageSync('userInfo');
-    var token = wx.getStorageSync('userInfo');
+    var token = wx.getStorageSync('token');
     if (userInfo && token) {
       app.readMsg(this.data.id,this);
       app.getOrderMsg(this.data.order_no,this);

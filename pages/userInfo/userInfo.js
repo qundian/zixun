@@ -71,8 +71,8 @@ Page({
         'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
       },
       success: function(res){
-        if(!res.data.message){
-          wx.setStorageSync('user_info', res.data)
+        if(res.data){
+          wx.setStorageSync('user_info', res.data);
           wx.navigateBack();
         }
       },

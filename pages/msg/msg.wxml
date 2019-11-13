@@ -1,4 +1,5 @@
 <view>
+  <view class="empty" wx:if="{{arr.length == 0}}">—————— 暂无数据 ——————</view>
   <!-- 通知老师咨询通知 -->
   <block wx:for="{{arr}}" wx:key="{{index}}">
     <block wx:if="{{item.type == 'order_need_teacher_confirm' && isTeacher}}">
@@ -58,4 +59,5 @@
       <text class="date">{{item. created_at}}</text>
     </view>
   </navigator>
+  <view class="getMore" bindtap="getList" wx:if="{{arr.length > 0}}">{{getMore[0]}}</view>
 </view>

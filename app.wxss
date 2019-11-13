@@ -149,3 +149,9 @@ body{
 .weui-demo-dialog_show .weui-half-screen-dialog{
     transform:translateY(0);
 }
+.empty,.getMore{
+  font-size: .85em;
+  color: #aaa;
+  text-align: center;
+  padding: 1.5em 0;
+}

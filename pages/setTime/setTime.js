@@ -22,7 +22,7 @@ Page({
     var _self = this;
     // 请求用户信息
     var userInfo = wx.getStorageSync('userInfo');
-    var token = wx.getStorageSync('userInfo');
+    var token = wx.getStorageSync('token');
     if (userInfo && token) {
       wx.request({
         url: app.globalData.edition + '/teacher/my_teacher_info',

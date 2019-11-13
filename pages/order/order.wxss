@@ -113,3 +113,8 @@ textarea{
   color:#2F69F8 !important;
   border:1px solid #2F69F8;
 }
+.G-11131910{
+  display: inline-block;
+  width: 71%;
+  vertical-align: middle;
+}

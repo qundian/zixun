@@ -58,7 +58,7 @@ Page({
     this.setData({ dateArray: dataTitle, dateArr: arr})
     // 请求页面全部数据
     var userInfo = wx.getStorageSync('userInfo');
-    var token = wx.getStorageSync('userInfo');
+    var token = wx.getStorageSync('token');
     if (userInfo && token) {
       wx.request({
         url: app.globalData.edition + '/teacher/detail?id=' + this.data.id,
@@ -190,5 +190,5 @@ Page({
       path: "/pages/details/details?id="+this.data.id,
       imageUrl: '/images/logo.png'
     };
-  },
+  }
 })

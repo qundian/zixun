@@ -3,7 +3,7 @@
     <view style="position:relative;">
       <view style="text-align:center;margin-top:1em;padding-bottom:1.5em;">
         <view style="font-weight:bold;">咨询预约通知</view>
-        <view style="margin-top:.5em;text-align:left;padding:0 1em;color:#666;fon-size:.85em;">亲爱的陈老师，用户{{info.user_info.name}}对您发起了预约咨询服务，详情如下：</view>
+        <view style="margin-top:.5em;text-align:left;padding:0 1em;color:#666;fon-size:.85em;">用户{{info.user_info.name}}对您发起了预约咨询服务，详情如下：</view>
       </view>
       <view class="kong"></view>
       <view class="teacherList" style="box-shadow:none;">

@@ -1,10 +1,15 @@
 <view style="padding-bottom:3.2em;">
   <view class="B-10091334">
-    <navigator url="/pages/userInfo/userInfo" hover-class="none">
+    <!-- <navigator url="/pages/userInfo/userInfo" hover-class="none">
       <text>填写基本信息</text>
       <image src="/images/right.png"></image>
       <text wx:if="{{userinfo}}" style="color:#aaa;font-size:.85em;float:right;margin-top:.3em;">{{userinfo.name}},{{userinfo.phone}}</text>
-    </navigator>
+    </navigator> -->
+    <view bindtap="showInfoModel">
+      <text>填写基本信息</text>
+      <image src="/images/right.png"></image>
+      <text wx:if="{{userinfo}}" style="color:#aaa;font-size:.85em;float:right;margin-top:.3em;">{{userinfo.name}},{{userinfo.phone}}</text>
+    </view>
   </view>
   <view class="B-10091334" style="border:none;" bindtap="openDialog">
     <text>选择预约时间</text>
@@ -119,6 +124,44 @@
             <view class="weui-dialog__bd">{{waring}}</view>
             <view class="weui-dialog__ft">
                 <view class="weui-dialog__btn" bindtap="closeModel" >确定</view>
+            </view>
+          </view>
+      </view>
+    </view>
+    <view class="weui-demo-dialog {{infoModel ? 'weui-demo-dialog_show' : ''}}">
+      <view class="weui-mask" bindtap="closeInfoModel"></view>
+      <view class="weui-dialog__wrp">
+          <view class="weui-dialog">
+            <view class="weui-dialog__hd">
+              <view class="weui-dialog__title">填写基本信息</view>
+            </view>
+            <view class="weui-dialog__bd" style="padding:0 .5em;">
+              <view id="B-10091651">
+                <view class="B-10091334" >
+                  <text space="ensp">预 约 人</text><text style="color:red"> *</text>
+                  <input class="G-11131910" type="text" value="" bindinput="changeValue" data-name="name" value="{{userinfo.name}}"></input>
+                </view>
+                <view class="B-10091334" >
+                  <text space="ensp">手 机 号</text><text style="color:red"> *</text>
+                  <input class="G-11131910" type="number" value="" placeholder="咨询时通话用" bindinput="changeValue" data-name="tel" value="{{userinfo.phone}}"></input>
+                </view>
+                <view class="B-10091334" >
+                  <text space="ensp">职    位</text><text style="color:red"> *</text>
+                  <input class="G-11131910" type="text" value="" placeholder="方便老师准备资料" bindinput="changeValue" data-name="position" value="{{userinfo.post}}"></input>
+                </view>
+                <view class="B-10091334" >
+                  <text>公司名称</text>
+                  <input class="G-11131910" type="text" value="" bindinput="changeValue" data-name="company" value="{{userinfo.company}}"></input>
+                </view>
+                <view class="B-10091334" >
+                  <text space="ensp">邮    箱</text>
+                  <input class="G-11131910" type="number" value="" bindinput="changeValue" data-name="email" value="{{userinfo.email}}"></input>
+                </view>
+              </view>
+            </view>
+            <view class="weui-dialog__ft">
+              <view class="weui-dialog__btn weui-dialog__btn_default" bindtap="closeInfoModel">取消</view>
+              <view class="weui-dialog__btn" bindtap="sendInfo" >确定</view>
             </view>
           </view>
       </view>

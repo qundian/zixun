@@ -1,5 +1,5 @@
 <!--index.wxml-->
-<view style="padding-bottom:6em;">
+<view style="padding-bottom:4em;">
 <!-- 搜索框 -->
   <view class="page__bd">
     <view class="weui-search-bar">
@@ -52,8 +52,9 @@
   <!-- 关注公众号组件 -->
   <official-account bindload="showKong"></official-account>
   <view class="kong"></view>
-  <view class="leader"><view></view><text>老师列表</text></view>
+  <view class="leader"><view></view><text>专家列表</text></view>
   <view>
+    <view class="empty" wx:if="{{teacherList.length == 0}}">—————— 暂无数据 ——————</view>
     <!-- 老师列表循环 -->
     <block wx:for="{{teacherList}}" wx:key="s">
       <navigator url="/pages/details/details?id={{item.id}}" hover-class="none">
@@ -91,6 +92,7 @@
         </view>
       </navigator>
     </block>
+    <view class="getMore" bindtap="getList" wx:if="{{teacherList.length > 0}}">{{getMore[0]}}</view>
   </view>
   <!-- 筛选弹窗 -->
   <view id="mask" bindtap="translateHide" animation="{{animation2}}" style="display:{{display}}"></view>

@@ -3,15 +3,26 @@ Page({
   data: {
     
   },
-  onLoad: function(){
-    wx.getSetting({
-      success(res) {
-        console.log(res.authSetting)
-      },
-      fail(res){
-        console.log(res)
-      }
-    })
+  onShow: function(){
+    wx.hideHomeButton();
+  },
+  onUnload: function(){
+    if (!wx.getStorageSync('userInfo') && !wx.getStorageSync('token')){
+      wx.showModal({
+        title: '提示',
+        content: '您还没登录，无法正常使用小程序！',
+        confirmText: '去登录',
+        success(res) {
+          if (res.confirm) {
+            wx.redirectTo({
+              url: '/pages/login/login'
+            })
+          } else if (res.cancel) {
+            console.log('用户点击取消')
+          }
+        }
+      })
+    }
   },
   rejectLogin: function (e) {
     wx.navigateBack({
@@ -45,7 +56,11 @@ Page({
             _self.login();
           } else {
             // 回到原来的地方放
-            wx.navigateBack();
+            // wx.navigateBack();
+            var path = wx.getStorageSync('path');
+            wx.redirectTo({
+              url: '/' + path
+            })
           }
         }
       })
@@ -80,7 +95,11 @@ Page({
             wx.setStorageSync('uid', res.data.data.uid)
             wx.setStorageSync('info', res.data.data)
             // 回到原来的页面
-            wx.navigateBack();
+            // wx.navigateBack();
+            var path = wx.getStorageSync('path');
+            wx.redirectTo({
+              url: '/' + path
+            })
           }
         })
       }

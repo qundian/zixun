@@ -1,6 +1,26 @@
+!function () {
+  var PageTmp = Page;
+
+  Page = function (pageConfig) {
+
+    // 设置全局默认分享
+    pageConfig = Object.assign({
+      onShareAppMessage: function () {
+        return {
+          title: '职接问',
+          path: '/pages/index/index',
+          imageUrl: '/images/screen.jpg'
+        };
+      }
+    }, pageConfig);
+
+    PageTmp(pageConfig);
+  };
+}();
 //app.js
 App({
   onLaunch: function () {
+    console.log('appjs')
     // 获取手机型号，判断是否是苹果刘海手机
     var _self = this;
     wx.getSystemInfo({
@@ -10,15 +30,22 @@ App({
         }
       }
     })
-    var userInfo = wx.getStorageSync('userInfo');
-    var token = wx.getStorageSync('userInfo');
-    if(!userInfo && !token){
-      wx.navigateTo({
-        url: '/pages/login/login',
-        success: function (res) {
-          // 通过eventChannel向被打开页面传送数据
-          
+    wx.onAppRoute(function (res) {
+      //获取加载的页面
+      let pages = getCurrentPages(),
+        //获取当前页面的对象
+        view = pages[pages.length - 1];
+      if (view) {
+        if (view.route != 'pages/login/login'){
+          wx.setStorageSync('path', view.route);
         }
+      }
+    })
+    var userInfo = wx.getStorageSync('userInfo');
+    var token = wx.getStorageSync('token');
+    if(!token){
+      wx.redirectTo({
+        url: '/pages/login/login'
       })
     }
   },
@@ -76,10 +103,12 @@ App({
         _self.setData({ info: res.data })
         var start_time = (new Date(res.data.start_at * 1000)).toString();
         start_time = start_time.split(' ')[4].substring(0, 5);
+        var end_time = (new Date(res.data.end_at * 1000)).toString();
+        end_time = end_time.split(' ')[4].substring(0, 5);
         var c_year = new Date().getFullYear();
         var c_month = (new Date(res.data.start_at * 1000).getMonth() + 1) < 10 ? '0' + (new Date(res.data.start_at * 1000).getMonth() + 1) : (new Date(res.data.start_at * 1000).getMonth() + 1);
         var c_day = new Date(res.data.start_at * 1000).getDate() < 10 ? '0' + new Date(res.data.start_at * 1000).getDate() : new Date(res.data.start_at * 1000).getDate()
-        var time = c_year + '-' + c_month + '-' + c_day + ' ' + start_time
+        var time = c_year + '-' + c_month + '-' + c_day + ' ' + start_time + '-' + end_time
         obj.date_at = time;
         _self.setData({ info: obj })
       },

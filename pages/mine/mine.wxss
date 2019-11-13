@@ -117,3 +117,15 @@
   width:1.5em;
   height:1.5em;
 }
+#login{
+  width:8em;
+  height:3em;
+  background: #fa5151;
+  color:#fff;
+  line-height: 3em;
+  text-align: center;
+  border-radius: .4em;
+  margin:0 auto;
+  font-weight:bold;
+  margin-top:3em;
+}

@@ -12,7 +12,7 @@ Page({
   onShow: function () {
     var _self = this;
     var userInfo = wx.getStorageSync('userInfo');
-    var token = wx.getStorageSync('userInfo');
+    var token = wx.getStorageSync('token');
     if (userInfo && token) {
       app.readMsg(this.data.id,this);
       app.getOrderMsg(this.data.order_no,this);
@@ -49,7 +49,7 @@ Page({
       success: function (res) {
         if (res.data.resultcode == 0){
           wx.makePhoneCall({
-            phoneNumber: res.data.privateNum.toString(),
+            phoneNumber: res.data.relationNum.toString(),
             success: function (res) {
               console.log(res)
             },

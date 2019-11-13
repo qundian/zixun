@@ -1,18 +1,18 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/userInfo/userInfo",
-    "pages/msg/msg",
+    "pages/order/order",
     "pages/mine/mine",
+    "pages/msg/msg",
+    "pages/Cost/Cost",
+    "pages/divideInto/divideInto",
+    "pages/userInfo/userInfo",
     "pages/confirmOrder/confirmOrder",
     "pages/waitPay/waitPay",
     "pages/setTime/setTime",
-    "pages/order/order",
     "pages/details/details",
     "pages/login/login",
     "pages/UserCancel/UserCancel",
-    "pages/divideInto/divideInto",
-    "pages/Cost/Cost",
     "pages/success/success", 
     "pages/moreHistory/moreHistory",
     "pages/history/history"

@@ -1,5 +1,8 @@
 <view style="padding-bottom:4em;">
   <view style="position:relative;">
+    <view style="position:absolute;width:100%;z-index:10;" wx:if="{{!isLogin}}">
+      <navigator url="/pages/login/login" id="login">立即登录</navigator>
+    </view>
     <navigator url="/pages/setTime/setTime" wx:if="{{isTeacher}}">
       <image src="/images/set.png" id="set"></image>
     </navigator>
@@ -45,7 +48,7 @@
           <view><text>咨询老师：</text><text class="C-09270945">{{item.user_info.name}}</text></view>
         </block>
         <view><text>咨询费用：</text><text class="C-09270945">￥{{item.total_fee}}</text></view>
-        <view><text>通话时间：</text><text class="C-09270945">{{item.time}}</text></view>
+        <view><text>通话时间：</text><text class="C-09270945">{{item.date_at}}</text></view>
         <view><text>咨询主题：</text><text class="C-09270945">{{item.subject?item.subject:'未填写咨询主题'}}</text></view>
         <block wx:if="{{item.status != 40 || item.status != 50}}">
           <block wx:if="{{item.state == 2}}">
@@ -57,6 +60,8 @@
         </block>
       </view>
     </block>
+    <view class="empty" wx:if="{{nowArr.length == 0}}">—————— 暂无数据 ——————</view>
+    <view class="getMore" bindtap="getMore" wx:if="{{nowArr.length > 0}}" data-name="now">{{getMore[0]}}</view>
   </view>
   <view id="once" wx:if="{{listState == 'once'}}" wx:key="index">
     <block wx:for="{{onceArr}}" wx:key="k">
@@ -69,7 +74,7 @@
           <view><text>咨询费用：</text><text class="C-09270945">￥{{item.total_fee}}</text></view>
         </block>
         <view><text>违约扣除：</text><text class="C-09270945">￥{{item.punish}}</text></view>
-        <view><text>通话时间：</text><text class="C-09270945">{{item.time}}</text></view>
+        <view><text>通话时间：</text><text class="C-09270945">{{item.date_at}}</text></view>
         <view><text>通话时长：</text><text class="C-09270945">{{item.long}}分钟</text></view>
         <view><text>咨询主题：</text><text class="C-09270945">{{item.subject?item.subject:'未填写咨询主题'}}</text></view>
         <view><text>此次评分：</text>
@@ -84,6 +89,8 @@
         <navigator url="/pages/details/details?id={{item.teacher.id}}"><button><text>再次咨询</text></button></navigator>
       </view>
     </block>
+    <view class="empty" wx:if="{{onceArr.length == 0}}">—————— 暂无数据 ——————</view>
+    <view class="getMore" bindtap="getMore" wx:if="{{onceArr.length > 0}}" data-name="once">{{getMore[1]}}</view>
   </view>
   <view id="now" wx:if="{{listState == 'waitPay'}}" wx:key="index">
     <block wx:for="{{waitArr}}" wx:key="s">
@@ -92,13 +99,15 @@
         <view><text>手机号：</text><text class="C-09270945">{{item.user_info.phone}}</text></view>
         <view><text>咨询老师：</text><text class="C-09270945">{{item.teacher.name}}</text></view>
         <view><text>咨询费用：</text><text class="C-09270945">￥{{item.total_fee}}</text></view>
-        <view><text>通话时间：</text><text class="C-09270945">{{item.time}}</text></view>
+        <view><text>通话时间：</text><text class="C-09270945">{{item.date_at}}</text></view>
         <view><text>咨询主题：</text><text class="C-09270945">{{item.subject?item.subject:'未填写咨询主题'}}</text></view>
         <navigator url="/pages/waitPay/waitPay?order_no={{item.order_no}}">
           <button><text>继续支付</text></button>
         </navigator>
       </view>
     </block>
+    <view class="empty" wx:if="{{waitArr.length == 0}}">—————— 暂无数据 ——————</view>
+    <view class="getMore" bindtap="getMore" wx:if="{{waitArr.length > 0}}" data-name="wait">{{getMore[2]}}</view>
   </view>
   <!-- 底部导航栏 -->
   <view class="weui-tabbar">
@@ -113,28 +122,9 @@
     <view class="weui-tabbar__item">
       <view style="position: relative;display:inline-block;">
         <image src="/images/userSelect.png" class="weui-tabbar__icon"></image>
-        <view class="weui-badge weui-badge_dot" style="position:absolute;top:-2px;left:calc(100% - 3px);"></view>
+        <!-- <view class="weui-badge weui-badge_dot" style="position:absolute;top:-2px;left:calc(100% - 3px);"></view> -->
       </view>
       <view class="weui-tabbar__label" style="color:#2F69F8;">个人中心</view>
     </view>
   </view>
-  <view class="page__bd">
-        <view class="weui-demo-dialog {{istrue ? 'weui-demo-dialog_show' : ''}}">
-          <view class="weui-mask" bindtap="closeDialog"></view>
-          <view class="weui-dialog__wrp" bindtap="closeDialog">
-              <view class="weui-dialog">
-                <view class="weui-dialog__hd">
-                  <view class="weui-dialog__title">提示</view>
-                </view>
-                <view class="weui-dialog__bd">
-                  您确定要取消本次咨询吗？
-                </view>
-                <view class="weui-dialog__ft">
-                    <view class="weui-dialog__btn weui-dialog__btn_default" bindtap="closeDialog">取消</view>
-                    <view class="weui-dialog__btn" bindtap="closeDialog">确定</view>
-                </view>
-              </view>
-          </view>
-        </view>
-    </view>
 </view>
