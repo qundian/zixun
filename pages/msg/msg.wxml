@@ -1,48 +1,80 @@
 <view>
   <view class="empty" wx:if="{{arr.length == 0}}">—————— 暂无数据 ——————</view>
   <!-- 通知老师咨询通知 -->
-  <block wx:for="{{arr}}" wx:key="{{index}}">
-    <block wx:if="{{item.type == 'order_need_teacher_confirm' && isTeacher}}">
-      <navigator url="/pages/confirmOrder/confirmOrder?order_no={{item.data.order_no}}&id={{item.id}}">
-        <view class="list">
-          <image src="/images/order.png"></image>
-          <text class="text">咨询预约通知</text>
-          <text wx:if="{{!item.read_at}}" class="num">1</text>
-          <text class="date">{{item. created_at}}</text>
+  <view class="page__bd">
+    <block wx:for="{{arr}}" wx:key="{{index}}">
+      <block wx:if="{{item.type == 'order_need_teacher_confirm' && isTeacher}}">
+        <view class="weui-cells">
+          <mp-slideview buttons="{{slideButtons}}" bindbuttontap="slideButtonTap" data-id="{{item.id}}">
+            <mp-cell value="左滑可以删除" footer="说明文字">
+              <navigator url="/pages/confirmOrder/confirmOrder?order_no={{item.data.order_no}}&id={{item.id}}">
+                <view class="list">
+                  <image src="/images/order.png"></image>
+                  <text class="text">咨询预约通知</text>
+                  <text wx:if="{{!item.read_at}}" class="num">1</text>
+                  <text class="date">{{item. created_at}}</text>
+                </view>
+              </navigator>
+            </mp-cell>
+          </mp-slideview>
         </view>
-      </navigator>
-    </block>
-    <block wx:elif="{{item.type == 'order_pay_success'}}">
-      <!-- 用户预约成功 -->
-      <navigator url="/pages/success/success?order_no={{item.data.order_no}}&id={{item.id}}">
-        <view class="list">
-          <image src="/images/shijian.png"></image>
-          <text class="text">预约成功通知</text>
-          <text wx:if="{{!item.read_at}}" class="num">1</text>
-          <text class="date">{{item. created_at}}</text>
+      </block>
+      <block wx:elif="{{item.type == 'order_pay_success'}}">
+        <view class="weui-cells">
+          <mp-slideview buttons="{{slideButtons}}" bindbuttontap="slideButtonTap" data-id="{{item.id}}">
+            <mp-cell value="左滑可以删除" footer="说明文字">
+              <!-- 用户预约成功 -->
+              <navigator url="/pages/success/success?order_no={{item.data.order_no}}&id={{item.id}}">
+                <view class="list">
+                  <image src="/images/shijian.png"></image>
+                  <text class="text">预约成功通知</text>
+                  <text wx:if="{{!item.read_at}}" class="num">1</text>
+                  <text class="date">{{item. created_at}}</text>
+                </view>
+              </navigator>
+            </mp-cell>
+          </mp-slideview>
         </view>
-      </navigator>
+      </block>
+      <block wx:elif="{{item.type == 'order_complete_to_teacher'}}">
+        <view class="weui-cells">
+          <mp-slideview buttons="{{slideButtons}}" bindbuttontap="slideButtonTap" data-id="{{item.id}}">
+            <mp-cell value="左滑可以删除" footer="说明文字">
+              <!-- 老师分成通知 -->
+              <navigator url="/pages/divideInto/divideInto?order_no={{item.data.order_no}}&id={{item.id}}">
+                <view class="list">
+                  <image src="/images/koufeimingxi.png"></image>
+                  <text class="text">结束分成通知</text>
+                  <text wx:if="{{!item.read_at}}" class="num">1</text>
+                  <text class="date">{{item. created_at}}</text>
+                </view>
+              </navigator>
+            </mp-cell>
+          </mp-slideview>
+        </view>
+      </block>
+      <block wx:elif="{{item.type == 'order_complete_to_user'}}">
+        <view class="weui-cells">
+          <mp-slideview buttons="{{slideButtons}}" bindbuttontap="slideButtonTap" data-id="{{item.id}}">
+            <mp-cell value="左滑可以删除" footer="说明文字">
+              <!-- 用户扣费加评分通知 -->
+              <navigator url="/pages/Cost/Cost?order_no={{item.data.order_no}}&id={{item.id}}">
+                <view class="list">
+                  <image src="/images/koufeimingxi.png"></image>
+                  <text class="text">结束扣费通知</text>
+                  <text wx:if="{{!item.read_at}}" class="num">1</text>
+                  <text class="date">{{item. created_at}}</text>
+                </view>
+              </navigator>
+            </mp-cell>
+          </mp-slideview>
+        </view>
+      </block>
+      <block wx:else>
+        3
+      </block>
     </block>
-    <block wx:else>
-      1
-    </block>
-  </block>
-  <!-- 用户扣费加评分通知 -->
-  <navigator url="/pages/Cost/Cost">
-    <view class="list">
-      <image src="/images/koufeimingxi.png"></image>
-      <text class="text">结束扣费通知</text>
-      <text class="date">{{item. created_at}}</text>
-    </view>
-  </navigator>
-  <!-- 老师分成通知 -->
-  <navigator url="/pages/divideInto/divideInto">
-    <view class="list">
-      <image src="/images/koufeimingxi.png"></image>
-      <text class="text">结束分成通知</text>
-      <text class="date">{{item. created_at}}</text>
-    </view>
-  </navigator>
+  </view>
   <!-- 用户取消咨询 -->
   <navigator url="/pages/UserCancel/UserCancel">
     <view class="list">

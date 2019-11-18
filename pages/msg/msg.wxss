@@ -1,7 +1,6 @@
 .list{
   clear: both;
   padding:.8em 1em;
-  border-bottom:1px solid #dcdcdc;
   overflow: hidden;
   color: #999;
 }
@@ -33,4 +32,7 @@
   text-align:center;
   line-height:1.2em;
   margin-left: .3em;
+}
+.weui-cells{
+  margin-top:0;
 }

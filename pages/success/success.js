@@ -69,5 +69,61 @@ Page({
         app.warning(res);
       }
     })
+  },
+  overConsultation: function(){
+    var _self = this;
+    wx.showModal({
+      title: '提示',
+      content: '确定要取消此次咨询服务？',
+      success(res) {
+        if (res.confirm) {
+          wx.request({
+            url: app.globalData.edition + '/order/complete?order_no=' + _self.data.order_no,
+            method: 'post',
+            dataType: "json",
+            header: {
+              "Content-Type": "application/json",
+              "Accept": "application/json",
+              'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
+            },
+            success: function (res) {
+              if (res.data == '') {
+                wx.showModal({
+                  title: '提示',
+                  content: '已结束咨询，请评价此次咨询服务',
+                  showCancel: false,
+                  success(res) {
+                    if (res.confirm) {
+                      wx.navigateTo({
+                        url: '/pages/Cost/Cost?order_no=' + _self.data.order_no
+                      })
+                    }
+                  }
+                })
+              }
+            },
+            complete: function (res) {
+              app.warning(res);
+            }
+          })
+        } else {
+
+        }
+      }
+    })
+    
+  },
+  cancel: function(){
+    wx.showModal({
+      title: '提示',
+      content: '确定要取消此次咨询服务？',
+      success(res) {
+        if (res.confirm) {
+          
+        }else{
+
+        }
+      }
+    })
   }
 })

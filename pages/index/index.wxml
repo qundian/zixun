@@ -6,13 +6,13 @@
         <view class="weui-search-bar__form">
             <view class="weui-search-bar__box">
                 <icon class="weui-icon-search_in-box" type="search" size="14"></icon>
-                <input type="text" class="weui-search-bar__input" placeholder="搜索" value="{{inputVal}}" bindconfirm="search"/>
+                <input type="text" class="weui-search-bar__input" placeholder="搜索" value="{{inputVal}}" bindinput="changeWord" bindconfirm="search" confirm-type="search"/>
                 <view class="weui-icon-clear" wx:if="{{inputVal.length > 0}}" bindtap="clearInput">
                     <icon type="clear" size="14"></icon>
                 </view>
             </view>
             <label class="weui-search-bar__label" hidden="{{inputShowed}}" bindtap="showInput">
-                <icon class="weui-icon-search" type="search" size="14"></icon>
+                <icon class="weui-icon-search" type="search" size="14" bindtap="clearWord"></icon>
                 <view class="weui-search-bar__text">搜索</view>
             </label>
         </view>
@@ -60,32 +60,32 @@
       <navigator url="/pages/details/details?id={{item.id}}" hover-class="none">
         <view class="teacherList" data-id="{{item.id}}">
           <view class="teacherListImg">
-            <image src="{{item.headerImg}}"></image>
+            <image src="{{teacherImg+item.list_img_url}}"></image>
           </view>
           <view class="tesacherListRight">
             <view class="teacherListP1">
               <text>{{item.name}}</text>
-              <block wx:for="{{gradeImg}}" wx:key="index" wx:for-item="option">
-                <image src="{{option}}" wx:if="{{index<(item.grade%1 != 0?(item.grade-1):item.grade)}}"></image>
+              <block wx:for="{{gradeImg}}" wx:key="index" wx:for-item="option" wx:if="{{index<(item.score/item.number_reputation-1)}}">
+                <image src="{{option}}"></image>
               </block>
-              <image src="/images/xxhalf.png" wx:if="{{item.grade%1 != 0}}"></image>
+              <image src="/images/xxhalf.png" wx:if="{{(item.score/item.number_reputation)%1 != 0}}"></image>
               <view class="teacherListPrice">
-                <text style='color:#aaa;text-decoration:line-through;'>￥{{item.original}}/</text>
+                <text style='color:#aaa;text-decoration:line-through;'>￥{{item.original_price}}/</text>
                 <text style="font-size:.5em;">￥</text><text style="font-weight:bold;font-size:1.2em;">{{item.price}}</text>/小时
               </view>
             </view>
-            <view class="teacherListShow">{{item.company}}</view>
+            <view class="teacherListShow">{{item.background}}</view>
             <view class="teacherListBest">
-              <block wx:for="{{item.territory}}" wx:for-item="itm" wx:key="idx">
-                <text>{{itm}}</text>
+              <block wx:for="{{item.tags}}" wx:for-item="itm" wx:key="idx">
+                <text>{{itm.tag}}</text>
               </block>
             </view>
             <view style="height:1.3em;">
-              <view class="teacherListDate">帮助<text>{{item.num1}}</text>人</view>
-              <view class="teacherListDate">咨询<text>{{item.num2}}</text>小时</view>
+              <view class="teacherListDate">帮助<text>{{item.consultants}}</text>人</view>
+              <view class="teacherListDate">咨询<text>{{item.duration}}</text>小时</view>
             </view>
             <view style="height:1.3em;">
-              <view class="teacherListDate"><text>{{item.num3}}</text>条评价</view>
+              <view class="teacherListDate"><text>{{item.eval_num}}</text>条评价</view>
             </view>
             <button class="teacherListBtn">预约咨询</button>
           </view>
@@ -103,13 +103,26 @@
         <text bindtap="addSelect" data-name="{{item.name}}" class="{{item.check?'select':''}}">{{item.name}}</text>
       </block>
     </view>
-    <view class="leader"><view></view><text>价格区间</text></view>
+    <view class="leader"><view></view><text>价格区间(单位：每小时)</text></view>
     <view id="B-09261132">
-      <input type="number" placeholder="0"></input><text style="padding-right:0;font-size:.8em;">/小时</text><text>—</text><input type="number" placeholder="0"></input><text style="padding-right:0;font-size:.8em;">/小时</text>
+      <input type="number" placeholder="0" bindinput="changePrice" data-index="0" value="{{price[0]}}"></input><text style="padding-right:0;font-size:.8em;">元</text><text>—</text>
+      <input type="number" placeholder="0" bindinput="changePrice" data-index="1" value="{{price[1]}}"></input><text style="padding-right:0;font-size:.8em;">元</text>
     </view>
     <view class="leader"><view></view><text>时间区间</text></view>
     <view id="B-09261136">
-      <input type="number" placeholder="8"></input><text style="padding-right:0;">点</text><text>—</text><input type="number" placeholder="22"></input><text style="padding-right:0;">点</text>
+      <view class="section">
+        <picker bindchange="bindPickerChange" data-name="start" value="{{index1}}" range="{{timeArray}}">
+          <view class="picker">{{timeArray[index1]}}</view>
+        </picker>
+      </view>
+      <text style="padding-right:0;font-size:.8em;">点</text>
+      <text>—</text>
+      <view class="section">
+        <picker bindchange="bindPickerChange" data-name="end" value="{{index2}}" range="{{timeArray}}">
+          <view class="picker">{{timeArray[index2]}}</view>
+        </picker>
+      </view>
+      <text style="padding-right:0;font-size:.8em;">点</text>
     </view>
     <view bindtap="callTel" style="text-align:center;font-size:.75em;padding:1em 5.9%;">没有找到适合老师，可以向客服反应呦 点击联系客服</view>
     <button id="B-09261151" bindtap="translateHide">确定</button>

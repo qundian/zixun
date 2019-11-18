@@ -52,7 +52,7 @@ App({
   globalData: {
     domain: 'http://zxt.hrpindao.com',
     edition: 'http://zxt.hrpindao.com/api/v1',
-    getDataUrl: 'http://zxt.hrpindao.com/storage/',  //轮播图
+    getDataUrl: 'http://zxt.hrpindao.com/storage/',  //轮播图、列表头像、详情页头像
     userHeaderImgUrl: 'http://tt.hrpindao.com/',  //评论头像
     userInfo: null,
     isIphoneX: false
@@ -110,7 +110,7 @@ App({
         var c_day = new Date(res.data.start_at * 1000).getDate() < 10 ? '0' + new Date(res.data.start_at * 1000).getDate() : new Date(res.data.start_at * 1000).getDate()
         var time = c_year + '-' + c_month + '-' + c_day + ' ' + start_time + '-' + end_time
         obj.date_at = time;
-        _self.setData({ info: obj })
+        _self.setData({ info: obj });
       },
       complete: function (res) {
         _that.warning(res);

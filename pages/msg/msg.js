@@ -8,6 +8,14 @@ Page({
     getMore: ['点击加载更多']
   },
   onLoad: function(){
+    this.setData({
+      slideButtons: [{
+        type: 'warn',
+        text: '删除',
+        extClass: 'test'
+      }],
+    });
+
     var _self = this;
     var userInfo = wx.getStorageSync('userInfo');
     var token = wx.getStorageSync('token');
@@ -35,6 +43,40 @@ Page({
   },
   onShow: function(){
     this.getList();
+  },
+  onHide: function () {
+    this.setData({ arr: [], nowPage: 1, allPage: 1, getMore: ['点击加载更多'] })
+  },
+  slideButtonTap(event) {
+    var _self = this;
+    var id = event.currentTarget.dataset.id;
+    var arr = this.data.arr;
+    wx.request({
+      url: app.globalData.edition + '/message/deleteMsg?id=' + id,
+      method: 'get',
+      dataType: "json",
+      header: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
+      },
+      success: function (res) {
+        if(res.data == 1){
+          arr.forEach(function(item,index){
+            if(item.id == id){
+              arr.splice(index, 1);
+            }
+          })
+          _self.setData({arr:arr});
+          wx.showToast({
+            title: '删除成功~',
+          })
+        }
+      },
+      complete: function (res) {
+        app.warning(res);
+      }
+    })
   },
   getList: function(){
     var _self = this;
@@ -74,24 +116,6 @@ Page({
         title: '已全部加载',
       })
     }
-  },
-  delOne: function(event){
-    wx.request({
-      url: app.globalData.edition + '/message/deleteMsg?id=' + id,
-      method: 'get',
-      dataType: "json",
-      header: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-        'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
-      },
-      success: function (res) {
-        console.log(res)
-      },
-      complete: function (res) {
-        app.warning(res);
-      }
-    })
   },
   delAll: function (event) {
     wx.request({

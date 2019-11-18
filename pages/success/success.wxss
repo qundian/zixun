@@ -29,5 +29,5 @@ button{
   height:3em;
   line-height:3em;
   font-size:.875em;
-  margin-top: 6em;
+  margin-top: 3em;
 }

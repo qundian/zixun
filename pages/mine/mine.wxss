@@ -70,9 +70,11 @@
 }
 .teacherList{
   font-size:.9em;
+  padding:0;
+  padding-bottom:1em;
 }
 .teacherList view{
-  padding:.5em 0;
+  padding:.5em 1em;
   overflow: hidden;
 }
 .teacherList text{
@@ -128,4 +130,25 @@
   margin:0 auto;
   font-weight:bold;
   margin-top:3em;
+}
+#cashOut{
+  position:absolute;
+  top:1em;
+  left:1em;
+  z-index:10;
+  color:#fff;
+  display:inline-block;
+  padding:.2em .6em;
+  border:1px solid #fff;
+  font-size:.8em;
+  border-radius:.3em;
+  font-weight:bold;
+}
+.bg{
+  line-height:2em;
+  color:#fff;
+  font-weight:bold;
+}
+.weui-tabbar__item.weui-bar__item_on .weui-tabbar__icon,.weui-tabbar__item.weui-bar__item_on .weui-tabbar__icon>i,.weui-tabbar__item.weui-bar__item_on .weui-tabbar__label{
+  color: #999999;
 }

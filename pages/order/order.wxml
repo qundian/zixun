@@ -19,7 +19,7 @@
   <view class="leader"><view></view><text>咨询老师</text></view>
   <view class="teacherList" data-id="{{teacherInfo.id}}">
     <view class="teacherListImg">
-      <image src="{{'http://zxt.hrpindao.com/storage/'+teacherInfo.list_img_url}}"></image>
+      <image src="{{teacherImg+teacherInfo.list_img_url}}"></image>
     </view>
     <view class="tesacherListRight">
       <view class="teacherListP1">
@@ -62,9 +62,9 @@
   <view class="B-10091334">
     <text>咨询费用：</text><text style="float:right;margin-top:.3em;font-weight:bold;">￥{{teacherInfo.price*timeNum}}</text>
   </view>
-  <view class="B-10091334">
+  <!-- <view class="B-10091334">
     <text>账户余额：</text><text style="float:right;margin-top:.3em;font-weight:bold;">￥{{account}}</text>
-  </view>
+  </view> -->
   <view class="B-10091334" style="border:none;">
     <text>咨询优惠：</text><text style="float:right;margin-top:.3em;font-weight:bold;">-￥{{(original_price-price)*timeNum}}</text>
   </view>

@@ -10,7 +10,7 @@ Page({
     istrue: false,
     info: '', //用户信息
     userHeaderImgUrl: app.globalData.userHeaderImgUrl,
-    account: 0, //余额
+    wallet:'', //余额
     nowArr: [], //已预约咨询
     nowPage: 1,
     nowAllPage: 1,
@@ -57,8 +57,8 @@ Page({
           'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
         },
         success: function (res) {
-          if(res.data.account){
-            _self.setData({ account: res.data.account})
+          if(res.data){
+            _self.setData({ wallet: res.data})
           }
         },
         complete: function (res) {
@@ -74,7 +74,7 @@ Page({
         },
         success: function (res) {
           if (res.data) {
-            _self.setData({ userinfo: res.data })
+            _self.setData({ userInfo: res.data })
           }
         },
         complete: function (res) {
@@ -86,8 +86,6 @@ Page({
     }else{
       this.setData({isLogin:false})
     }
-    var userInfo = wx.getStorageSync('userInfo');
-    this.setData({userInfo:userInfo})
   },
   change: function(event){
     this.setData({
@@ -167,7 +165,7 @@ Page({
               } else if (item.end_at < new Date().getTime() / 1000){
                 item.state = 3;
               }
-              arr.push(item);
+              arr.push(_self.setDate(item));
             })
             nowPage++;
             if (nowPage > res.data.last_page) {
@@ -179,7 +177,7 @@ Page({
           }else if(option3 == 'onceArr'){
             var arr = _self.data.nowArr;
             res.data.data.forEach(function (item, index) {
-              arr.push(item);
+              arr.push(_self.setDate(item));
             })
             oncePage++;
             if (oncePage > res.data.last_page) {
@@ -191,7 +189,7 @@ Page({
           }else{
             var arr = _self.data.nowArr;
             res.data.data.forEach(function (item, index) {
-              arr.push(item);
+              arr.push(_self.setDate(item));
             })
             waitPage++;
             if (waitPage > res.data.last_page) {
@@ -221,7 +219,7 @@ Page({
       success: function (res) {
         if (res.data.resultcode == 0) {
           wx.makePhoneCall({
-            phoneNumber: res.data.privateNum.toString(),
+            phoneNumber: res.data.relationNum.toString(),
             success: function (res) {
               console.log(res)
             },
@@ -252,5 +250,6 @@ Page({
     var c_day = new Date(item.start_at * 1000).getDate() < 10 ? '0' + new Date(item.start_at * 1000).getDate() : new Date(item.start_at * 1000).getDate()
     var time = c_year + '-' + c_month + '-' + c_day + ' ' + start_time + '-' + end_time
     item.date_at = time;
+    return item;
   }
 })

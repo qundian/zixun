@@ -1,5 +1,7 @@
 {
-  "usingComponents": {},
+  "usingComponents": {
+    "mp-slideview": "./../components/slideview/slideview"
+  },
   "navigationBarTitleText": "消息列表",
   "navigationBarTextStyle": "white"
 }

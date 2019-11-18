@@ -30,6 +30,7 @@ Page({
     position: '',
     company: '',
     email: '',
+    teacherImg: app.globalData.getDataUrl
   },
   onLoad: function (options){
     var _self = this;

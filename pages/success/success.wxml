@@ -18,6 +18,7 @@
   </view>
   <block wx:if="{{info.status != 40 || info.status != 50}}">
     <block wx:if="{{info.state == 2}}">
+      <button style="background:#fa5151;" bindtap="overConsultation"><text>结束咨询</text></button>
       <button bindtap="call">拨打电话</button>
     </block>
     <block wx:elif="{{info.state == 1}}">

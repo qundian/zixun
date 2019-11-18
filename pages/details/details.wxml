@@ -1,6 +1,6 @@
 <view style="padding-bottom:4em;">
   <view style="position:relative;">
-    <image src="{{'http://zxt.hrpindao.com/storage/'+data.details_img_url}}" aspectFit style="width:100%;height:15.625em;"></image>
+    <image src="{{teacherImg+data.details_img_url}}" aspectFit style="width:100%;height:15.625em;"></image>
     <text id="teacherName">{{data.name}}</text>
     <view id="C-09281003">
       <text>{{data.title}}</text>
@@ -9,9 +9,9 @@
     <view id="userBot">
       <view class="C-09261532" style="width:45%;">
         <block wx:for="{{gradeImg}}" wx:key="{{index}}">
-          <image src="{{item}}" wx:if="{{index<(data.score%1 != 0?(data.score-1):data.score)}}"></image>
+          <image src="{{item}}" wx:if="{{index<(data.score/data.number_reputation-1)}}"></image>
         </block>
-        <image src="/images/xxhalf.png" wx:if="{{data.score%1 != 0}}"></image>
+        <image src="/images/xxhalf.png" wx:if="{{(item.score/item.number_reputation)%1 != 0}}"></image>
         <text style="font-size:.85em;color:#999;">评分</text>
       </view>
       <view class="C-09261532" style="width:27.25%;">

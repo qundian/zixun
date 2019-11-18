@@ -9,22 +9,30 @@
     <image src="/images/userbg.png" aspectFit id="userBg"></image>
     <image src="{{userHeaderImgUrl+'Public/upload/user_head/'+info.head_image}}" id="headerImg"></image>
     <view id="userName">{{info.username}}</view>
-    <view id="userBot">
-      <view class="C-09261532" style="width:29.5%;">
-        <text style="font-size:1.1em;font-weight:bold;">{{account}}元</text><text style="font-size:.85em;color:#999;">账户余额</text>
-      </view>
-      <view class="C-09261532" style="width:29.5%;">
-        <text style="font-size:1.1em;font-weight:bold;">10小时</text><text style="font-size:.85em;color:#999;">累计咨询时长</text>
-      </view>
-      <view class="C-09261532" style="width:40%;border:none;">
-        <view style="display:inline-block;width:50%;"><image src="/images/cz.png">
-          </image><text style="font-size:.85em;color:#999;">充值</text>
+    <block wx:if="{{isTeacher}}">
+      <view id="userBot">
+        <view class="C-09261532" style="width:24%;">
+          <text style="font-size:1.1em;font-weight:bold;">￥{{wallet.account}}</text><text style="font-size:.85em;color:#999;">账户余额</text>
         </view>
-        <view style="display:inline-block;width:50%;">
-          <image src="/images/tx.png"></image><text style="font-size:.85em;color:#999;">提现</text>
+        <view class="C-09261532" style="width:24%;">
+          <text style="font-size:1.1em;font-weight:bold;">{{wallet.duration}}分钟</text><text style="font-size:.85em;color:#999;">累计咨询时长</text>
+        </view>
+        <view class="C-09261532" style="width:24%;">
+          <text style="font-size:1.1em;font-weight:bold;">￥{{wallet.account_waiting}}</text><text style="font-size:.85em;color:#999;">结算中</text>
+        </view>
+        <view class="C-09261532" style="width:24%;border:none;">
+          <text style="font-size:1.1em;font-weight:bold;">￥{{wallet.account_withdraw}}</text><text style="font-size:.85em;color:#999;">提现中</text>
         </view>
       </view>
-    </view>
+      <text id="cashOut">提 现</text>
+    </block>
+    <block wx:else>
+      <view id="userBot">
+        <view class="C-09261532" style="width:100%;">
+          <text style="font-size:1.1em;font-weight:bold;">{{wallet.duration}}分钟</text><text style="font-size:.85em;color:#999;">累计咨询时长</text>
+        </view>
+      </view>
+    </block>
   </view>
   <view class="kong"></view>
   <view style="padding:1em .85em;">
@@ -41,20 +49,22 @@
   <view id="now" wx:if="{{listState == 'now'}}" wx:key="index">
     <block wx:for="{{nowArr}}" wx:key="s">
       <view class="teacherList" wx:if="{{item.status == 20}}">
-        <block wx:if="{{isTeacher}}">
-          <view><text>咨询用户：</text><text class="C-09270945">{{item.user_info.name}}</text></view>
+        <block wx:if="{{userInfo.user_id == item.user_id}}">
+          <view class="bg" style="background:#7B68EE;">主动预约的订单</view>
+          <view><text>咨询老师：</text><text class="C-09270945">{{item.teacher.name}}</text></view>
         </block>
         <block wx:else>
-          <view><text>咨询老师：</text><text class="C-09270945">{{item.user_info.name}}</text></view>
+          <view class="bg" style="background:#7EC0EE;">被预约的订单</view>
+          <view><text>咨询用户：</text><text class="C-09270945">{{item.user_info.name}}</text></view>
         </block>
         <view><text>咨询费用：</text><text class="C-09270945">￥{{item.total_fee}}</text></view>
         <view><text>通话时间：</text><text class="C-09270945">{{item.date_at}}</text></view>
         <view><text>咨询主题：</text><text class="C-09270945">{{item.subject?item.subject:'未填写咨询主题'}}</text></view>
         <block wx:if="{{item.status != 40 || item.status != 50}}">
-          <block wx:if="{{item.state == 2}}">
+          <block wx:if="{{item.state == 2 && userInfo.user_id == item.user_id}}">
             <button bindtap="call" data-orderno="{{item.order_no}}"><text>拨打电话</text></button>
           </block>
-          <block wx:elif="{{item.state == 1}}">
+          <block wx:if="{{item.state == 1}}">
             <button style="background:#fa5151;" bindtap="cancel" data-orderno="{{order_no}}"><text>取消预约</text></button>
           </block>
         </block>
@@ -66,27 +76,62 @@
   <view id="once" wx:if="{{listState == 'once'}}" wx:key="index">
     <block wx:for="{{onceArr}}" wx:key="k">
       <view class="teacherList" wx:if="{{item.status == 30}}">
-        <block wx:if="{{isTeacher}}">
+        <block wx:if="{{userInfo.user_id == item.user_id}}">
+          <view class="bg" style="background:#7B68EE;">主动预约的订单</view>
+          <view><text>咨询老师：</text><text class="C-09270945">{{item.teacher.name}}</text></view>
+        </block>
+        <block wx:else>
+          <view class="bg" style="background:#7EC0EE;">被预约的订单</view>
           <view><text>咨询用户：</text><text class="C-09270945">{{item.user_info.name}}</text></view>
           <view><text>分成所得：</text><text class="C-09270945">￥{{item.profit}}</text></view>
         </block>
-        <block>
-          <view><text>咨询费用：</text><text class="C-09270945">￥{{item.total_fee}}</text></view>
-        </block>
+        <view><text>咨询费用：</text><text class="C-09270945">￥{{item.total_fee}}</text></view>
         <view><text>违约扣除：</text><text class="C-09270945">￥{{item.punish}}</text></view>
         <view><text>通话时间：</text><text class="C-09270945">{{item.date_at}}</text></view>
-        <view><text>通话时长：</text><text class="C-09270945">{{item.long}}分钟</text></view>
+        <!-- <view><text>通话时长：</text><text class="C-09270945">{{item.long}}分钟</text></view> -->
         <view><text>咨询主题：</text><text class="C-09270945">{{item.subject?item.subject:'未填写咨询主题'}}</text></view>
-        <view><text>此次评分：</text>
-        <view style="padding:0;width:70%;float:right;text-align:right;">
-          <block wx:for="{{gradeImg}}" wx:key="index" wx:for-item="option">
-            <image src="{{option}}" wx:if="{{index<(item.grade%1 != 0?(item.grade-1):item.grade)}}"></image>
-          </block>
-          <image src="/images/xxhalf.png" wx:if="{{item.grade%1 != 0}}"></image>
-        </view>
-        </view>
-        <view><text>此次评价：</text><text class="C-09270945" style="text-align:left;">{{item.discuss}}</text></view>
-        <navigator url="/pages/details/details?id={{item.teacher.id}}"><button><text>再次咨询</text></button></navigator>
+        <block wx:if="{{item.order_eval}}">
+          <view>
+            <text>此次评分：</text>
+            <view style="padding:0;width:70%;float:right;text-align:right;">
+              <text>态度：</text>
+              <block wx:for="{{gradeImg}}" wx:key="index" wx:for-item="option">
+                <image src="{{option}}" wx:if="{{index < item.order_eval.attitude}}"></image>
+              </block>
+              <block wx:for="{{gradeImg}}" wx:key="index" wx:for-item="option" wx:if="{{index < (5-item.order_eval.attitude)}}">
+                <image src="/images/star.png"></image>
+              </block>
+            </view>
+            <view style="padding:0;width:70%;float:right;text-align:right;">
+              <text>专业：</text>
+              <block wx:for="{{gradeImg}}" wx:key="index" wx:for-item="option">
+                <image src="{{option}}" wx:if="{{index < item.order_eval.speciality}}"></image>
+              </block>
+              <block wx:for="{{gradeImg}}" wx:key="index" wx:for-item="option" wx:if="{{index < (5-item.order_eval.speciality)}}">
+                <image src="/images/star.png"></image>
+              </block>
+            </view>
+            <view style="padding:0;width:70%;float:right;text-align:right;">
+              <text>满意：</text>
+              <block wx:for="{{gradeImg}}" wx:key="index" wx:for-item="option">
+                <image src="{{option}}" wx:if="{{index < item.order_eval.satisfaction}}"></image>
+              </block>
+              <block wx:for="{{gradeImg}}" wx:key="index" wx:for-item="option" wx:if="{{index < (5-item.order_eval.satisfaction)}}">
+                <image src="/images/star.png"></image>
+              </block>
+            </view>
+          </view>
+        </block>
+        <block wx:else>
+          <view>
+            <text>此次评分：</text>
+            <view style="padding:0;width:70%;float:right;text-align:right;">
+              <text>无</text>
+            </view>
+          </view>
+        </block>
+        <view><text>此次评价：</text><text class="C-09270945">{{item.order_eval.content?item.order_eval.content:'未填写评价'}}</text></view>
+        <navigator wx:if="{{userInfo.user_id == item.user_id}}" url="/pages/details/details?id={{item.teacher.id}}"><button><text>再次咨询</text></button></navigator>
       </view>
     </block>
     <view class="empty" wx:if="{{onceArr.length == 0}}">—————— 暂无数据 ——————</view>

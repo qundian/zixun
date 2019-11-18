@@ -24,14 +24,16 @@ Page({
     display: 'none',
     animation1: [],
     animation2: [],
-    territoryVal: '',
-    price: [12,43],
-    time: [9,9,12],
+    price: [0,0],
     follow: false,
     notReady: 0,
     nowPage: 1,
     allPage: 1,
-    getMore: ['点击加载更多']
+    getMore: ['点击加载更多'],
+    teacherImg: app.globalData.getDataUrl,
+    timeArray: [8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],
+    index1: 0,
+    index2: 0,
   },
   onReady:function(){
     this.animation1 = wx.createAnimation();
@@ -42,11 +44,6 @@ Page({
   },
   onShow: function(){
     var _self = this;
-    wx.getSystemInfo({
-      success(res) {
-        
-      }
-    })
     // 请求图片轮播图
     var imgUrls = [];
     wx.request({
@@ -90,7 +87,7 @@ Page({
           'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
         },
         success: function (res) {
-          if (res.data) {
+          if (res.data>=0) {
             _self.setData({ notReady: res.data })
           }
         },
@@ -224,23 +221,8 @@ Page({
         url: app.globalData.edition + '/teacher/list?page=' + nowPage,
         success: function (res) {
           res.data.data.forEach(function (item, index) {
-            obj = {
-              headerImg: app.globalData.getDataUrl + item.list_img_url,
-              name: item.name,
-              grade: item.score,
-              original: item.original_price,
-              price: item.price,
-              company: item.background,
-              territory: [],
-              num1: item.consultants,
-              num2: item.duration,
-              num3: item.eval_num,
-              id: item.id
-            }
-            item.tags.forEach(function (a, b) {
-              obj.territory.push(a.tag);
-            })
-            opt.push(obj);
+            var item = item;
+            opt.push(item);
           })
           nowPage++;
           if (nowPage > res.data.last_page) {
@@ -260,5 +242,59 @@ Page({
         title: '已全部加载',
       })
     }
+  },
+  bindPickerChange: function (e) {
+    var name = e.currentTarget.dataset.name;
+    if(name == 'start'){
+      this.setData({
+        index1: e.detail.value
+      })
+    }else{
+      this.setData({
+        index2: e.detail.value
+      })
+    }
+  },
+  submitSearch: function(){
+    var _self = this;
+    wx.request({
+      url: app.globalData.edition + '/search/search',
+      method: 'post',
+      data:{
+        page: 1,
+        keyword: _self.data.inputVal,
+        tags_in: _self.data.territory,
+        price_between: _self.data.price,
+        times_in: timeArray[_self.data.index1,_self.data.index2]
+      },
+      dataType: "json",
+      header: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
+      },
+      success: function (res) {
+        console.log(res)
+      },
+      complete: function (res) {
+        app.warning(res);
+      }
+    })
+  },
+  changeWord: function(e){
+    this.setData({ inputVal: e.detail.value})
+  },
+  changePrice: function(e){
+    var price = this.data.price;
+    if(e.currentTarget.dataset.index == 0){
+      price[0] = e.detail.value;
+      this.setData({price: price})
+    }else{
+      price[1] = e.detail.value;
+      this.setData({ price: price })
+    }
+  },
+  clearWord: function(){
+    this.setData({inputVal: ''})
   }
 })

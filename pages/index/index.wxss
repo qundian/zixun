@@ -87,7 +87,7 @@ swiper{
 #B-09261124 text{
   display:inline-block;
   font-size: .8em;
-  padding:.4em .7em;
+  padding:.4em .6em;
   border: 1px solid #CCCCCC;
   border-radius: 6px;
   margin-right:.25em;
@@ -139,4 +139,16 @@ swiper{
   height:3em;
   border-radius:50%;
   border:1px solid #2F69F8;
+}
+.section{
+  display: inline-block;
+  width: 3.5em;
+  height: 2.06em;
+  border: 1px solid #CCCCCC;
+  border-radius: 6px;
+  vertical-align: middle;
+  text-align: center;
+}
+.picker{
+  line-height: 2.06em;
 }

@@ -44,3 +44,8 @@ button{
 .C-10101704 text{
   vertical-align: middle;
 }
+button{
+  width:40%;
+  display: inline-block;
+  margin:0 3%;
+}

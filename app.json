@@ -1,13 +1,13 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/order/order",
     "pages/mine/mine",
     "pages/msg/msg",
     "pages/Cost/Cost",
-    "pages/divideInto/divideInto",
-    "pages/userInfo/userInfo",
     "pages/confirmOrder/confirmOrder",
+    "pages/divideInto/divideInto",
+    "pages/order/order",
+    "pages/userInfo/userInfo",
     "pages/waitPay/waitPay",
     "pages/setTime/setTime",
     "pages/details/details",
