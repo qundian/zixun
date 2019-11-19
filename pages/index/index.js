@@ -34,6 +34,7 @@ Page({
     timeArray: ['08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00','24:00'],
     startTime: '08:00',
     endTime: '24:00',
+    isSelectTime: false
   },
   onReady:function(){
     this.animation1 = wx.createAnimation();
@@ -152,6 +153,16 @@ Page({
     if(option.currentTarget.dataset.type == 'request'){
       this.setData({ teacherList: [], getMore: ['点击加载更多'], nowPage: 1, allPage: 1 });
       this.getList(1);
+    } else if (option.currentTarget.dataset.type == 'clear'){
+      var newArr = this.data.territory;
+      newArr.forEach(function(item,index){
+        item.check = false;
+      })
+      this.setData({
+        teacherList: [], getMore: ['点击加载更多'], nowPage: 1, allPage: 1 ,
+        startTime: '08:00',endTime: '24:00',inputVal: '',price: [0,0],territory: newArr
+      });
+      this.getList();
     }
   },
   translateShow: function () {
@@ -234,21 +245,25 @@ Page({
           var num1 = this.data.price[0];
           this.setData({price:[num0,num1]})
           c = this.data.price;
+        } else {
+          c = this.data.price;
         }
       }
 
       var num2 = parseInt(this.data.startTime);
       var num3 = parseInt(this.data.endTime);
-      if ((num3 - num2) <= 1){
-        b.push(parseInt(this.data.startTime));
-      }else{
-        for (var i = 0; i < (num3 - 1);i++){
-          if(num2 < (num3-1)){
-            num2++;
-            b.push(num2);
+      if(this.data.isSelectTime){
+        if ((num3 - num2) <= 1){
+          b.push(parseInt(this.data.startTime));
+        }else{
+          for (var i = 0; i < (num3 - 1);i++){
+            if(num2 < (num3-1)){
+              num2++;
+              b.push(num2);
+            }
           }
+          b.unshift(parseInt(this.data.startTime));
         }
-        b.unshift(parseInt(this.data.startTime));
       }
       if(option){
         var data = {
@@ -269,6 +284,8 @@ Page({
       }
       wx.request({
         url: app.globalData.edition + '/teacher/list',
+        method: 'post',
+        dataType: "json",
         data: data,
         success: function (res) {
           res.data.data.forEach(function (item, index) {
@@ -308,7 +325,8 @@ Page({
         return;
       }
       this.setData({
-        startTime: this.data.timeArray[e.detail.value]
+        startTime: this.data.timeArray[e.detail.value],
+        isSelectTime: true
       })
     }else{
       var time0 = this.data.startTime;
@@ -322,7 +340,8 @@ Page({
         return;
       }
       this.setData({
-        endTime: this.data.timeArray[e.detail.value]
+        endTime: this.data.timeArray[e.detail.value],
+        isSelectTime: true
       })
     }
   },

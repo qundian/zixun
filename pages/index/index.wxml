@@ -105,8 +105,8 @@
     </view>
     <view class="leader"><view></view><text>价格区间(单位：每小时)</text></view>
     <view id="B-09261132">
-      <input type="number" placeholder="0" bindinput="changePrice" data-index="0" value="{{price[0]}}"></input><text style="padding-right:0;font-size:.8em;">元</text><text>—</text>
-      <input type="number" placeholder="0" bindinput="changePrice" data-index="1" value="{{price[1]}}"></input><text style="padding-right:0;font-size:.8em;">元</text>
+      <input type="number" bindinput="changePrice" data-index="0" value="{{price[0]}}"></input><text style="padding-right:0;font-size:.8em;">元</text><text>—</text>
+      <input type="number" bindinput="changePrice" data-index="1" value="{{price[1]}}"></input><text style="padding-right:0;font-size:.8em;">元</text>
     </view>
     <view class="leader"><view></view><text>时间区间</text></view>
     <view id="B-09261136">
@@ -125,6 +125,7 @@
     <view bindtap="callTel" style="text-align:center;font-size:.75em;padding:1em 5.9%;">没有找到适合老师，可以向客服反应呦 点击联系客服</view>
     <button class="B-09261151" bindtap="translateHide" data-type="request">确定</button>
     <button class="B-09261151" bindtap="translateHide" data-type="cancel" style="background:#aaa;">取消</button>
+    <button class="B-09261151" bindtap="translateHide" data-type="clear" style="background:#aaa;">清除搜索条件</button>
   </view>
   <!-- 底部导航栏 -->
   <view class="weui-tabbar">
