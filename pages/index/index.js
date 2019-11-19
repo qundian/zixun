@@ -31,9 +31,9 @@ Page({
     allPage: 1,
     getMore: ['点击加载更多'],
     teacherImg: app.globalData.getDataUrl,
-    timeArray: [8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24],
-    index1: 0,
-    index2: 0,
+    timeArray: ['08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00','24:00'],
+    startTime: '08:00',
+    endTime: '24:00',
   },
   onReady:function(){
     this.animation1 = wx.createAnimation();
@@ -148,7 +148,11 @@ Page({
     var witch = option.currentTarget.id;  //确定按钮的id  B-09261151
     this.animation1.translate('15.9em', 0).step();
     this.animation2.opacity(0).step();
-    this.setData({ animation1: this.animation1.export(),animation2: this.animation2.export(),display:'none' })
+    this.setData({ animation1: this.animation1.export(),animation2: this.animation2.export(),display:'none' });
+    if(option.currentTarget.dataset.type == 'request'){
+      this.setData({ teacherList: [], getMore: ['点击加载更多'], nowPage: 1, allPage: 1 });
+      this.getList(1);
+    }
   },
   translateShow: function () {
     this.animation1.translate('-15.9em', 0).step();
@@ -157,6 +161,8 @@ Page({
   },
   search: function (event){
     var inputVal = event.detail.value;
+    this.setData({ teacherList: [], getMore: ['点击加载更多'], nowPage: 1, allPage: 1 });
+    this.getList(1);
   },
   addSelect: function(event){
     var arr = this.data.territory;
@@ -213,12 +219,57 @@ Page({
   getList: function(option){
     var _self = this;
     var nowPage = this.data.nowPage;
-    // 请求老师列表信息
-    var obj = {};
     var opt = this.data.teacherList;
+    var obj = {},a = [],b = [],c = [];
     if (this.data.getMore[0] == '点击加载更多') {
+
+      this.data.territory.forEach(function(item,index){
+        if (item.check){
+          a.push(item.name);
+        }
+      })
+      if(this.data.price[0] != 0 || this.data.price[1] != 0){
+        if(this.data.price[0] > this.data.price[1]){
+          var num0 = this.data.price[1];
+          var num1 = this.data.price[0];
+          this.setData({price:[num0,num1]})
+          c = this.data.price;
+        }
+      }
+
+      var num2 = parseInt(this.data.startTime);
+      var num3 = parseInt(this.data.endTime);
+      if ((num3 - num2) <= 1){
+        b.push(parseInt(this.data.startTime));
+      }else{
+        for (var i = 0; i < (num3 - 1);i++){
+          if(num2 < (num3-1)){
+            num2++;
+            b.push(num2);
+          }
+        }
+        b.unshift(parseInt(this.data.startTime));
+      }
+      if(option){
+        var data = {
+          page: nowPage,
+          keyword: _self.data.inputVal,
+          tags_in: a,
+          price_between: c,
+          times_in: b
+        }
+      }else{
+        var data = {
+          page: nowPage,
+          keyword: '',
+          tags_in: [],
+          price_between: [],
+          times_in: []
+        }
+      }
       wx.request({
-        url: app.globalData.edition + '/teacher/list?page=' + nowPage,
+        url: app.globalData.edition + '/teacher/list',
+        data: data,
         success: function (res) {
           res.data.data.forEach(function (item, index) {
             var item = item;
@@ -239,47 +290,41 @@ Page({
       })
     } else {
       wx.showToast({
-        title: '已全部加载',
+        title: '已全部加载'
       })
     }
   },
   bindPickerChange: function (e) {
     var name = e.currentTarget.dataset.name;
     if(name == 'start'){
+      var time0 = this.data.timeArray[e.detail.value];
+      var time1 = this.data.endTime;
+      if (parseInt(time0) > parseInt(time1)) {
+        wx.showModal({
+          title: '警告',
+          content: '开始时间不能大于结束时间，请重新选择',
+          showCancel: false
+        })
+        return;
+      }
       this.setData({
-        index1: e.detail.value
+        startTime: this.data.timeArray[e.detail.value]
       })
     }else{
+      var time0 = this.data.startTime;
+      var time1 = this.data.timeArray[e.detail.value];
+      if (parseInt(time0) > parseInt(time1)) {
+        wx.showModal({
+          title: '警告',
+          content: '结束时间不能小于开始时间，请重新选择',
+          showCancel: false
+        })
+        return;
+      }
       this.setData({
-        index2: e.detail.value
+        endTime: this.data.timeArray[e.detail.value]
       })
     }
-  },
-  submitSearch: function(){
-    var _self = this;
-    wx.request({
-      url: app.globalData.edition + '/search/search',
-      method: 'post',
-      data:{
-        page: 1,
-        keyword: _self.data.inputVal,
-        tags_in: _self.data.territory,
-        price_between: _self.data.price,
-        times_in: timeArray[_self.data.index1,_self.data.index2]
-      },
-      dataType: "json",
-      header: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-        'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
-      },
-      success: function (res) {
-        console.log(res)
-      },
-      complete: function (res) {
-        app.warning(res);
-      }
-    })
   },
   changeWord: function(e){
     this.setData({ inputVal: e.detail.value})
@@ -287,10 +332,10 @@ Page({
   changePrice: function(e){
     var price = this.data.price;
     if(e.currentTarget.dataset.index == 0){
-      price[0] = e.detail.value;
+      price[0] = Number(e.detail.value);
       this.setData({price: price})
     }else{
-      price[1] = e.detail.value;
+      price[1] = Number(e.detail.value);
       this.setData({ price: price })
     }
   },

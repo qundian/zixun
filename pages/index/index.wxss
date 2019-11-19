@@ -109,14 +109,14 @@ swiper{
   padding:0 .5em;
   vertical-align: middle;
 }
-#B-09261151{
+.B-09261151{
   background: #FFB701;
   box-shadow: 0 2px 3px 0 rgba(255,183,1,0.30);
   font-size:.9em;
   color: #fff;
   border-radius: 2em;
   width: 12em;
-  margin-top:4em;
+  margin-top:2em;
 }
 .select{
   border-color: #2F69F8 !important;
@@ -142,7 +142,7 @@ swiper{
 }
 .section{
   display: inline-block;
-  width: 3.5em;
+  width: 4.5em;
   height: 2.06em;
   border: 1px solid #CCCCCC;
   border-radius: 6px;

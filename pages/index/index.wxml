@@ -95,7 +95,7 @@
     <view class="getMore" bindtap="getList" wx:if="{{teacherList.length > 0}}">{{getMore[0]}}</view>
   </view>
   <!-- 筛选弹窗 -->
-  <view id="mask" bindtap="translateHide" animation="{{animation2}}" style="display:{{display}}"></view>
+  <view id="mask" bindtap="translateHide" animation="{{animation2}}" style="display:{{display}}" data-type="cancel"></view>
   <view id="leftModel" animation="{{animation1}}">
     <view class="leader"><view></view><text>擅长领域</text></view>
     <view id="B-09261124">
@@ -111,21 +111,20 @@
     <view class="leader"><view></view><text>时间区间</text></view>
     <view id="B-09261136">
       <view class="section">
-        <picker bindchange="bindPickerChange" data-name="start" value="{{index1}}" range="{{timeArray}}">
-          <view class="picker">{{timeArray[index1]}}</view>
+        <picker bindchange="bindPickerChange" data-name="start" value="{{startTime}}" range="{{timeArray}}">
+          <view class="picker">{{startTime}}</view>
         </picker>
       </view>
-      <text style="padding-right:0;font-size:.8em;">点</text>
       <text>—</text>
       <view class="section">
-        <picker bindchange="bindPickerChange" data-name="end" value="{{index2}}" range="{{timeArray}}">
-          <view class="picker">{{timeArray[index2]}}</view>
+        <picker bindchange="bindPickerChange" data-name="end" value="{{endTime}}" range="{{timeArray}}">
+          <view class="picker">{{endTime}}</view>
         </picker>
       </view>
-      <text style="padding-right:0;font-size:.8em;">点</text>
     </view>
     <view bindtap="callTel" style="text-align:center;font-size:.75em;padding:1em 5.9%;">没有找到适合老师，可以向客服反应呦 点击联系客服</view>
-    <button id="B-09261151" bindtap="translateHide">确定</button>
+    <button class="B-09261151" bindtap="translateHide" data-type="request">确定</button>
+    <button class="B-09261151" bindtap="translateHide" data-type="cancel" style="background:#aaa;">取消</button>
   </view>
   <!-- 底部导航栏 -->
   <view class="weui-tabbar">

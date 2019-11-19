@@ -74,7 +74,7 @@ Page({
     var _self = this;
     wx.showModal({
       title: '提示',
-      content: '确定要取消此次咨询服务？',
+      content: '确定要结束此次咨询服务？',
       success(res) {
         if (res.confirm) {
           wx.request({
