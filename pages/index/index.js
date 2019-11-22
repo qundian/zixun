@@ -13,14 +13,9 @@ Page({
     gradeImg: [
       '/images/xx.png', '/images/xx.png', '/images/xx.png', '/images/xx.png', '/images/xx.png'
     ],  //评分图片
-    hotWords: ['薪酬设计','职业规划','人才发展'], //热词
+    hotWords: [], //热词
     teacherList: [],
-    territory: [
-      { name: '薪酬设计', check: false },
-      { name: '职业规划', check: false },
-      { name: '人才发展', check: false },
-      { name: '组织变革', check: false }
-    ],
+    territory: [],
     display: 'none',
     animation1: [],
     animation2: [],
@@ -60,13 +55,27 @@ Page({
       }
     })
     
-    // 获取热门主题
-    var hotWords = [];
+    // 获取筛选弹出的擅长领域
+    var begoodat = [];
     wx.request({
-      url: app.globalData.edition + '/tag/list?page=1&per_page=4',
+      url: app.globalData.edition + '/tag/list?page=1&per_page=10',
       success: function (res) {
         res.data.data.forEach(function (item, index) {
-          hotWords.push(item.tag);
+          begoodat.push({ name: item.tag,check: false});
+        })
+        _self.setData({ territory: begoodat })
+      },
+      complete: function (res) {
+        app.warning(res);
+      }
+    })
+    // 获取热词
+    var hotWords = [];
+    wx.request({
+      url: app.globalData.edition + '/words/list?per_page=4',
+      success: function (res) {
+        res.data.data.forEach(function (item, index) {
+          hotWords.push(item.words);
         })
         _self.setData({ hotWords: hotWords })
       },
@@ -114,11 +123,6 @@ Page({
       inputVal: ""
     });
   },
-  inputTyping: function (e) {
-    this.setData({
-      inputVal: e.detail.value
-    });
-  },
   // 设置swiper高度
   imageLoad: function (e) {//获取图片真实宽度  
     var srceenWidth = 0;
@@ -160,7 +164,7 @@ Page({
       })
       this.setData({
         teacherList: [], getMore: ['点击加载更多'], nowPage: 1, allPage: 1 ,
-        startTime: '08:00',endTime: '24:00',inputVal: '',price: [0,0],territory: newArr
+        startTime: '08:00',endTime: '24:00',inputVal: '',price: [0,0],territory: newArr,isSelectTime: false
       });
       this.getList();
     }
@@ -171,8 +175,7 @@ Page({
     this.setData({ animation1: this.animation1.export(), animation2: this.animation2.export(),display:'block' })
   },
   search: function (event){
-    var inputVal = event.detail.value;
-    this.setData({ teacherList: [], getMore: ['点击加载更多'], nowPage: 1, allPage: 1 });
+    this.setData({ teacherList: [], getMore: ['点击加载更多'], nowPage: 1, allPage: 1, inputVal: event.detail.value});
     this.getList(1);
   },
   addSelect: function(event){
@@ -187,20 +190,6 @@ Page({
     })
     this.setData({
       territory: arr
-    })
-  },
-  bindGetUserInfo:function(){
-    wx.getUserInfo({
-      success: function (res) {
-        if (!res.userInfo) {
-          return;
-        }
-        wx.setStorageSync('userInfo', res.userInfo)
-        // _self.login();
-      },
-      fail: function(res){
-        console.log(res)
-      }
     })
   },
   callTel: function () {

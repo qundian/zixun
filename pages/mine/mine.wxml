@@ -11,20 +11,20 @@
     <view id="userName">{{info.username}}</view>
     <block wx:if="{{isTeacher}}">
       <view id="userBot">
-        <view class="C-09261532" style="width:24%;">
+        <view class="C-09261532" style="width:20%;">
           <text style="font-size:1.1em;font-weight:bold;">￥{{wallet.account}}</text><text style="font-size:.85em;color:#999;">账户余额</text>
         </view>
         <view class="C-09261532" style="width:24%;">
           <text style="font-size:1.1em;font-weight:bold;">{{wallet.duration}}分钟</text><text style="font-size:.85em;color:#999;">累计咨询时长</text>
         </view>
-        <view class="C-09261532" style="width:24%;">
-          <text style="font-size:1.1em;font-weight:bold;">￥{{wallet.account_waiting}}</text><text style="font-size:.85em;color:#999;">结算中</text>
+        <view class="C-09261532" style="width:27.5%;">
+          <text style="font-size:1.1em;font-weight:bold;">￥{{wallet.account_waiting}}</text><text style="font-size:.85em;color:#999;">结算中<text style="font-size:.6em;display:inline;">(7天内到账)</text></text>
         </view>
-        <view class="C-09261532" style="width:24%;border:none;">
-          <text style="font-size:1.1em;font-weight:bold;">￥{{wallet.account_withdraw}}</text><text style="font-size:.85em;color:#999;">提现中</text>
+        <view class="C-09261532" style="width:27.5%;border:none;">
+          <text style="font-size:1.1em;font-weight:bold;">￥{{wallet.account_withdraw}}</text><text style="font-size:.85em;color:#999;">提现中<text style="font-size:.6em;display:inline;">(7天内到账)</text></text>
         </view>
       </view>
-      <text id="cashOut">提 现</text>
+      <text id="cashOut" bindtap="showCash">提 现</text>
     </block>
     <block wx:else>
       <view id="userBot">
@@ -170,6 +170,25 @@
         <!-- <view class="weui-badge weui-badge_dot" style="position:absolute;top:-2px;left:calc(100% - 3px);"></view> -->
       </view>
       <view class="weui-tabbar__label" style="color:#2F69F8;">个人中心</view>
+    </view>
+  </view>
+  <view class="page__bd">
+    <view class="weui-demo-dialog {{isCash ? 'weui-demo-dialog_show' : ''}}">
+      <view class="weui-mask" bindtap="closeCash"></view>
+      <view class="weui-dialog__wrp">
+          <view class="weui-dialog">
+            <view class="weui-dialog__hd">
+              <view class="weui-dialog__title">提现金额</view>
+            </view>
+            <view class="weui-dialog__bd">
+              <text>￥</text><input value="{{cash}}" bindinput="changes" type="number" placeholder="请输入提现金额"></input>
+            </view>
+            <view class="weui-dialog__ft">
+              <view class="weui-dialog__btn" bindtap="closeCash" >取消</view>
+              <view class="weui-dialog__btn" bindtap="closeCash" bindtap="getCash">确定</view>
+            </view>
+          </view>
+      </view>
     </view>
   </view>
 </view>

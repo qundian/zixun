@@ -64,14 +64,14 @@
     <scroll-view scroll-x="true" style="white-space: nowrap;height:8.5em;padding-left:6.1%;box-sizing:border-box;" scroll-with-animation="true">
       <block wx:for="{{data.orders}}" wx:key="{{index}}">
         <view class="D-10081133">
-          <view style="color:#666;font-size:.875em;">{{item.user_info.username}}</view><view style="font-size:.75em;color:#999">{{item.created_at}}</view>
+          <view style="color:#666;font-size:.875em;">{{item.user.username}}</view><view style="font-size:.75em;color:#999">{{item.created_at}}</view>
           <view class="E-10081305">{{item.subject}}</view>
         </view>
       </block>
     </scroll-view>
     <view class="kong"></view>
     <view class="leader"><view></view><text>评论</text></view>
-    <block wx:for="{{data.eval}}" wx:key="{{index}}"> 
+    <block wx:for="{{data.order_eval}}" wx:key="{{index}}"> 
       <view style="padding:0 6.1%;">
         <view class="C-10081354">
           <view class="D-10081400">
@@ -93,7 +93,7 @@
       <image src="/images/kefu.png"></image><text>客服</text>
     </view>
     <view style="width:40%;font-size:1em;line-height:2.6em;">
-      <text style="display:inline;color:#FF0000;font-size:1.1em;">￥{{data.price}}</text>/小时
+      <text style="display:inline;color:#FF0000;font-size:1.2em;">￥{{data.price}}</text>/<text style="font-size:.85em;display:inline">小时</text>
     </view>
     <view style="width:30%;"><navigator hover-class="none" url="/pages/order/order?id={{id}}">预约咨询</navigator></view>
     <view style="height:1em;width:100%;" wx:if="{{isIphoneX}}"></view>

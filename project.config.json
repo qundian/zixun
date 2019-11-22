@@ -23,7 +23,7 @@
 		}
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.9.0",
+	"libVersion": "2.9.3",
 	"appid": "wx7e98d26b7182a9a9",
 	"projectname": "zixun",
 	"debugOptions": {

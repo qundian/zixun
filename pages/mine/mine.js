@@ -7,7 +7,7 @@ Page({
     gradeImg: [
       '/images/xx.png', '/images/xx.png', '/images/xx.png', '/images/xx.png', '/images/xx.png'
     ],  //评分图片
-    istrue: false,
+    isCash: false,
     info: '', //用户信息
     userHeaderImgUrl: app.globalData.userHeaderImgUrl,
     wallet:'', //余额
@@ -21,7 +21,8 @@ Page({
     waitPage: 1,
     waitAllPage: 1,
     isLogin: true,
-    getMore: ['点击加载更多', '点击加载更多', '点击加载更多']
+    getMore: ['点击加载更多', '点击加载更多', '点击加载更多'],
+    cash: ''
   },
   onShow: function(){
     var _self = this;
@@ -86,6 +87,12 @@ Page({
     }else{
       this.setData({isLogin:false})
     }
+  },
+  showCash: function () {
+    this.setData({ isCash: true })
+  },
+  closeCash: function(){
+    this.setData({isCash: false})
   },
   change: function(event){
     this.setData({
@@ -251,5 +258,48 @@ Page({
     var time = c_year + '-' + c_month + '-' + c_day + ' ' + start_time + '-' + end_time
     item.date_at = time;
     return item;
+  },
+  getCash: function(){
+    var _self = this;
+    if (_self.data.cash < 1){
+      wx.showToast({
+        title: '最小金额为1元'
+      })
+    }else{
+    }
+      wx.request({
+        url: app.globalData.edition + '/user/withdraw/apply',
+        method: 'post',
+        data: {
+          apply_total: _self.data.cash
+        },
+        dataType: "json",
+        header: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          'Authorization': wx.getStorageSync('token') ? `Bearer ${wx.getStorageSync('token')}` : ''
+        },
+        success: function (res) {
+          if(res.data.code == 0){
+            wx.showToast({
+              title: '提现成功',
+            })
+            var wallet = _self.data.wallet;
+            wallet.account = parseInt(wallet.account) - parseInt(_self.data.cash);
+            wallet.account_withdraw = parseInt(wallet.account_withdraw)+parseInt(_self.data.cash);
+            _self.setData({wallet:wallet})
+          }else{
+            wx.showToast({
+              title: res.data.msg,
+            })
+          }
+        },
+        complete: function (res) {
+          app.warning(res);
+        }
+      })
+  },
+  changes:function(event){
+    this.setData({cash:event.detail.value})
   }
 })

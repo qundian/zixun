@@ -1,7 +1,8 @@
 @import '/style/weui.wxss';
 @import '/components/weui-wxss/dist/style/weui.wxss';
-body{
+page{
   color:#333333;
+  padding-bottom: 1.5em;
 }
 .kong{
   width:100%;
@@ -156,4 +157,7 @@ body{
   color: #aaa;
   text-align: center;
   padding: 1.5em 0;
+}
+button{
+  font-weight: bold;
 }

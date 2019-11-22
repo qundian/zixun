@@ -39,6 +39,8 @@ Page({
     if (this.data.id) {
       wx.request({
         url: app.globalData.edition + '/teacher/list?id=' + _self.data.id,
+        method: 'post',
+        dataType: "json",
         success: function (res) {
           _self.setData({ teacherInfo: res.data.data[0], original_price: parseInt(res.data.data[0].original_price), price: parseInt(res.data.data[0].price) })
         },
@@ -139,6 +141,7 @@ Page({
     }
   },
   addSelect: function (event) {
+    var text = this.data.text;
     var arr = this.data.territory;
     var name = event.currentTarget.dataset.name;
     arr.forEach(function (item, index) {
@@ -148,8 +151,11 @@ Page({
         item.check = false;
       }
     })
+    if (!event.currentTarget.dataset.state){
+      text = text + name;
+    }
     this.setData({
-      territory: arr
+      territory: arr,text: text
     })
   },
   openDialog: function () {
@@ -390,7 +396,7 @@ Page({
       }
     })
   },
-  changeValue: function(event){
+  changeText: function(event){
     this.setData({ text: event.detail.value})
   },
   changeValue: function (event) {

@@ -49,12 +49,12 @@
     </view>
   </view>
   <view class="leader"><view></view><text>本次咨询主题</text></view>
-  <textarea bindinput="changeValue"></textarea>
+  <textarea bindinput="changeText" value="{{text}}" placeholder="输入您本次向咨询的问题或主题"></textarea>
   <view style="padding:1.2em 6%;font-size:.75em;overflow:hidden;padding-bottom:.6em;">
     <text style="width:20%;float:left;line-height:2.5em;">热门主题：</text>
     <view style="float:left;width:80%;">
       <block wx:for="{{territory}}" wx:key="{{index}}">
-        <text class="C-10091403 {{item.check?'select':''}}" data-name="{{item.name}}" bindtap="addSelect">{{item.name}}</text>
+        <text class="C-10091403 {{item.check?'select':''}}" data-name="{{item.name}}" data-state="{{item.check}}" bindtap="addSelect">{{item.name}}</text>
       </block>
     </view>
   </view>
