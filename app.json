@@ -1,8 +1,8 @@
 {
   "pages": [
-    "pages/mine/mine",
-    "pages/index/index",
     "pages/msg/msg",
+    "pages/index/index",
+    "pages/mine/mine",
     "pages/Cost/Cost",
     "pages/confirmOrder/confirmOrder",
     "pages/divideInto/divideInto",
@@ -15,7 +15,9 @@
     "pages/UserCancel/UserCancel",
     "pages/success/success", 
     "pages/moreHistory/moreHistory",
-    "pages/history/history"
+    "pages/history/history",
+    "pages/tellUserTeacherCancel/tellUserTeacherCancel",
+    "pages/tellTeacherUserCancel/tellTeacherUserCancel"
   ],
   "window": {
     "backgroundTextStyle": "light",

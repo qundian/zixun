@@ -70,26 +70,49 @@
           </mp-slideview>
         </view>
       </block>
-      <block wx:else>
-        3
+      <block wx:if="{{item.type == 'teacher_cancel_order_to_tacher' && isTeacher}}">
+        <view class="weui-cells">
+          <mp-slideview buttons="{{slideButtons}}" bindbuttontap="slideButtonTap" data-id="{{item.id}}">
+            <mp-cell value="左滑可以删除" footer="说明文字">
+              <!-- 老师主动取消咨询 -->
+              <navigator url="/pages/teacherCancel/teacherCancel?order_no={{item.data.order_no}}&id={{item.id}}">
+                <view class="list">
+                  <image src="/images/quxiao.png"></image>
+                  <text class="text">取消咨询通知</text>
+                  <text wx:if="{{!item.read_at}}" class="num">1</text>
+                  <text class="date">{{item. created_at}}</text>
+                </view>
+              </navigator>
+            </mp-cell>
+          </mp-slideview>
+        </view>
+      </block>
+      <block wx:if="{{item.type == 'teacher_cancel_order_to_user'}}">
+        <view class="weui-cells">
+          <mp-slideview buttons="{{slideButtons}}" bindbuttontap="slideButtonTap" data-id="{{item.id}}">
+            <mp-cell value="左滑可以删除" footer="说明文字">
+              <navigator url="/pages/tellUserTeacherCancel/tellUserTeacherCancel?order_no={{item.data.order_no}}&id={{item.id}}">
+                <view class="list">
+                  <image src="/images/quxiao.png"></image>
+                  <text class="text">取消咨询通知</text>
+                  <text wx:if="{{!item.read_at}}" class="num">1</text>
+                  <text class="date">{{item. created_at}}</text>
+                </view>
+              </navigator>
+            </mp-cell>
+          </mp-slideview>
+        </view>
       </block>
     </block>
   </view>
-  <!-- 用户取消咨询 -->
-  <navigator url="/pages/UserCancel/UserCancel">
+  <!-- 用户主动取消咨询 -->
+  <!-- <navigator url="/pages/UserCancel/UserCancel?order_no={{item.data.order_no}}&id={{item.id}}">
     <view class="list">
       <image src="/images/quxiao.png"></image>
       <text class="text">取消咨询通知</text>
+      <text wx:if="{{!item.read_at}}" class="num">1</text>
       <text class="date">{{item. created_at}}</text>
     </view>
-  </navigator>
-  <!-- 老师取消咨询 -->
-  <navigator url="/pages/teacherCancel/teacherCancel">
-    <view class="list">
-      <image src="/images/quxiao.png"></image>
-      <text class="text">取消咨询通知</text>
-      <text class="date">{{item. created_at}}</text>
-    </view>
-  </navigator>
+  </navigator> -->
   <view class="getMore" bindtap="getList" wx:if="{{arr.length > 0}}">{{getMore[0]}}</view>
 </view>

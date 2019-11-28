@@ -23,14 +23,14 @@
       <view class="weui-dialog__wrp">
           <view class="weui-dialog">
             <view class="weui-dialog__hd">
-              <view class="weui-dialog__title">拒绝理由</view>
+              <view class="weui-dialog__title">拒绝理由(必填)</view>
             </view>
             <view class="weui-dialog__bd">
-              <input></input>
+              <input type="text" bindinput="changeValue"></input>
             </view>
             <view class="weui-dialog__ft">
-              <view class="weui-dialog__btn" bindtap="closeDialog" >取消</view>
-              <view class="weui-dialog__btn" bindtap="closeDialog" >确定</view>
+              <view class="weui-dialog__btn" bindtap="closeDialog" data-type='cancel'>取消</view>
+              <view class="weui-dialog__btn" bindtap="closeDialog" data-type='sure'>确定</view>
             </view>
           </view>
       </view>

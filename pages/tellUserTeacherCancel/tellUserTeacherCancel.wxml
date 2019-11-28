@@ -1,0 +1,30 @@
+<view>
+  <view id="B-10171010">
+    <view style="position:relative;">
+      <view style="text-align:center;margin-top:1em;padding-bottom:1.5em;">
+        <view style="font-weight:bold;color:#2F69F8;">咨询被取消通知</view>
+        <view style="margin-top:.5em;">抱歉您与<text>{{info.teacher.name}}</text>的一对一咨询已被取消！</view>
+      </view>
+      <view class="kong"></view>
+      <view class="teacherList" style="box-shadow:none;">
+        <view><text>咨询用户：</text><text class="C-09270945">{{info.user_info.name}}</text></view>
+        <view><text>手机号：</text><text class="C-09270945">{{info.user_info.phone}}</text></view>
+        <view><text>咨询老师：</text><text class="C-09270945">{{info.teacher.name}}</text></view>
+        <view><text>咨询费用：</text><text class="C-09270945">￥{{info.total_fee}}</text></view>
+        <view><text>咨询时间：</text><text class="C-09270945">{{info.date_at}}</text></view>
+        <view><text>咨询主题：</text><text class="C-09270945">{{info.subject?info.subject:'未填写咨询主题'}}</text></view>
+        <view><text>取消理由：</text><text class="C-09270945">{{info.subject}}</text></view>
+      </view>
+    </view>
+  </view>
+  <block wx:if="{{info.status != 40 || info.status != 50}}">
+    <block wx:if="{{info.state == 2}}">
+      <button style="background:#fa5151;" bindtap="overConsultation"><text>结束咨询</text></button>
+      <button bindtap="call">拨打电话</button>
+    </block>
+    <block wx:elif="{{info.state == 1}}">
+      <button style="background:#fa5151;" bindtap="cancel"><text>取消预约</text></button>
+    </block>
+  </block>
+  <navigator url="/pages/index/index" hover-class="none"><button><text>返回首页</text></button></navigator>
+</view> 
